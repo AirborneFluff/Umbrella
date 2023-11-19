@@ -484,3 +484,5 @@ $RECYCLE.BIN/
 *.swp
 /appsettings.Development.json
 /LocalDatabase.db
+/LocalDatabase.db-shm
+/LocalDatabase.db-wal

@@ -2,6 +2,7 @@
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -17,6 +18,7 @@ public sealed class ComponentsController : BaseApiController
         _mapper = mapper;
     }
     
+    [Authorize]
     [HttpGet("{componentId}")]
     public async Task<ActionResult> GetComponentById(long componentId)
     {
