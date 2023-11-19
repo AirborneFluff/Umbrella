@@ -1,7 +1,10 @@
 ﻿using System.Security.Claims;
 using API.Data.DTOs;
+using API.Data.Records;
+using API.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +50,22 @@ public class AccountController : BaseApiController
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity), 
             authProperties);
+        
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<ActionResult> GetUser()
+    {
+        return Ok(User.GetDetails());
+    }
+
+    [HttpPost("logout")]
+    public async Task<ActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme);
         
         return Ok();
     }
