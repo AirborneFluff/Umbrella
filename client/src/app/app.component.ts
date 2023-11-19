@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AccountService } from './core/services/account.service';
+import { ApiService } from './core/services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'client';
+
+  constructor() {
+  }
 }
