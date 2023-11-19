@@ -50,7 +50,9 @@ public class AccountController : BaseApiController
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity), 
             authProperties);
-        
+
+        //TODO We need some response from the server. IdentityUserDto perhaps
+        //TODO Convert the User.GetDetails from principle extension to something that can be used here
         return Ok();
     }
 

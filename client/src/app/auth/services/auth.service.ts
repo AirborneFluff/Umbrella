@@ -14,6 +14,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   public login(login: LoginParams) {
+    //TODO We need some response from the server. IdentityUserDto perhaps
     return this.http.post(this.baseUrl + "Account/login", login);
   }
 
@@ -22,6 +23,7 @@ export class AuthService {
   }
 
   public getUser() {
+    //TODO This should be IdentityUser response object containing claims
     return this.http.get<UserClaim[]>(this.baseUrl + "Account", {});
   }
 
