@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from './core/services/api.service';
 import { AuthService } from './auth/services/auth.service';
+import { TEST_EMAIL, TEST_PASSWORD } from './developer.secrets';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent {
   }
 
   login() {
-    this.auth.login({email: "email", password: "password"}).subscribe();
+    this.auth.login({email: TEST_EMAIL, password: TEST_PASSWORD}).subscribe();
   }
 
   logout() {
