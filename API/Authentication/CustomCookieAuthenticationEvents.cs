@@ -6,7 +6,7 @@ namespace API.Authentication;
 public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
 {
     private const string TicketIssuedTicks = nameof(TicketIssuedTicks);
-    private readonly TimeSpan _absoluteLifespan = TimeSpan.FromSeconds(15);
+    private readonly TimeSpan _absoluteLifespan = TimeSpan.FromDays(3);
 
     public override async Task SigningIn(CookieSigningInContext context)
     {

@@ -38,7 +38,7 @@ public static class ApplicationServiceExtensions
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             { 
-                options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 options.Cookie.MaxAge = options.ExpireTimeSpan;
                 options.SlidingExpiration = true;
                 
