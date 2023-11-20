@@ -39,6 +39,12 @@ public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
         await base.ValidatePrincipal(context);
     }
 
+    public override Task RedirectToAccessDenied(RedirectContext<CookieAuthenticationOptions> context)
+    {
+        context.Response.StatusCode = 403;
+        return Task.CompletedTask;
+    }
+
     public override Task RedirectToLogin(RedirectContext<CookieAuthenticationOptions> context)
     {
         context.Response.StatusCode = 401;

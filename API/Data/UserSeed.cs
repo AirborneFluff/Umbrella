@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using API.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
@@ -20,10 +21,10 @@ public sealed class UserSeed
 
         var roles = new List<IdentityRole>
         {
-            new IdentityRole { Name = "Member" },
-            new IdentityRole { Name = "Moderator" },
-            new IdentityRole { Name = "Admin" },
-            new IdentityRole { Name = "Owner" },
+            new IdentityRole { Name = IdentityRoleNames.Owner },
+            new IdentityRole { Name = IdentityRoleNames.Administrator },
+            new IdentityRole { Name = IdentityRoleNames.User },
+            new IdentityRole { Name = IdentityRoleNames.ReadOnlyUser },
         };
 
         foreach (var role in roles)
@@ -37,6 +38,6 @@ public sealed class UserSeed
         var result = await userManager.CreateAsync(user, ownerPassword);
         if (!result.Succeeded) throw new Exception("Issue creating owner account");
         
-        await userManager.AddToRoleAsync(user, "Owner");
+        await userManager.AddToRoleAsync(user, IdentityRoleNames.Owner);
     }
 }

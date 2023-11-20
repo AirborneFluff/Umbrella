@@ -32,6 +32,7 @@ public static class ApplicationServiceExtensions
         builder.Services
             .AddDefaultIdentity<IdentityUser>(options =>
             {
+                options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedAccount = false;
             })
             .AddRoles<IdentityRole>()
@@ -53,5 +54,25 @@ public static class ApplicationServiceExtensions
             });
         
         builder.Services.AddTransient<CustomCookieAuthenticationEvents>();
+    }
+
+    public static void AddAuthorization(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("RequireOwnerRole",
+                policy => policy.RequireRole(IdentityRoleNames.Owner));
+            
+            options.AddPolicy("RequireAdministratorRole",
+                policy => policy.RequireRole(
+                    IdentityRoleNames.Administrator,
+                    IdentityRoleNames.Owner));
+            
+            options.AddPolicy("RequireUserRole",
+                policy => policy.RequireRole(
+                    IdentityRoleNames.User,
+                    IdentityRoleNames.Administrator,
+                    IdentityRoleNames.Owner));
+        });
     }
 }

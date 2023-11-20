@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using API.Data.DTOs;
-using API.Data.Records;
 using API.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -35,6 +34,9 @@ public class AccountController : BaseApiController
         {
             new Claim(ClaimTypes.Name, user.Email!),
         };
+
+        var roles = await _userManager.GetRolesAsync(user);
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
