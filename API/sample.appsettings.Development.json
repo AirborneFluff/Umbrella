@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection" : "Data Source=<DatabaseName>"
+    "DefaultConnection" : "Data Source=LocalDatabase.db"
   },
   "OwnerCredentials": {
     "UserName" : "<admin username>",
