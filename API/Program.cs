@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddDbContext();
 builder.AddApplicationServices();
 builder.AddIdentityCore();
+builder.AddAuthentication();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

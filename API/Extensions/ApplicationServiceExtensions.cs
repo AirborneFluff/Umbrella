@@ -1,4 +1,5 @@
-﻿using API.Data;
+﻿using API.Authentication;
+using API.Data;
 using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,15 +31,20 @@ public static class ApplicationServiceExtensions
     {
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<DataContext>();
-        
+    }
+
+    public static void AddAuthentication(this WebApplicationBuilder builder)
+    {
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             { 
-                options.Events.OnRedirectToLogin = (context) =>
-                {
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
+                options.Cookie.MaxAge = options.ExpireTimeSpan;
+                options.SlidingExpiration = true;
+                
+                options.EventsType = typeof(CustomCookieAuthenticationEvents);
             });
+        
+        builder.Services.AddTransient<CustomCookieAuthenticationEvents>();
     }
 }

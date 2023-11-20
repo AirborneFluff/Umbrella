@@ -39,17 +39,9 @@ public class AccountController : BaseApiController
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-        var authProperties = new AuthenticationProperties
-        {
-            IsPersistent = true,
-            AllowRefresh = true,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-        };
-
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme, 
-            new ClaimsPrincipal(claimsIdentity), 
-            authProperties);
+            new ClaimsPrincipal(claimsIdentity));
 
         //TODO We need some response from the server. IdentityUserDto perhaps
         //TODO Convert the User.GetDetails from principle extension to something that can be used here
