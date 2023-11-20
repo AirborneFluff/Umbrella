@@ -2,7 +2,7 @@
 
 namespace API.Controllers;
 
-public class FallbackController : Controller
+public sealed class FallbackController : Controller
 {
     public ActionResult Index()
     {

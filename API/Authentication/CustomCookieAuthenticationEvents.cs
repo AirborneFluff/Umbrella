@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace API.Authentication;
 
-public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
+public sealed class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
 {
     private const string TicketIssuedTicks = nameof(TicketIssuedTicks);
     private readonly TimeSpan _absoluteLifespan = TimeSpan.FromDays(3);

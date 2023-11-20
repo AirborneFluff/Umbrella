@@ -1,3 +1,3 @@
 ﻿namespace API.Data.Records;
 
-public record UserClaim(string Type, string Value);
+public sealed record UserClaim(string Type, string Value);
