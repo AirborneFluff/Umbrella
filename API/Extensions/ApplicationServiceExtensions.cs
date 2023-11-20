@@ -29,7 +29,14 @@ public static class ApplicationServiceExtensions
 
     public static void AddIdentityCore(this WebApplicationBuilder builder)
     {
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+        builder.Services
+            .AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+            .AddRoles<IdentityRole>()
+            .AddRoleManager<RoleManager<IdentityRole>>()
+            .AddRoleValidator<RoleValidator<IdentityRole>>()
             .AddEntityFrameworkStores<DataContext>();
     }
 

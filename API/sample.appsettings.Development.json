@@ -1,0 +1,15 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection" : "Data Source=<DatabaseName>"
+  },
+  "OwnerCredentials": {
+    "UserName" : "<admin username>",
+    "Password" : "<admin password>"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
