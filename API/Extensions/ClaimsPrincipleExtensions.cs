@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using API.Authentication;
 using API.Data.DTOs;
 using API.Data.Records;
 
@@ -17,5 +18,17 @@ public static class ClaimsPrincipleExtensions
             Claims = userClaims,
             Email = email.Value
         };
+    }
+
+    public static IdentityRoles.Role MaxPermissibleRole(this ClaimsPrincipal principal)
+    {
+        var userRoles = principal.Claims
+            .Where(x => x.Type == ClaimTypes.Role)
+            .Select(x => x.Value);
+        var maxRole = (IdentityRoles.Role?) userRoles.Max(role => Enum.Parse(typeof(IdentityRoles.Role), role));
+        if (maxRole is null) throw new Exception("User has no roles");
+        var permissibleValue = (int)maxRole + 1;
+        
+        return (IdentityRoles.Role)permissibleValue;
     }
 }

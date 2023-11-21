@@ -12,6 +12,6 @@ public sealed class NewUserDto
 
     public string[] Roles { get; set; } =
     {
-        IdentityRoleNames.ReadOnlyUser
+        IdentityRoles.ReadOnlyUser
     };
 }

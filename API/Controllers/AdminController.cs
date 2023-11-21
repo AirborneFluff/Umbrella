@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+﻿using API.ActionResults;
 using API.Authentication;
 using API.Data.DTOs;
 using API.Extensions;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize(Policy = "RequireOwnerRole")]
+[Authorize(Policy = "RequireAdministratorRole")]
 public sealed class AdminController : BaseApiController
 {
     private readonly UserManager<IdentityUser> _userManager;
@@ -44,14 +44,61 @@ public sealed class AdminController : BaseApiController
         foreach (var role in userData.Roles)
         {
             if (!await _roleManager.RoleExistsAsync(role)) continue;
+            if (User.MaxPermissibleRole() > IdentityRoles.GetRole(role)) continue;
+            
             await _userManager.AddToRoleAsync(user, role);
         }
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        return Ok(new
+        return Ok(new UserUpdateDto()
         {
+            Id = user.Id,
             Email = user.Email,
+            Roles = roles
+        });
+    }
+
+    [HttpPost("users/{userId}/roles/{role}")]
+    public async Task<ActionResult> AddUserRole(string role, string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is null) return NotFound("No user found by that Id");
+
+        if (!await _roleManager.RoleExistsAsync(role)) return NotFound("No role found");
+
+        if (User.MaxPermissibleRole() > IdentityRoles.GetRole(role))
+            return new ForbiddenObjectResult("You do not have permission to add this role");
+        
+        await _userManager.AddToRoleAsync(user, role);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        return Ok(new UserUpdateDto()
+        {
+            Id = user.Id,
+            Email = user.Email!,
+            Roles = roles
+        });
+    }
+
+    [HttpDelete("users/{userId}/roles/{role}")]
+    public async Task<ActionResult> RemoveUserRole(string role, string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is null) return NotFound("No user found by that Id");
+
+        if (!await _roleManager.RoleExistsAsync(role)) return NotFound("No role found");
+
+        if (User.MaxPermissibleRole() > IdentityRoles.GetRole(role))
+            return new ForbiddenObjectResult("You do not have permission to remove this role");
+        
+        await _userManager.RemoveFromRoleAsync(user, role);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        return Ok(new UserUpdateDto()
+        {
+            Id = user.Id,
+            Email = user.Email!,
             Roles = roles
         });
     }

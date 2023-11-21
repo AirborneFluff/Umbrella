@@ -19,13 +19,9 @@ public sealed class UserSeed
         if (ownerUserName is null || ownerPassword is null)
             throw new Exception("Owner UserName and Password not configured");
 
-        var roles = new List<IdentityRole>
-        {
-            new IdentityRole { Name = IdentityRoleNames.Owner },
-            new IdentityRole { Name = IdentityRoleNames.Administrator },
-            new IdentityRole { Name = IdentityRoleNames.User },
-            new IdentityRole { Name = IdentityRoleNames.ReadOnlyUser },
-        };
+        var roles = Enum.GetValues(typeof(IdentityRoles.Role))
+            .Cast<IdentityRoles.Role>()
+            .Select(role => new IdentityRole(role.ToString()));
 
         foreach (var role in roles)
             await roleManager.CreateAsync(role);
@@ -38,6 +34,6 @@ public sealed class UserSeed
         var result = await userManager.CreateAsync(user, ownerPassword);
         if (!result.Succeeded) throw new Exception("Issue creating owner account");
         
-        await userManager.AddToRoleAsync(user, IdentityRoleNames.Owner);
+        await userManager.AddToRoleAsync(user, IdentityRoles.Owner);
     }
 }

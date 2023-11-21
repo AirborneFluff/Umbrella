@@ -61,18 +61,18 @@ public static class ApplicationServiceExtensions
         builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy("RequireOwnerRole",
-                policy => policy.RequireRole(IdentityRoleNames.Owner));
+                policy => policy.RequireRole(IdentityRoles.Owner));
             
             options.AddPolicy("RequireAdministratorRole",
                 policy => policy.RequireRole(
-                    IdentityRoleNames.Administrator,
-                    IdentityRoleNames.Owner));
+                    IdentityRoles.Administrator,
+                    IdentityRoles.Owner));
             
             options.AddPolicy("RequireUserRole",
                 policy => policy.RequireRole(
-                    IdentityRoleNames.User,
-                    IdentityRoleNames.Administrator,
-                    IdentityRoleNames.Owner));
+                    IdentityRoles.User,
+                    IdentityRoles.Administrator,
+                    IdentityRoles.Owner));
         });
     }
 }
