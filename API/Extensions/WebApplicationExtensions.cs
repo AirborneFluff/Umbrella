@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions;
@@ -12,7 +13,7 @@ public static class WebApplicationExtensions
         var service = scope.ServiceProvider;
         try
         {
-            var context = service.GetRequiredService<DataContext>();
+            var context = service.GetRequiredService<IdentityDbContext<IdentityUser>>();
             var userManager = service.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = service.GetRequiredService<RoleManager<IdentityRole>>();
             await context.Database.MigrateAsync();

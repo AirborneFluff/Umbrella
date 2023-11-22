@@ -2,7 +2,6 @@ using API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddDbContext();
 builder.AddApplicationServices();
 builder.AddIdentityCore();
 builder.AddAuthentication();
