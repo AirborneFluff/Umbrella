@@ -1,14 +1,16 @@
 ﻿using System.Security.Claims;
 using API.Data.DTOs;
+using API.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AccountController : BaseApiController
+public sealed class AccountController : BaseApiController
 {
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
@@ -33,20 +35,33 @@ public class AccountController : BaseApiController
             new Claim(ClaimTypes.Name, user.Email!),
         };
 
+        var roles = await _userManager.GetRolesAsync(user);
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-        var authProperties = new AuthenticationProperties
-        {
-            IsPersistent = true,
-            AllowRefresh = true,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-        };
-
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme, 
-            new ClaimsPrincipal(claimsIdentity), 
-            authProperties);
+            new ClaimsPrincipal(claimsIdentity));
+
+        //TODO We need some response from the server. IdentityUserDto perhaps
+        //TODO Convert the User.GetDetails from principle extension to something that can be used here
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<ActionResult> GetUser()
+    {
+        return Ok(User.GetDetails());
+    }
+
+    [HttpPost("logout")]
+    public async Task<ActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme);
         
         return Ok();
     }

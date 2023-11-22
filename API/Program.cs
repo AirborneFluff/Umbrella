@@ -1,11 +1,12 @@
 using API.Extensions;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddDbContext();
 builder.AddApplicationServices();
 builder.AddIdentityCore();
+builder.AddAuthentication();
+builder.AddAuthorization();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -37,6 +38,8 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.MapControllers();
-app.MapFallbackToController("Index", "Fallback");
+//app.MapFallbackToController("Index", "Fallback");
+
+app.SeedDatabase();
 
 app.Run();
