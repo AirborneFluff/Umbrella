@@ -9,9 +9,9 @@ public class DataRepository<T> : IDataRepository<T> where T: MongoEntity
 {
     private readonly IMongoCollection<T> _collection;
     
-    public DataRepository(IMongoCollection<T> collection)
+    public DataRepository(IMongoDatabase database)
     {
-        _collection = collection;
+        _collection = database.GetCollection<T>(typeof(T).Name);
     }
     
     public async Task<T> GetById(ObjectId id)

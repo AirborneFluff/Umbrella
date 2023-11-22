@@ -5,7 +5,7 @@ namespace API.Data.Repositories;
 
 public sealed class StockItemsRepository: DataRepository<StockItem>
 {
-    public StockItemsRepository(IMongoCollection<StockItem> collection) : base(collection)
+    public StockItemsRepository(IMongoDatabase database) : base(database)
     {
     }
 }

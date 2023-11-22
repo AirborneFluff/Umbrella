@@ -7,7 +7,9 @@ namespace API.Data;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
-    public IDataRepository<StockItem> StockItems { get; }
+    private readonly IMongoDatabase _database;
+
+    public IDataRepository<StockItem> StockItems => new StockItemsRepository(_database);
     public IDataRepository<ServiceItem> ServiceItems { get; } = null!;
     public IDataRepository<SalesTransaction> SalesTransactions { get; } = null!;
     public IDataRepository<SalesOrder> SalesOrders { get; } = null!;
@@ -15,9 +17,7 @@ public sealed class UnitOfWork : IUnitOfWork
     public UnitOfWork(IConfiguration config)
     {
         var mongoClient = new MongoClient(config["MongoDatabase:ConnectionString"]);
-        var mongoDatabase = mongoClient.GetDatabase(config["DatabaseName"]);
-
-        StockItems = new StockItemsRepository(mongoDatabase.GetCollection<StockItem>(nameof(StockItem)));
+        _database = mongoClient.GetDatabase(config["MongoDatabase:DatabaseName"]);
     }
     
     

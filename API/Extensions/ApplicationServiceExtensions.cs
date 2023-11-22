@@ -1,5 +1,7 @@
 ﻿using API.Authentication;
+using API.Data;
 using API.Helpers;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,6 +14,7 @@ public static class ApplicationServiceExtensions
     
     public static void AddApplicationServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
     }
 
