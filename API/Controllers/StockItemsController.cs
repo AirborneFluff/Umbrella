@@ -1,5 +1,4 @@
-﻿using API.Data;
-using API.Entities;
+﻿using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,15 +16,13 @@ public sealed class StockItemsController : BaseApiController
     [HttpGet]
     public async Task<ActionResult> TestEndpoint()
     {
-        var newStockItem = new StockItem()
+        _unitOfWork.StockItems.Add(new StockItem()
         {
-            ChargedUnitCost = (decimal)0.5,
-            Description = "My Test Item",
-            Location = "AAB-001"
-        };
-        
-        await _unitOfWork.StockItems.Insert(newStockItem);
+            Description = "Test"
+        });
 
-        return Ok(newStockItem);
+        await _unitOfWork.SaveChangesAsync();
+
+        return Ok();
     }
 }

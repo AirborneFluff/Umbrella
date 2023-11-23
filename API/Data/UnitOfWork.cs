@@ -1,22 +1,24 @@
 ﻿using API.Data.Repositories;
 using API.Entities;
 using API.Interfaces;
-using MongoDB.Driver;
 
 namespace API.Data;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
-    private readonly IMongoDatabase _database;
-
-    public IDataRepository<StockItem> StockItems => new StockItemsRepository(_database);
-    public IDataRepository<ServiceItem> ServiceItems { get; } = null!;
-    public IDataRepository<SalesTransaction> SalesTransactions { get; } = null!;
-    public IDataRepository<SalesOrder> SalesOrders { get; } = null!;
-
-    public UnitOfWork(IConfiguration config)
+    private readonly DataContext _context;
+    
+    public IDataRepository<StockItem> StockItems => new DataRepository<StockItem>(_context);
+    public IDataRepository<ServiceItem> ServiceItems => new DataRepository<ServiceItem>(_context);
+    public IDataRepository<SalesTransaction> SalesTransactions => new DataRepository<SalesTransaction>(_context);
+    public IDataRepository<SalesOrder> SalesOrders => new DataRepository<SalesOrder>(_context);
+    public async Task<bool> SaveChangesAsync()
     {
-        var mongoClient = new MongoClient(config["MongoDatabase:ConnectionString"]);
-        _database = mongoClient.GetDatabase(config["MongoDatabase:DatabaseName"]);
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+    public UnitOfWork(DataContext context, ILogger<UnitOfWork> logger)
+    {
+        _context = context;
     }
 }

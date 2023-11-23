@@ -1,12 +1,29 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using API.Entities;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace API.Data;
 
-public sealed class DataContext : IdentityDbContext<IdentityUser>
+public sealed class DataContext : DbContext
 {
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
+    private readonly string _databaseName;
+    private readonly MongoClient _client;
+    public DbSet<StockItem> StockItems { get; set; }
+    
+    public DataContext(IConfiguration config)
     {
+        _client = new MongoClient(config["MongoDatabase:ConnectionString"]);
+        var dbName = config["MongoDatabase:DatabaseName"];
+        _databaseName = dbName ?? throw new Exception("MongoDb name not configured");
+    }
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseMongoDB(_client, _databaseName);
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<StockItem>().ToCollection("stockItems");
     }
 }

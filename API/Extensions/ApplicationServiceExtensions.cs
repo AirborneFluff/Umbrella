@@ -14,6 +14,7 @@ public static class ApplicationServiceExtensions
     
     public static void AddApplicationServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddDbContext<DataContext>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
     }

@@ -1,6 +1,5 @@
 ﻿using API.Entities;
 using API.Interfaces;
-using Humanizer;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -8,35 +7,26 @@ namespace API.Data.Repositories;
 
 public class DataRepository<T> : IDataRepository<T> where T: MongoEntity
 {
-    private readonly IMongoCollection<T> _collection;
+    private readonly DataContext _context;
     
-    public DataRepository(IMongoDatabase database)
+    public DataRepository(DataContext context)
     {
-        var collectionName = typeof(T).Name.Pluralize().Camelize();
-        _collection = database.GetCollection<T>(collectionName);
+        _context = context;
     }
     
-    public async Task<T> GetById(ObjectId id)
+    public async Task<T?> GetById(ObjectId id)
     {
-        var filter = GetIdFilter(id);
-        return await _collection.Find(filter).SingleOrDefaultAsync();
+        return await _context.FindAsync<T>(id);
     }
 
-    public async Task Insert(T entity)
+    public void Add(T entity)
     {
-        await _collection.InsertOneAsync(entity);
+        _context.Add(entity);
     }
 
-    public async Task Update(T entity)
+    public void Remove(T entity)
     {
-        var filter = GetIdFilter(entity.Id);
-        await _collection.ReplaceOneAsync(filter, entity);
-    }
-
-    public async Task Delete(T entity)
-    {
-        var filter = GetIdFilter(entity.Id);
-        await _collection.DeleteOneAsync(filter);
+        _context.Remove(entity);
     }
 
     private FilterDefinition<T> GetIdFilter(ObjectId id)
