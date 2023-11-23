@@ -19,10 +19,4 @@ public sealed class UnitOfWork : IUnitOfWork
         var mongoClient = new MongoClient(config["MongoDatabase:ConnectionString"]);
         _database = mongoClient.GetDatabase(config["MongoDatabase:DatabaseName"]);
     }
-    
-    
-    public Task<bool> SaveChangesAsync()
-    {
-        throw new NotImplementedException();
-    }
 }

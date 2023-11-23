@@ -8,6 +8,4 @@ public interface IUnitOfWork
     public IDataRepository<ServiceItem> ServiceItems { get; }
     public IDataRepository<SalesTransaction> SalesTransactions { get; }
     public IDataRepository<SalesOrder> SalesOrders { get; }
-    
-    Task<bool> SaveChangesAsync();
 }
