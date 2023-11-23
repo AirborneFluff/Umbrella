@@ -1,5 +1,6 @@
 ﻿using API.Entities;
 using API.Interfaces;
+using Humanizer;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -11,7 +12,8 @@ public class DataRepository<T> : IDataRepository<T> where T: MongoEntity
     
     public DataRepository(IMongoDatabase database)
     {
-        _collection = database.GetCollection<T>(typeof(T).Name);
+        var collectionName = typeof(T).Name.Pluralize().Camelize();
+        _collection = database.GetCollection<T>(collectionName);
     }
     
     public async Task<T> GetById(ObjectId id)
