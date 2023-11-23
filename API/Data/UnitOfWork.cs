@@ -12,6 +12,7 @@ public sealed class UnitOfWork : IUnitOfWork
     public IDataRepository<ServiceItem> ServiceItems => new DataRepository<ServiceItem>(_context);
     public IDataRepository<SalesTransaction> SalesTransactions => new DataRepository<SalesTransaction>(_context);
     public IDataRepository<SalesOrder> SalesOrders => new DataRepository<SalesOrder>(_context);
+    public IDataRepository<StockSupplier> StockSuppliers => new DataRepository<StockSupplier>(_context);
     public async Task<bool> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync() > 0;

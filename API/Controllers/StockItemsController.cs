@@ -16,9 +16,25 @@ public sealed class StockItemsController : BaseApiController
     [HttpGet]
     public async Task<ActionResult> TestEndpoint()
     {
-        _unitOfWork.StockItems.Add(new StockItem()
+        var item = new StockItem()
         {
             Description = "Test"
+        };
+        
+        _unitOfWork.StockItems.Add(item);
+
+        var supplier = new StockSupplier()
+        {
+            Name = "Rapid"
+        };
+        
+        _unitOfWork.StockSuppliers.Add(supplier);
+        
+        item.SupplySources.Add(new StockSupplySource()
+        {
+            SupplierId = supplier.Id,
+            Supplier = supplier,
+            Sku = "11-72661"
         });
 
         await _unitOfWork.SaveChangesAsync();

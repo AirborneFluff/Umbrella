@@ -10,6 +10,7 @@ public sealed class DataContext : DbContext
     private readonly string _databaseName;
     private readonly MongoClient _client;
     public DbSet<StockItem> StockItems { get; set; }
+    public DbSet<StockSupplier> StockSuppliers { get; set; }
     
     public DataContext(IConfiguration config)
     {
@@ -25,5 +26,6 @@ public sealed class DataContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<StockItem>().ToCollection("stockItems");
+        modelBuilder.Entity<StockSupplier>().ToCollection("stockSuppliers");
     }
 }
