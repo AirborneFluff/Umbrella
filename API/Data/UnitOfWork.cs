@@ -18,7 +18,7 @@ public sealed class UnitOfWork : IUnitOfWork
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public UnitOfWork(DataContext context, ILogger<UnitOfWork> logger)
+    public UnitOfWork(DataContext context)
     {
         _context = context;
     }

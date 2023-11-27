@@ -13,7 +13,12 @@ public class DataRepository<T> : IDataRepository<T> where T: MongoEntity
     {
         _context = context;
     }
-    
+
+    public Task<T?> GetById(string id)
+    {
+        return GetById(ObjectId.Parse(id));
+    }
+
     public async Task<T?> GetById(ObjectId id)
     {
         return await _context.FindAsync<T>(id);

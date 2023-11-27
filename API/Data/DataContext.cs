@@ -9,8 +9,8 @@ public sealed class DataContext : DbContext
 {
     private readonly string _databaseName;
     private readonly MongoClient _client;
-    public DbSet<StockItem> StockItems { get; set; }
-    public DbSet<StockSupplier> StockSuppliers { get; set; }
+    public DbSet<StockItem> StockItems => Set<StockItem>();
+    public DbSet<StockSupplier> StockSuppliers => Set<StockSupplier>();
     
     public DataContext(IConfiguration config)
     {
