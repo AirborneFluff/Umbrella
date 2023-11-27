@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace API.Extensions;
 
@@ -14,9 +15,20 @@ public static class ApplicationServiceExtensions
     
     public static void AddApplicationServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<DataContext>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+    }
+
+    public static void AddMongoDbContext(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<DataContext>(options =>
+        {
+            var connection = builder.Configuration["MongoDatabase:ConnectionString"];
+            var dbName = builder.Configuration["MongoDatabase:DatabaseName"];
+            if (connection is null || dbName is null) throw new Exception("MongoDB not configured");
+
+            options.UseMongoDB(connection, dbName);
+        });
     }
 
     public static void AddIdentityCore(this WebApplicationBuilder builder)

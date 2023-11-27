@@ -6,6 +6,7 @@ builder.AddApplicationServices();
 builder.AddIdentityCore();
 builder.AddAuthentication();
 builder.AddAuthorization();
+builder.AddMongoDbContext();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
