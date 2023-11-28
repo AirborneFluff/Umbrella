@@ -1,9 +1,14 @@
-﻿namespace API.Interfaces;
+﻿using API.Entities;
+
+namespace API.Interfaces;
 
 public interface IUnitOfWork
 {
-    public IComponentsRepository ComponentsRepository { get; }
+    public IDataRepository<StockItem> StockItems { get; }
+    public IDataRepository<ServiceItem> ServiceItems { get; }
+    public IDataRepository<SalesTransaction> SalesTransactions { get; }
+    public IDataRepository<SalesOrder> SalesOrders { get; }
+    public IDataRepository<StockSupplier> StockSuppliers { get; }
 
-    Task<bool> Complete();
-    bool HasChanges();
+    Task<bool> SaveChangesAsync();
 }

@@ -1,15 +1,22 @@
 ﻿using API.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace API.Data;
 
-public sealed class DataContext : IdentityDbContext<IdentityUser>
+public sealed class DataContext : DbContext
 {
+    public DbSet<StockItem> StockItems => Set<StockItem>();
+    public DbSet<StockSupplier> StockSuppliers => Set<StockSupplier>();
+    
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
     }
 
-    public DbSet<ProductComponent> Components { get; set; } = null!;
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<StockItem>().ToCollection("stockItems");
+        modelBuilder.Entity<StockSupplier>().ToCollection("stockSuppliers");
+    }
 }
