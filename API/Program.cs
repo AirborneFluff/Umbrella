@@ -5,8 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddApplicationServices();
 builder.AddIdentityCore();
 builder.AddAuthentication();
+builder.AddCosmosDbContext();
 builder.AddAuthorization();
-builder.AddMongoDbContext();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +40,7 @@ app.UseStaticFiles();
 app.MapControllers();
 //app.MapFallbackToController("Index", "Fallback");
 
+app.SeedUsersDatabase();
 app.SeedDatabase();
 
 app.Run();

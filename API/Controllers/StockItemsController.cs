@@ -1,59 +1,34 @@
-﻿using API.Data;
+﻿using API.ActionResults;
+using API.Data.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
+using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
 public sealed class StockItemsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly DataContext _context;
+    private readonly IMapper _mapper;
 
-    public StockItemsController(IUnitOfWork unitOfWork, DataContext context)
+    public StockItemsController(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _context = context;
+        _mapper = mapper;
     }
 
-    [HttpGet]
-    public async Task<ActionResult> TestEndpoint()
+    [HttpPost]
+    public async Task<ActionResult> AddStockItem(StockItemDto item)
     {
-        var item = new StockItem()
-        {
-            Description = "Test"
-        };
-        
-        _unitOfWork.StockItems.Add(item);
+        var newStockItem = _mapper.Map<StockItem>(item);
+        _unitOfWork.StockItems.Add(newStockItem);
 
-        var supplier = new StockSupplier()
-        {
-            Name = "Rapid"
-        };
-        
-        item.SupplySources.Add(new StockSupplySource()
-        {
-            SupplierId = supplier.Id,
-            Supplier = supplier,
-            Sku = "11-72661"
-        });
+        var saveResult = await _unitOfWork.SaveChangesAsync();
+        if (saveResult.Success) return Ok(newStockItem);
 
-        await _unitOfWork.SaveChangesAsync();
-
-        var result = await _unitOfWork.StockItems.GetById(item.Id);
-        if (result is null) return NotFound();
-
-        return Ok(result);
-    }
-    
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult> TestEndpointOne(string id)
-    {
-        var result = await _context.StockItems.FindAsync(ObjectId.Parse(id));
-        if (result is null) return NotFound();
-
-        return Ok(result);
+        if (saveResult.Exception is null) return BadRequest(saveResult.FailureMessage);
+        return new CosmosExceptionResult((CosmosException)saveResult.Exception);
     }
 }
