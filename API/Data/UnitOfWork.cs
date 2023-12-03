@@ -13,6 +13,7 @@ public sealed class UnitOfWork : IUnitOfWork
     private readonly DataContext _context;
     
     public IStockItemsRepository StockItems => new StockItemsRepository(_context);
+    public IStockSuppliersRepository StockSuppliers => new StockSuppliersRepository(_context);
 
     public async Task<OperationResult> SaveChangesAsync()
     {
