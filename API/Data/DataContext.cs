@@ -18,7 +18,7 @@ public sealed class DataContext : DbContext
         modelBuilder.Entity<StockItem>()
             .ToContainer("StockItems")
             .HasKey(item => item.PartCode);
-        
+
         modelBuilder.Entity<StockSupplier>()
             .ToContainer("StockSuppliers")
             .HasKey(item => item.Id);
