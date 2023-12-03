@@ -10,7 +10,7 @@ using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
-public sealed class StockItemsController : BaseApiController
+public sealed partial class StockItemsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
