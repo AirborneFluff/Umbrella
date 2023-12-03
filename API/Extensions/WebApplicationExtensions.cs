@@ -13,7 +13,7 @@ public static class WebApplicationExtensions
         var service = scope.ServiceProvider;
         try
         {
-            var context = service.GetRequiredService<IdentityDbContext<IdentityUser>>();
+            var context = service.GetRequiredService<AuthenticationContext>();
             var userManager = service.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = service.GetRequiredService<RoleManager<IdentityRole>>();
             await context.Database.MigrateAsync();

@@ -2,9 +2,9 @@
   "ConnectionStrings": {
     "DefaultConnection" : "Data Source=LocalDatabase.db"
   },
-  "MongoDatabase": {
-    "ConnectionString" : "mongodb://localhost:27017",
-    "DatabaseName" : "Umbrella"
+  "Cosmos": {
+    "URI" : "https://localhost:8081",
+    "PrimaryKey" : "<Primary Key>"
   },
   "OwnerCredentials": {
     "UserName" : "<admin username>",

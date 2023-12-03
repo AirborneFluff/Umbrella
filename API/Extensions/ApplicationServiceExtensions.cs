@@ -19,21 +19,22 @@ public static class ApplicationServiceExtensions
         builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
     }
 
-    public static void AddMongoDbContext(this WebApplicationBuilder builder)
+    public static void AddCosmosDbContext(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<DataContext>(options =>
         {
-            var connection = builder.Configuration["MongoDatabase:ConnectionString"];
-            var dbName = builder.Configuration["MongoDatabase:DatabaseName"];
-            if (connection is null || dbName is null) throw new Exception("MongoDB not configured");
+            var uri = builder.Configuration["Cosmos:URI"];
+            var key = builder.Configuration["Cosmos:PrimaryKey"];
+            var name = builder.Configuration["Cosmos:DatabaseName"];
+            if (uri is null || key is null || name is null) throw new Exception("Cosmos DB not configured");
 
-            options.UseMongoDB(connection, dbName);
+            options.UseCosmos(uri, key, name);
         });
     }
 
     public static void AddIdentityCore(this WebApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<IdentityDbContext<IdentityUser>>(options => {
+        builder.Services.AddDbContext<AuthenticationContext>(options => {
             var connStr = builder.Configuration.GetConnectionString("DefaultConnection");
             if (connStr == null) throw new Exception("DefaultConnection not configured");
             
@@ -49,7 +50,7 @@ public static class ApplicationServiceExtensions
             .AddRoles<IdentityRole>()
             .AddRoleManager<RoleManager<IdentityRole>>()
             .AddRoleValidator<RoleValidator<IdentityRole>>()
-            .AddEntityFrameworkStores<IdentityDbContext<IdentityUser>>();
+            .AddEntityFrameworkStores<AuthenticationContext>();
     }
 
     public static void AddAuthentication(this WebApplicationBuilder builder)
