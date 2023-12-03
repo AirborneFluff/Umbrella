@@ -18,8 +18,8 @@ public sealed class UnitOfWork : IUnitOfWork
     {
         try
         {
-            var changes = await _context.SaveChangesAsync();
-            return changes > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("No changes made");
+            await _context.SaveChangesAsync();
+            return OperationResult.SuccessResult();
         }
         catch (DbUpdateException e)
         {
