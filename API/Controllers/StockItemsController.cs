@@ -1,9 +1,10 @@
-﻿using API.Data;
+﻿using API.ActionResults;
 using API.Data.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
@@ -24,7 +25,10 @@ public sealed class StockItemsController : BaseApiController
         var newStockItem = _mapper.Map<StockItem>(item);
         _unitOfWork.StockItems.Add(newStockItem);
 
-        if (await _unitOfWork.SaveChangesAsync()) return Ok(newStockItem);
-        return BadRequest("Issue adding stock item");
+        var saveResult = await _unitOfWork.SaveChangesAsync();
+        if (saveResult.Success) return Ok(newStockItem);
+
+        if (saveResult.Exception is null) return BadRequest(saveResult.FailureMessage);
+        return new CosmosExceptionResult((CosmosException)saveResult.Exception);
     }
 }

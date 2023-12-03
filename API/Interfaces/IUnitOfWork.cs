@@ -1,10 +1,11 @@
 ﻿using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces;
 
 public interface IUnitOfWork
 {
-    public IDataRepository<StockItem> StockItems { get; }
+    public IStockItemsRepository StockItems { get; }
 
-    Task<bool> SaveChangesAsync();
+    Task<OperationResult> SaveChangesAsync();
 }

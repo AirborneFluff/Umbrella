@@ -40,6 +40,7 @@ app.UseStaticFiles();
 app.MapControllers();
 //app.MapFallbackToController("Index", "Fallback");
 
+app.SeedUsersDatabase();
 app.SeedDatabase();
 
 app.Run();
