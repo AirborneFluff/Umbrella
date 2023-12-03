@@ -4,7 +4,8 @@ namespace API.Data.DTOs;
 
 public sealed class StockSupplySourceDto
 {
-    public int SupplierId { get; set; }
+    [Required]
+    public Guid SupplierId { get; set; }
     [Required]
     public required string SupplierSKU { get; set; }
 

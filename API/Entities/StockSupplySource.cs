@@ -2,7 +2,7 @@
 
 public sealed class StockSupplySource
 {
-    public required StockSupplier Supplier { get; set; }
+    public required OwnedStockSupplier Supplier { get; set; }
     public required string SupplierSKU { get; set; }
     
     public required string StockUnits { get; set; }

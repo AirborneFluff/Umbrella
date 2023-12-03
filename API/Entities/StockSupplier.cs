@@ -1,8 +1,8 @@
 ﻿namespace API.Entities;
 
-public sealed class StockSupplier
+public class StockSupplier
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public required string Name { get; set; }
     public string? Website { get; set; }
 }

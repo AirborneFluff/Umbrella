@@ -13,7 +13,7 @@ public sealed class StockSuppliersRepository : IStockSuppliersRepository
         _context = context;
     }
     
-    public Task<StockSupplier?> GetById(int id)
+    public Task<StockSupplier?> GetById(Guid id)
     {
         return _context.StockSuppliers.FirstOrDefaultAsync(item => item.Id == id);
     }
