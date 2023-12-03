@@ -1,4 +1,5 @@
-﻿using API.Authentication;
+﻿using API.ActionFilters;
+using API.Authentication;
 using API.Data;
 using API.Helpers;
 using API.Interfaces;
@@ -86,5 +87,10 @@ public static class ApplicationServiceExtensions
                     IdentityRoles.Administrator,
                     IdentityRoles.Owner));
         });
+    }
+    
+    public static void AddActionFilters(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<ValidateStockItemExists>();
     }
 }
