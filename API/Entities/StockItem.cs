@@ -1,6 +1,4 @@
-﻿using API.Interfaces;
-
-namespace API.Entities;
+﻿namespace API.Entities;
 
 public sealed class StockItem
 {
