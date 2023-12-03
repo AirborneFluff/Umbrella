@@ -27,9 +27,4 @@ public sealed class StockItemsRepository : IStockItemsRepository
     {
         _context.StockItems.Remove(stockItem);
     }
-
-    public void Update(StockItem stockItem)
-    {
-        _context.StockItems.Update(stockItem);
-    }
 }

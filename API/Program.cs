@@ -7,6 +7,7 @@ builder.AddIdentityCore();
 builder.AddAuthentication();
 builder.AddCosmosDbContext();
 builder.AddAuthorization();
+builder.AddActionFilters();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
