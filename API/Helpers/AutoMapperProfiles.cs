@@ -15,8 +15,6 @@ public sealed class AutoMapperProfiles : Profile
 
         CreateMap<StockSupplierDto, StockSupplier>();
 
-        CreateMap<StockSupplier, OwnedStockSupplier>();
-        
         CreateMap<StockSupplySourceDto, StockSupplySource>();
     }
 }

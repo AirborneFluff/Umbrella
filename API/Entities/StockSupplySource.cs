@@ -1,8 +1,10 @@
-﻿namespace API.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace API.Entities;
 
 public sealed class StockSupplySource
 {
-    public required OwnedStockSupplier Supplier { get; set; }
+    public required StockSupplier Supplier { get; set; }
     public required string SupplierSKU { get; set; }
     
     public required string StockUnits { get; set; }
