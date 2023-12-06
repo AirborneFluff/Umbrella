@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace API.Entities;
+﻿namespace API.Entities;
 
 public sealed class StockSupplySource
 {
