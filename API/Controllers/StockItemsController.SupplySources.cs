@@ -20,7 +20,7 @@ public sealed partial class StockItemsController
         if (supplier is null) return BadRequest($"No Stock Supplier found by the Id: {supplySource.SupplierId}");
 
         var newSupplySource = _mapper.Map<StockSupplySource>(supplySource);
-        newSupplySource.Supplier = supplier;
+        newSupplySource.Supplier = _mapper.Map<OwnedStockSupplier>(supplier);
 
         stockItem.SupplySources.Add(newSupplySource);
 

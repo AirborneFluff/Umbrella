@@ -35,6 +35,14 @@ public sealed partial class StockItemsController : BaseApiController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
+    [HttpGet("{partCode}")]
+    public async Task<ActionResult> GetStockItem(string partCode)
+    {
+        var stockItem = HttpContext.GetStockItem();
+        return Ok(stockItem);
+    }
+    
+    [ServiceFilter(typeof(ValidateStockItemExists))]
     [HttpPut("{partCode}")]
     public async Task<ActionResult> UpdateStockItem(UpdateStockItemDto item, string partCode)
     {
