@@ -2,7 +2,7 @@
 
 namespace API.Data.DTOs;
 
-public sealed class StockItemDto
+public sealed class NewStockItemDto
 {
     [Required]
     public required string PartCode { get; set; }

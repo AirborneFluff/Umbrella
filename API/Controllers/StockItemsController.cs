@@ -22,7 +22,7 @@ public sealed partial class StockItemsController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddStockItem(StockItemDto item)
+    public async Task<ActionResult> AddStockItem(NewStockItemDto item)
     {
         var newStockItem = _mapper.Map<StockItem>(item);
         _unitOfWork.StockItems.Add(newStockItem);

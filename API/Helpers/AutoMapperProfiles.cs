@@ -11,8 +11,8 @@ public sealed class AutoMapperProfiles : Profile
     {
         CreateMap<IdentityUser, IdentityUserDto>();
         
-        CreateMap<StockItem, StockItemDto>();
-        CreateMap<StockItemDto, StockItem>();
+        CreateMap<StockItem, NewStockItemDto>();
+        CreateMap<NewStockItemDto, StockItem>();
         CreateMap<UpdateStockItemDto, StockItem>();
 
         CreateMap<StockSupplierDto, StockSupplier>();
