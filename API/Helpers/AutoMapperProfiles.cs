@@ -10,6 +10,16 @@ public sealed class AutoMapperProfiles : Profile
     public AutoMapperProfiles()
     {
         CreateMap<IdentityUser, IdentityUserDto>();
-        CreateMap<StockItemDto, StockItem>();
+        
+        CreateMap<StockItem, NewStockItemDto>();
+        CreateMap<NewStockItemDto, StockItem>();
+        CreateMap<UpdateStockItemDto, StockItem>();
+
+        CreateMap<StockSupplierDto, StockSupplier>();
+        CreateMap<StockSupplier, OwnedStockSupplier>();
+
+        CreateMap<StockSupplySourceDto, StockSupplySource>();
+
+        CreateMap<NewPriceBreakDto, PriceBreak>();
     }
 }

@@ -15,7 +15,8 @@ public sealed class StockItemsRepository : IStockItemsRepository
 
     public Task<StockItem?> GetByPartCode(string partCode)
     {
-        return _context.StockItems.FirstOrDefaultAsync(item => item.PartCode == partCode);
+        return _context.StockItems
+            .FirstOrDefaultAsync(item => item.PartCode == partCode);
     }
 
     public void Add(StockItem stockItem)
@@ -26,10 +27,5 @@ public sealed class StockItemsRepository : IStockItemsRepository
     public void Remove(StockItem stockItem)
     {
         _context.StockItems.Remove(stockItem);
-    }
-
-    public void Update(StockItem stockItem)
-    {
-        _context.StockItems.Update(stockItem);
     }
 }
