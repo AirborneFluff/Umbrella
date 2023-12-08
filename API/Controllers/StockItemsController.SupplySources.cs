@@ -37,9 +37,9 @@ public sealed partial class StockItemsController
     {
         var stockItem = HttpContext.GetStockItem();
         
-        if (!stockItem.SupplySources.IsValidIndex(sourceIndex)) return BadRequest("Index out of range");
-
-        var supplySource = stockItem.SupplySources.ElementAt(sourceIndex);
+        var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
+        if (supplySource is null) return BadRequest("Supply Source index out of range");
+        
         _mapper.Map(sourceUpdates, supplySource);
 
         if (supplySource.Supplier.Id != sourceUpdates.SupplierId)
@@ -63,9 +63,9 @@ public sealed partial class StockItemsController
     {
         var stockItem = HttpContext.GetStockItem();
         
-        if (!stockItem.SupplySources.IsValidIndex(sourceIndex)) return BadRequest("Index out of range");
-
-        var supplySource = stockItem.SupplySources.ElementAt(sourceIndex);
+        var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
+        if (supplySource is null) return BadRequest("Supply Source index out of range");
+        
         stockItem.SupplySources.Remove(supplySource);
 
         var saveResult = await _unitOfWork.SaveChangesAsync();
