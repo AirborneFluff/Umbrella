@@ -17,7 +17,7 @@ public sealed partial class StockItemsController
         var stockItem = HttpContext.GetStockItem();
         
         var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
-        if (supplySource is null) return BadRequest("Supply Source index out of range");
+        if (supplySource is null) return NotFound("Supply Source index out of range");
 
         var newPriceBreak = _mapper.Map<PriceBreak>(price);
         supplySource.Prices.Add(newPriceBreak);
@@ -30,16 +30,41 @@ public sealed partial class StockItemsController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
+    [HttpGet("{partCode}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
+    public async Task<ActionResult> GetPriceBreak(string partCode, int sourceIndex, int priceIndex)
+    {
+        var stockItem = HttpContext.GetStockItem();
+        var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
+        if (supplySource is null) return NotFound("Supply Source index out of range");
+
+        var priceBreak = supplySource.Prices.ElementAtOrDefault(priceIndex);
+        if (priceBreak is null) return NotFound("Price index out of range");
+        
+        return Ok(priceBreak);
+    }
+    
+    [ServiceFilter(typeof(ValidateStockItemExists))]
+    [HttpGet("{partCode}/supplySources/{sourceIndex:int}/prices")]
+    public async Task<ActionResult> GetAllPriceBreaks(string partCode, int sourceIndex)
+    {
+        var stockItem = HttpContext.GetStockItem();
+        var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
+        if (supplySource is null) return NotFound("Supply Source index out of range");
+        
+        return Ok(supplySource.Prices);
+    }
+    
+    [ServiceFilter(typeof(ValidateStockItemExists))]
     [HttpPut("{partCode}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
     public async Task<ActionResult> UpdatePriceBreak(NewPriceBreakDto price, string partCode, int sourceIndex, int priceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         
         var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
-        if (supplySource is null) return BadRequest("Supply Source index out of range");
+        if (supplySource is null) return NotFound("Supply Source index out of range");
 
         var priceBreak = supplySource.Prices.ElementAtOrDefault(priceIndex);
-        if (priceBreak is null) return BadRequest("Price index out of range");
+        if (priceBreak is null) return NotFound("Price index out of range");
 
         _mapper.Map(price, priceBreak);
 
@@ -57,10 +82,10 @@ public sealed partial class StockItemsController
         var stockItem = HttpContext.GetStockItem();
         
         var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
-        if (supplySource is null) return BadRequest("Supply Source index out of range");
+        if (supplySource is null) return NotFound("Supply Source index out of range");
 
         var priceBreak = supplySource.Prices.ElementAtOrDefault(priceIndex);
-        if (priceBreak is null) return BadRequest("Price index out of range");
+        if (priceBreak is null) return NotFound("Price index out of range");
 
         supplySource.Prices.Remove(priceBreak);
 

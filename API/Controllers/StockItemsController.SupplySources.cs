@@ -17,7 +17,7 @@ public sealed partial class StockItemsController
         var stockItem = HttpContext.GetStockItem();
         
         var supplier = await _unitOfWork.StockSuppliers.GetById(supplySource.SupplierId);
-        if (supplier is null) return BadRequest($"No Stock Supplier found by the Id: {supplySource.SupplierId}");
+        if (supplier is null) return NotFound($"No Stock Supplier found by the Id: {supplySource.SupplierId}");
 
         var newSupplySource = _mapper.Map<StockSupplySource>(supplySource);
         newSupplySource.Supplier = _mapper.Map<OwnedStockSupplier>(supplier);
@@ -32,20 +32,39 @@ public sealed partial class StockItemsController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
+    [HttpGet("{partCode}/supplySources")]
+    public async Task<ActionResult> GetAllSupplySources(string partCode)
+    {
+        var stockItem = HttpContext.GetStockItem();
+        return Ok(stockItem.SupplySources);
+    }
+    
+    [ServiceFilter(typeof(ValidateStockItemExists))]
+    [HttpGet("{partCode}/supplySources/{sourceIndex:int}")]
+    public async Task<ActionResult> GetSupplySourceByIndex(string partCode, int sourceIndex)
+    {
+        var stockItem = HttpContext.GetStockItem();
+        var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
+        if (supplySource is null) return NotFound("Supply Source index out of range");
+        
+        return Ok(supplySource);
+    }
+    
+    [ServiceFilter(typeof(ValidateStockItemExists))]
     [HttpPut("{partCode}/supplySources/{sourceIndex:int}")]
     public async Task<ActionResult> UpdateSupplySource(StockSupplySourceDto sourceUpdates, string partCode, int sourceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         
         var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
-        if (supplySource is null) return BadRequest("Supply Source index out of range");
+        if (supplySource is null) return NotFound("Supply Source index out of range");
         
         _mapper.Map(sourceUpdates, supplySource);
 
         if (supplySource.Supplier.Id != sourceUpdates.SupplierId)
         {
             var supplier = await _unitOfWork.StockSuppliers.GetById(sourceUpdates.SupplierId);
-            if (supplier is null) return BadRequest($"No Stock Supplier found by the Id: {sourceUpdates.SupplierId}");
+            if (supplier is null) return NotFound($"No Stock Supplier found by the Id: {sourceUpdates.SupplierId}");
             
             supplySource.Supplier = _mapper.Map<OwnedStockSupplier>(supplier);;
         }
@@ -64,7 +83,7 @@ public sealed partial class StockItemsController
         var stockItem = HttpContext.GetStockItem();
         
         var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
-        if (supplySource is null) return BadRequest("Supply Source index out of range");
+        if (supplySource is null) return NotFound("Supply Source index out of range");
         
         stockItem.SupplySources.Remove(supplySource);
 
