@@ -5,9 +5,7 @@ using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 
 namespace API.Extensions;
 
@@ -86,6 +84,11 @@ public static class ApplicationServiceExtensions
                     IdentityRoles.User,
                     IdentityRoles.Administrator,
                     IdentityRoles.Owner));
+            
+            options.AddPolicy(nameof(UserPermissions.ReadStockItems),
+                policy =>
+                    policy.RequireAssertion(ctx =>
+                        ctx.User.HasPermission(UserPermissions.ReadStockItems)));
         });
     }
     

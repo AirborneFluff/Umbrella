@@ -31,4 +31,17 @@ public static class ClaimsPrincipleExtensions
         
         return (IdentityRoles.Role)permissibleValue;
     }
+
+    public static bool HasPermission(this ClaimsPrincipal principal, UserPermissions permission) //todo Add permissions enum value
+    {
+        var userClaims = principal.Claims.Select(x => new UserClaim(x.Type, x.Value)).ToList();
+        var permissionClaim = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.PermissionsValue);
+        if (permissionClaim == null) throw new Exception("User has no email");
+
+        var userPermissions = ulong.Parse(permissionClaim.Value);
+        var permissionValue = (ulong)permission;
+        var bitwise = userPermissions & permissionValue;
+        return bitwise > 0;
+
+    }
 }
