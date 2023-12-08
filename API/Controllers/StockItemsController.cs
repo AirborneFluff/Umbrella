@@ -5,11 +5,13 @@ using API.Entities;
 using API.Extensions;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
+[Authorize]
 public sealed partial class StockItemsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -56,7 +58,7 @@ public sealed partial class StockItemsController : BaseApiController
         if (saveResult.Exception is null) return BadRequest(saveResult.FailureMessage);
         return new CosmosExceptionResult((CosmosException)saveResult.Exception);
     }
-    
+
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [HttpDelete("{partCode}")]
     public async Task<ActionResult> RemoveStockItem(string partCode)
