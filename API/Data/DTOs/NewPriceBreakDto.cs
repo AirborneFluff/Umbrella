@@ -2,7 +2,7 @@
 
 namespace API.Data.DTOs;
 
-public sealed class NewPriceBreak
+public sealed class NewPriceBreakDto
 {
     [Required]
     public decimal UnitCost { get; set; }

@@ -19,5 +19,7 @@ public sealed class AutoMapperProfiles : Profile
         CreateMap<StockSupplier, OwnedStockSupplier>();
 
         CreateMap<StockSupplySourceDto, StockSupplySource>();
+
+        CreateMap<NewPriceBreakDto, PriceBreak>();
     }
 }
