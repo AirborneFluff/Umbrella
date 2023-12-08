@@ -37,7 +37,6 @@ public sealed partial class StockItemsController
     {
         var stockItem = HttpContext.GetStockItem();
         
-        sourceIndex -= 1;
         if (!stockItem.SupplySources.IsValidIndex(sourceIndex)) return BadRequest("Index out of range");
 
         var supplySource = stockItem.SupplySources.ElementAt(sourceIndex);
@@ -64,7 +63,6 @@ public sealed partial class StockItemsController
     {
         var stockItem = HttpContext.GetStockItem();
         
-        sourceIndex -= 1;
         if (!stockItem.SupplySources.IsValidIndex(sourceIndex)) return BadRequest("Index out of range");
 
         var supplySource = stockItem.SupplySources.ElementAt(sourceIndex);
