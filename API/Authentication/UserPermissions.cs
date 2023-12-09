@@ -3,6 +3,7 @@
 public enum UserPermissions
 {
     ManageUsers,
+    ManageStockSuppliers,
     ManageStockItems,
-    ReadStockItems,
+    ReadStockItems
 }
