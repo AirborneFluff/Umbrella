@@ -1,4 +1,5 @@
 ﻿using API.ActionResults;
+using API.Authentication;
 using API.Data.DTOs;
 using API.Entities;
 using API.Interfaces;
@@ -9,7 +10,6 @@ using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
-[Authorize]
 public sealed class StockSuppliersController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +20,8 @@ public sealed class StockSuppliersController : BaseApiController
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-
+    
+    [Authorize(Policy = nameof(UserPermissions.ManageStockSuppliers))]
     [HttpPost]
     public async Task<ActionResult> AddStockSupplier(StockSupplierDto stockSupplier)
     {

@@ -1,8 +1,10 @@
 ﻿using API.ActionFilters;
 using API.ActionResults;
+using API.Authentication;
 using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 
@@ -11,6 +13,7 @@ namespace API.Controllers;
 public sealed partial class StockItemsController
 {
     [ServiceFilter(typeof(ValidateStockItemExists))]
+    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
     [HttpPost("{partCode}/supplySources/{sourceIndex:int}/prices")]
     public async Task<ActionResult> AddPriceBreak(NewPriceBreakDto price, string partCode, int sourceIndex)
     {
@@ -55,6 +58,7 @@ public sealed partial class StockItemsController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
+    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
     [HttpPut("{partCode}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
     public async Task<ActionResult> UpdatePriceBreak(NewPriceBreakDto price, string partCode, int sourceIndex, int priceIndex)
     {
@@ -76,6 +80,7 @@ public sealed partial class StockItemsController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
+    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
     [HttpDelete("{partCode}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
     public async Task<ActionResult> RemovePriceBreak(string partCode, int sourceIndex, int priceIndex)
     {

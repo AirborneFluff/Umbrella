@@ -10,8 +10,5 @@ public sealed class NewUserDto
     [Required]
     public required string Password { get; set; }
 
-    public string[] Roles { get; set; } =
-    {
-        IdentityRoles.ReadOnlyUser
-    };
+    public ulong Permissions { get; set; } = 0;
 }

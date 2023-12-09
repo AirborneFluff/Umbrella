@@ -1,5 +1,6 @@
 ﻿using API.ActionFilters;
 using API.ActionResults;
+using API.Authentication;
 using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -11,7 +12,7 @@ using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
-[Authorize]
+[Authorize(Policy = nameof(UserPermissions.ReadStockItems))]
 public sealed partial class StockItemsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -23,6 +24,7 @@ public sealed partial class StockItemsController : BaseApiController
         _mapper = mapper;
     }
 
+    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
     [HttpPost]
     public async Task<ActionResult> AddStockItem(NewStockItemDto item)
     {
@@ -45,6 +47,7 @@ public sealed partial class StockItemsController : BaseApiController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
+    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
     [HttpPut("{partCode}")]
     public async Task<ActionResult> UpdateStockItem(UpdateStockItemDto item, string partCode)
     {
@@ -60,6 +63,7 @@ public sealed partial class StockItemsController : BaseApiController
     }
 
     [ServiceFilter(typeof(ValidateStockItemExists))]
+    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
     [HttpDelete("{partCode}")]
     public async Task<ActionResult> RemoveStockItem(string partCode)
     {

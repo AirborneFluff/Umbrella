@@ -1,19 +1,17 @@
 ﻿using API.ActionFilters;
 using API.Authentication;
 using API.Data;
+using API.Entities;
 using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 
 namespace API.Extensions;
 
 public static class ApplicationServiceExtensions
 {
-    
     public static void AddApplicationServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -43,14 +41,11 @@ public static class ApplicationServiceExtensions
         });
         
         builder.Services
-            .AddDefaultIdentity<IdentityUser>(options =>
+            .AddDefaultIdentity<AppUser>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedAccount = false;
             })
-            .AddRoles<IdentityRole>()
-            .AddRoleManager<RoleManager<IdentityRole>>()
-            .AddRoleValidator<RoleValidator<IdentityRole>>()
             .AddEntityFrameworkStores<AuthenticationContext>();
     }
 
@@ -58,7 +53,7 @@ public static class ApplicationServiceExtensions
     {
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
-            { 
+            {
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 options.Cookie.MaxAge = options.ExpireTimeSpan;
                 options.SlidingExpiration = true;
@@ -71,22 +66,32 @@ public static class ApplicationServiceExtensions
 
     public static void AddAuthorization(this WebApplicationBuilder builder)
     {
+        var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
+        
+        builder.Services.AddHttpContextAccessor();
+        var defaultPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .AddRequirements(
+                new PermissionsHashRequirement(permissionsHash))
+            .Build();
+        
+        
         builder.Services.AddAuthorization(options =>
         {
-            options.AddPolicy("RequireOwnerRole",
-                policy => policy.RequireRole(IdentityRoles.Owner));
-            
-            options.AddPolicy("RequireAdministratorRole",
-                policy => policy.RequireRole(
-                    IdentityRoles.Administrator,
-                    IdentityRoles.Owner));
-            
-            options.AddPolicy("RequireUserRole",
-                policy => policy.RequireRole(
-                    IdentityRoles.User,
-                    IdentityRoles.Administrator,
-                    IdentityRoles.Owner));
+            options.DefaultPolicy = defaultPolicy;
+            foreach (var permission in Enum.GetValues<UserPermissions>())
+            {
+                options.AddPolicy(permission.ToString(),
+                    policy =>
+                    {
+                        policy.AddRequirements(new PermissionsHashRequirement(permissionsHash));
+                        policy.RequireAssertion(ctx =>
+                            ctx.User.HasPermission(permission));
+                    });
+            }
         });
+        
+        builder.Services.AddSingleton<IAuthorizationHandler, PermissionsHashHandler>();
     }
     
     public static void AddActionFilters(this WebApplicationBuilder builder)
