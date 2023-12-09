@@ -23,7 +23,7 @@ public sealed class UserSeed
         {
             UserName = ownerUserName,
             Email = ownerUserName,
-            Permissions = UInt64.MaxValue
+            Permissions = PermissionGroups.PowerUser
         };
         var result = await userManager.CreateAsync(user, ownerPassword);
         if (!result.Succeeded) throw new Exception("Issue creating owner account");
