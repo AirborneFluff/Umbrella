@@ -23,9 +23,7 @@ public sealed class PermissionsHashHandler : AuthorizationHandler<PermissionsHas
                 CookieAuthenticationDefaults.AuthenticationScheme);
             
             httpContext!.Response.StatusCode = 401;
-            await httpContext!.Response.CompleteAsync();
-            
-            httpContext.Abort();
+            await httpContext.Response.CompleteAsync();
             return;
         }
         
