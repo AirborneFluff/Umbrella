@@ -15,9 +15,11 @@ public static class PermissionGroups
     };
 
 
-    static ulong GetPermissionValue(UserPermissions[] permissions)
+    public static ulong GetPermissionValue(UserPermissions[] permissions)
     {
         return permissions
-            .Aggregate<UserPermissions, ulong>(0, (current, value) => current | (ulong)1 << (int)value);
+            .Aggregate<UserPermissions, ulong>(0, (current, value) => current | GetPermissionValue(value));
     }
+
+    public static ulong GetPermissionValue(UserPermissions permission) => (ulong)1 << (int)permission;
 }
