@@ -5,13 +5,13 @@ using API.Entities;
 using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions;
 
 public static class ApplicationServiceExtensions
 {
-    
     public static void AddApplicationServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -53,7 +53,7 @@ public static class ApplicationServiceExtensions
     {
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
-            { 
+            {
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 options.Cookie.MaxAge = options.ExpireTimeSpan;
                 options.SlidingExpiration = true;
@@ -66,16 +66,24 @@ public static class ApplicationServiceExtensions
 
     public static void AddAuthorization(this WebApplicationBuilder builder)
     {
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddAuthorization(options =>
         {
+            var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
             foreach (var permission in Enum.GetValues<UserPermissions>())
             {
                 options.AddPolicy(permission.ToString(),
                     policy =>
+                    {
+                        policy.AddRequirements(
+                            new PermissionsHashRequirement(permissionsHash));
                         policy.RequireAssertion(ctx =>
-                            ctx.User.HasPermission(permission)));
+                            ctx.User.HasPermission(permission));
+                    });
             }
         });
+        
+        builder.Services.AddSingleton<IAuthorizationHandler, PermissionsHashHandler>();
     }
     
     public static void AddActionFilters(this WebApplicationBuilder builder)

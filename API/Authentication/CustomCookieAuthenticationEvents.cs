@@ -41,18 +41,24 @@ public sealed class CustomCookieAuthenticationEvents : CookieAuthenticationEvent
 
     public override Task RedirectToAccessDenied(RedirectContext<CookieAuthenticationOptions> context)
     {
+        if (context.Response.HasStarted) return Task.CompletedTask;
+        
         context.Response.StatusCode = 403;
         return Task.CompletedTask;
     }
 
     public override Task RedirectToLogin(RedirectContext<CookieAuthenticationOptions> context)
     {
+        if (context.Response.HasStarted) return Task.CompletedTask;
+        
         context.Response.StatusCode = 401;
         return Task.CompletedTask;
     }
 
     private static async Task RejectPrincipalAsync(CookieValidatePrincipalContext context)
     {
+        if (context.Response.HasStarted) return;
+        
         context.RejectPrincipal();
         await context.HttpContext.SignOutAsync();
     }

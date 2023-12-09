@@ -3,6 +3,7 @@ using API.Authentication;
 using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -32,11 +33,14 @@ public sealed class AccountController : BaseApiController
         var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
         if (!result.Succeeded) return Unauthorized();
 
+        var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
+
         var claims = new List<Claim>
         {
             new Claim(ExtendedClaimTypes.Id, user.Id),
             new Claim(ExtendedClaimTypes.Email, user.Email),
-            new Claim(ExtendedClaimTypes.Permissions, user.Permissions.ToString())
+            new Claim(ExtendedClaimTypes.Permissions, user.Permissions.ToString()),
+            new Claim(ExtendedClaimTypes.PermissionsHash, permissionsHash)
         };
 
         var claimsIdentity = new ClaimsIdentity(
@@ -50,7 +54,8 @@ public sealed class AccountController : BaseApiController
         {
             Email = user.Email,
             Id = user.Id,
-            Permissions = user.Permissions
+            Permissions = user.Permissions,
+            PermissionsHash = permissionsHash
         });
     }
 
