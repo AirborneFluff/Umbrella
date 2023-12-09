@@ -16,7 +16,7 @@ public static class ApplicationServiceExtensions
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-    } 
+    }   
 
     public static void AddCosmosDbContext(this WebApplicationBuilder builder)
     {
