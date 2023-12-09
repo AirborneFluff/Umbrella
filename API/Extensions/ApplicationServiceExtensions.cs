@@ -66,17 +66,25 @@ public static class ApplicationServiceExtensions
 
     public static void AddAuthorization(this WebApplicationBuilder builder)
     {
+        var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
+        
         builder.Services.AddHttpContextAccessor();
+        var defaultPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .AddRequirements(
+                new PermissionsHashRequirement(permissionsHash))
+            .Build();
+        
+        
         builder.Services.AddAuthorization(options =>
         {
-            var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
+            options.DefaultPolicy = defaultPolicy;
             foreach (var permission in Enum.GetValues<UserPermissions>())
             {
                 options.AddPolicy(permission.ToString(),
                     policy =>
                     {
-                        policy.AddRequirements(
-                            new PermissionsHashRequirement(permissionsHash));
+                        policy.AddRequirements(new PermissionsHashRequirement(permissionsHash));
                         policy.RequireAssertion(ctx =>
                             ctx.User.HasPermission(permission));
                     });
