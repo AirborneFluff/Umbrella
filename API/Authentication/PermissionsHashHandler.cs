@@ -16,13 +16,14 @@ public sealed class PermissionsHashHandler : AuthorizationHandler<PermissionsHas
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionsHashRequirement requirement)
     {
         var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext is null) throw new Exception("HttpContext not retrievable");
         
         if (!context.User.HasClaim(c => c.Type == requirement.ClaimType && c.Value == requirement.ExpectedValue))
         {
-            await httpContext!.SignOutAsync(
+            await httpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
             
-            httpContext!.Response.StatusCode = 401;
+            httpContext.Response.StatusCode = 401;
             await httpContext.Response.CompleteAsync();
             return;
         }
