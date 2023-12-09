@@ -1,10 +1,10 @@
 ﻿using API.ActionFilters;
 using API.Authentication;
 using API.Data;
+using API.Entities;
 using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions;
@@ -41,14 +41,11 @@ public static class ApplicationServiceExtensions
         });
         
         builder.Services
-            .AddDefaultIdentity<IdentityUser>(options =>
+            .AddDefaultIdentity<AppUser>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedAccount = false;
             })
-            .AddRoles<IdentityRole>()
-            .AddRoleManager<RoleManager<IdentityRole>>()
-            .AddRoleValidator<RoleValidator<IdentityRole>>()
             .AddEntityFrameworkStores<AuthenticationContext>();
     }
 
@@ -71,24 +68,13 @@ public static class ApplicationServiceExtensions
     {
         builder.Services.AddAuthorization(options =>
         {
-            options.AddPolicy("RequireOwnerRole",
-                policy => policy.RequireRole(IdentityRoles.Owner));
-            
-            options.AddPolicy("RequireAdministratorRole",
-                policy => policy.RequireRole(
-                    IdentityRoles.Administrator,
-                    IdentityRoles.Owner));
-            
-            options.AddPolicy("RequireUserRole",
-                policy => policy.RequireRole(
-                    IdentityRoles.User,
-                    IdentityRoles.Administrator,
-                    IdentityRoles.Owner));
-            
-            options.AddPolicy(nameof(UserPermissions.ReadStockItems),
-                policy =>
-                    policy.RequireAssertion(ctx =>
-                        ctx.User.HasPermission(UserPermissions.ReadStockItems)));
+            foreach (var permission in Enum.GetValues<UserPermissions>())
+            {
+                options.AddPolicy(permission.ToString(),
+                    policy =>
+                        policy.RequireAssertion(ctx =>
+                            ctx.User.HasPermission(permission)));
+            }
         });
     }
     

@@ -1,5 +1,6 @@
 ﻿using API.ActionFilters;
 using API.ActionResults;
+using API.Authentication;
 using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -11,7 +12,7 @@ using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
-[Authorize]
+[Authorize(Policy = nameof(UserPermissions.ReadStockItems))]
 public sealed partial class StockItemsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;

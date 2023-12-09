@@ -1,6 +1,6 @@
 ﻿using API.Data;
+using API.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions;
@@ -14,10 +14,9 @@ public static class WebApplicationExtensions
         try
         {
             var context = service.GetRequiredService<AuthenticationContext>();
-            var userManager = service.GetRequiredService<UserManager<IdentityUser>>();
-            var roleManager = service.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = service.GetRequiredService<UserManager<AppUser>>();
             await context.Database.MigrateAsync();
-            await UserSeed.SeedRolesAndOwner(userManager, roleManager, app.Configuration);
+            await UserSeed.SeedRolesAndOwner(userManager, app.Configuration);
         }
         catch (Exception ex)
         {

@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using API.Authentication;
 using API.Data.DTOs;
+using API.Entities;
 using API.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,10 +14,10 @@ namespace API.Controllers;
 
 public sealed class AccountController : BaseApiController
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
-    public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -29,14 +31,13 @@ public sealed class AccountController : BaseApiController
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
         if (!result.Succeeded) return Unauthorized();
-        
+
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.Email!),
+            new Claim(ExtendedClaimTypes.Id, user.Id),
+            new Claim(ExtendedClaimTypes.Email, user.Email),
+            new Claim(ExtendedClaimTypes.Permissions, user.Permissions.ToString())
         };
-
-        var roles = await _userManager.GetRolesAsync(user);
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -45,9 +46,12 @@ public sealed class AccountController : BaseApiController
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity));
 
-        //TODO We need some response from the server. IdentityUserDto perhaps
-        //TODO Convert the User.GetDetails from principle extension to something that can be used here
-        return Ok();
+        return Ok(new AppUserDto()
+        {
+            Email = user.Email,
+            Id = user.Id,
+            Permissions = user.Permissions
+        });
     }
 
     [Authorize]

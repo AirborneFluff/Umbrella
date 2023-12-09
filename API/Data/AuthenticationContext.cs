@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using API.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
-public sealed class AuthenticationContext : IdentityDbContext<IdentityUser>
+public sealed class AuthenticationContext : IdentityDbContext<AppUser>
 {
     public AuthenticationContext(DbContextOptions<AuthenticationContext> options) : base(options)
     {
