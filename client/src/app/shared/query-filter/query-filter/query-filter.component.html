@@ -1,0 +1,35 @@
+<div class="flex justify-between px-4 items-center">
+  <div class="cursor-pointer min-w-[1.5rem]">
+    <mat-icon *ngIf="navigationDepth > 0" (click)="navigateUp()">chevron_left</mat-icon>
+  </div>
+
+  <p class="font-display my-5 text-2xl font-medium mx-auto text-center select-none">Filters</p>
+
+  <div class="cursor-pointer min-w-[1.5rem]">
+    <mat-icon>close</mat-icon>
+  </div>
+</div>
+<ng-container
+  *ngTemplateOutlet="groupList; context: {$implicit: {data: currentOptions}}">
+</ng-container>
+
+
+<ng-template #groupList let-d>
+  <ul class="px-6">
+    <ng-container *ngFor="let option of d.data as FilterOptions">
+      <li
+        class="p-2 cursor-pointer border-b border-gray-200"
+        [ngClass]="{'text-violet-700' : option?.parameter?.active}"
+        (click)="handleOptionClick(option)">
+        <div class="flex justify-between items-center ">
+          <p class="font-display text-base font-normal select-none">{{option.title}}</p>
+          <mat-icon *ngIf="option.children">chevron_right</mat-icon>
+          <mat-icon *ngIf="option?.parameter?.active">done</mat-icon>
+        </div>
+        <div class="flex flex-row gap-x-2 flex-wrap">
+          <span class="leading-tight text-violet-700 text-xs font-display" *ngFor="let param of getActiveOptions(option)">{{param.title}}</span>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+</ng-template>
