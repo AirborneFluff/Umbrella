@@ -1,0 +1,85 @@
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "title": "Fruits",
+            "parameter": {
+              "param": "categoryFruit",
+              "active": false
+            }
+          },
+          {
+            "title": "Vegetables",
+            "parameter": {
+              "param": "categoryVeg",
+              "active": false
+            }
+          },
+          {
+            "title": "Homeware",
+            "parameter": {
+              "param": "categoryHomeware",
+              "active": false
+            }
+          }
+        ],
+        "title": "Category"
+      },
+      {
+        "children": [
+          {
+            "title": "Less than 100",
+            "parameter": {
+              "param": "less100",
+              "active": false
+            }
+          },
+          {
+            "title": "Overstocked",
+            "parameter": {
+              "param": "overStocked",
+              "active": false
+            }
+          }
+        ],
+        "title": "Stock Level"
+      },
+      {
+        "children": [
+          {
+            "title": "Red",
+            "parameter": {
+              "param": "colourRed",
+              "active": false
+            }
+          },
+          {
+            "title": "Blue",
+            "parameter": {
+              "param": "colourBlue",
+              "active": false
+            }
+          },
+          {
+            "title": "Green",
+            "parameter": {
+              "param": "colourGreen",
+              "active": false
+            }
+          }
+        ],
+        "title": "Colour"
+      }
+    ],
+    "title": "Item Parameters"
+  },
+  {
+    "title": "Out of stock",
+    "parameter": {
+      "param": "noStock",
+      "active": false
+    }
+  }
+]

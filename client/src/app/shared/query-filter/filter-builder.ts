@@ -1,9 +1,18 @@
 import { FilterOption } from './filter-option';
 
 export class FilterBuilder {
-  private options: FilterOption[] = [];
+  private readonly options: FilterOption[] = [];
 
-  public constructor() {
+  public constructor(configJson?: string, config?: FilterOption[]) {
+    if (configJson) {
+      this.options = JSON.parse(configJson) as FilterOption[];
+      return;
+    }
+
+    if (config) {
+      this.options = config;
+      return;
+    }
   }
 
   public build(): FilterOption[] {
