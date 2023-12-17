@@ -1,20 +1,27 @@
 <div class="flex justify-between px-4 items-center">
   <div class="cursor-pointer min-w-[1.5rem]">
-    <mat-icon *ngIf="(filter.navigationDepth$ | async)! > 0" (click)="filter.navigateUp()">chevron_left</mat-icon>
+    <mat-icon *ngIf="(filter.navigationDepth$ | async)! > 0" (click)="pageBack()">chevron_left</mat-icon>
   </div>
 
   <p class="font-display my-5 text-2xl font-medium mx-auto text-center select-none">Filters</p>
 
-  <div class="cursor-pointer min-w-[1.5rem]">
+  <div class="cursor-pointer min-w-[1.5rem]" (click)="close.emit()">
     <mat-icon>close</mat-icon>
   </div>
 </div>
-<ng-container
-  *ngTemplateOutlet="groupList; context: {$implicit: {data: filter.navigationOptions$ | async}}">
-</ng-container>
+<div class="relative overflow-hidden">
+  <div [@fadeIn]="animationDirection">
+    <ng-container *ngTemplateOutlet="optionsTemplate; context: {$implicit: {data: filter.navigationOptions$ | async}}">
+    </ng-container>
+  </div>
 
+  <div [@fadeOut]="animationDirection" class="pointer-events-none hidden absolute top-0 left-0 w-full">
+    <ng-container *ngTemplateOutlet="optionsTemplate; context: {$implicit: {data: previousOptions$ | async}}">
+    </ng-container>
+  </div>
+</div>
 
-<ng-template #groupList let-d>
+<ng-template #optionsTemplate let-d>
   <ul class="px-6">
     <ng-container *ngFor="let option of d.data">
       <li

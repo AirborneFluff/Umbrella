@@ -1,4 +1,4 @@
-import {FilterOption} from "./filter-option";
+import { FilterOption } from "./filter-option";
 import {
   BehaviorSubject,
   map,
@@ -24,14 +24,26 @@ export class QueryFilter {
     startWith(0)
   )
 
-  constructor(configJson: string) {
-    if (configJson) {
-      this.rootOptions = JSON.parse(configJson) as FilterOption[];
-    }
+  constructor(options: FilterOption[]) {
+    this.rootOptions = options;
   }
 
   buildHttpParams(): HttpParams {
-    let params: HttpParams;
+    let params: HttpParams = new HttpParams();
+
+    const activeOptions = this.getActiveOptions({
+      parameter: undefined, title: '',
+      children: this.rootOptions
+    });
+
+    for (const key in activeOptions) {
+      const parameter = activeOptions[key].parameter
+      if (!parameter) continue;
+
+      params = params.append(parameter.param, true);
+    }
+
+    return params;
   }
 
   navigateUp() {
