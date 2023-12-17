@@ -1,6 +1,6 @@
 <div class="flex justify-between px-4 items-center">
   <div class="cursor-pointer min-w-[1.5rem]">
-    <mat-icon *ngIf="navigationDepth > 0" (click)="navigateUp()">chevron_left</mat-icon>
+    <mat-icon *ngIf="(filter.navigationDepth$ | async)! > 0" (click)="filter.navigateUp()">chevron_left</mat-icon>
   </div>
 
   <p class="font-display my-5 text-2xl font-medium mx-auto text-center select-none">Filters</p>
@@ -10,13 +10,13 @@
   </div>
 </div>
 <ng-container
-  *ngTemplateOutlet="groupList; context: {$implicit: {data: currentOptions}}">
+  *ngTemplateOutlet="groupList; context: {$implicit: {data: filter.navigationOptions$ | async}}">
 </ng-container>
 
 
 <ng-template #groupList let-d>
   <ul class="px-6">
-    <ng-container *ngFor="let option of d.data as FilterOptions">
+    <ng-container *ngFor="let option of d.data">
       <li
         class="p-2 cursor-pointer border-b border-gray-200"
         [ngClass]="{'text-violet-700' : option?.parameter?.active}"
@@ -27,7 +27,7 @@
           <mat-icon *ngIf="option?.parameter?.active">done</mat-icon>
         </div>
         <div class="flex flex-row gap-x-2 flex-wrap">
-          <span class="leading-tight text-violet-700 text-xs font-display" *ngFor="let param of getActiveOptions(option)">{{param.title}}</span>
+          <span class="leading-tight text-violet-700 text-xs font-display" *ngFor="let param of filter.getActiveOptions(option)">{{param.title}}</span>
         </div>
       </li>
     </ng-container>
