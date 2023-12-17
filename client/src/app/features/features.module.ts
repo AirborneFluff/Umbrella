@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
+import { AppFrameModule } from './app-frame/app-frame.module';
+
+
 
 @NgModule({
+  exports: [
+    AppFrameModule
+  ],
   declarations: [],
   imports: [
     CommonModule,
-    MatIconModule
-  ],
-  exports: [
-    MatIconModule
+    AppFrameModule
   ]
 })
-export class SharedModule { }
+export class FeaturesModule { }
