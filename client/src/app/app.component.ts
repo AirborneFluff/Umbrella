@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ApiService } from './core/services/api.service';
 import { AuthService } from './auth/services/auth.service';
 import { TEST_EMAIL, TEST_PASSWORD } from './developer.secrets';
+import { FilterOption } from './shared/query-filter/filter-option';
+import jsonConfig from '../app/shared/query-filter/example.query-filter.json'
 
 @Component({
   selector: 'app-root',
@@ -10,8 +12,10 @@ import { TEST_EMAIL, TEST_PASSWORD } from './developer.secrets';
 })
 export class AppComponent {
   title = 'client';
+  filterOptions!: FilterOption[];
 
   constructor(private api: ApiService, private auth: AuthService) {
+    this.filterOptions = jsonConfig as FilterOption[];
   }
 
   login() {
