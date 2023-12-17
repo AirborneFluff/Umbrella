@@ -1,9 +1,9 @@
-<div class="flex justify-between px-4 items-center">
+<div class="flex justify-between px-4 items-center select-none">
   <div class="cursor-pointer min-w-[1.5rem]">
     <mat-icon *ngIf="(filter.navigationDepth$ | async)! > 0" (click)="pageBack()">chevron_left</mat-icon>
   </div>
 
-  <p class="font-display my-5 text-2xl font-medium mx-auto text-center select-none">Filters</p>
+  <p class="font-display my-5 text-2xl font-medium mx-auto text-center">Filters</p>
 
   <div class="cursor-pointer min-w-[1.5rem]" (click)="close.emit()">
     <mat-icon>close</mat-icon>
