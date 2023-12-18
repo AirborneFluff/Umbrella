@@ -1,10 +1,10 @@
-<div class="hidden md:flex fixed top-0 left-0 h-full bg-[#FFFFFF] flex-col select-none py-9 gap-9">
+<div class="hidden md:flex fixed top-0 left-0 h-full bg-[#FFFFFF] flex-col select-none py-9 gap-9 rounded-r-lg xl:w-72 lg:w-48 md:w-24">
   <div class="px-6 flex flex-col gap-8 justify-center items-center">
-    <img class="rounded-full w-16"
+    <img class="rounded-full w-12 lg:w-16"
          [src]="userAvatarUrl$ | async"
          (error)="useDefaultImage()"
          alt="Profile picture">
-    <div class="hidden xl:flex xl:w-64 bg-[#F2EBFB] rounded-lg py-2.5 px-4 cursor-pointer justify-between">
+    <div class="hidden xl:flex w-full bg-[#F2EBFB] rounded-lg py-2.5 px-4 cursor-pointer justify-between">
       <span class="font-light font-display">Hi, {{currentUserName$ | async}}</span>
       <mat-icon>expand_more</mat-icon>
     </div>
@@ -12,7 +12,7 @@
 
   <div>
     <ng-container *ngFor="let entry of desktopEntries">
-      <menu-entry [entry]="entry"></menu-entry>
+      <menu-entry [entry]="entry" [active]="isSelectedEntry(entry, desktopEntries)"></menu-entry>
     </ng-container>
   </div>
 
@@ -21,10 +21,12 @@
   </div>
 </div>
 
-<div class="md:hidden block fixed bottom-0 left-0 w-full bg-[#FBFAFF]">
+<div class="md:hidden block fixed bottom-0 left-0 w-full bg-[#FBFAFF] h-20">
   <div class="flex justify-around items-center">
     <ng-container *ngFor="let entry of mobileEntries">
-      <menu-entry [entry]="entry"></menu-entry>
+      <menu-entry [entry]="entry" [active]="isSelectedEntry(entry, mobileEntries)"></menu-entry>
     </ng-container>
   </div>
 </div>
+
+<div class="xl:pl-72 md:pl-24 lg:pl-48 max-md:pb-20"><ng-content/></div>

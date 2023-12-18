@@ -8,4 +8,5 @@ import { MenuEntry } from '../menu-entry';
 })
 export class MenuEntryComponent {
   @Input() entry!: MenuEntry;
+  @Input() active: boolean = false;
 }
