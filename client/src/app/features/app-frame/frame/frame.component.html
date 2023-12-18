@@ -12,7 +12,7 @@
 
   <div>
     <ng-container *ngFor="let entry of desktopEntries">
-      <menu-entry [entry]="entry" [active]="isSelectedEntry(entry, desktopEntries)"></menu-entry>
+      <menu-entry [entry]="entry" [active]="isSelectedEntry(entry, desktopEntries)" (click)="handleEntryClick(entry)"></menu-entry>
     </ng-container>
   </div>
 
@@ -24,7 +24,7 @@
 <div class="md:hidden block fixed bottom-0 left-0 w-full bg-[#FBFAFF] h-20">
   <div class="flex justify-around items-center">
     <ng-container *ngFor="let entry of mobileEntries">
-      <menu-entry [entry]="entry" [active]="isSelectedEntry(entry, mobileEntries)"></menu-entry>
+      <menu-entry [entry]="entry" [active]="isSelectedEntry(entry, mobileEntries)" (click)="handleEntryClick(entry)"></menu-entry>
     </ng-container>
   </div>
 </div>
