@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { QueryFilterModule } from './shared/query-filter/query-filter.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FeaturesModule } from './features/features.module';
+import { CoreModule } from "./core/core.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { FeaturesModule } from './features/features.module';
     HttpClientModule,
     QueryFilterModule,
     BrowserAnimationsModule,
-    FeaturesModule
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

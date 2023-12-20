@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [],
   imports: [
     CommonModule,
-    MatIconModule
+    MatIconModule,
   ],
   exports: [
     MatIconModule

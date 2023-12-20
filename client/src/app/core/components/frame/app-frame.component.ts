@@ -5,10 +5,10 @@ const DEFAULT_AVATAR_URL = './assets/outline_face_black_48dp.png'
 
 @Component({
   selector: 'app-frame',
-  templateUrl: './frame.component.html',
-  styleUrls: ['./frame.component.scss']
+  templateUrl: './app-frame.component.html',
+  styleUrls: ['./app-frame.component.scss']
 })
-export class FrameComponent {
+export class AppFrameComponent {
   //todo Update to using CurrentUserStream when implemented
   currentUserName$ = of('User');
   userAvatarUrl$ = new BehaviorSubject<string>('');
