@@ -1,0 +1,5 @@
+.selected-background {
+  @apply absolute w-full h-full top-0 left-0;
+  background: linear-gradient(90deg, rgba(126, 34, 206, 0.20) 0%, rgba(126, 34, 206, 0.00) 50%);
+  filter: blur(2px);
+}
