@@ -8,10 +8,10 @@ const DEFAULT_AVATAR_URL = './assets/outline_face_black_48dp.png'
 
 @Component({
   selector: 'app-frame',
-  templateUrl: './frame.component.html',
-  styleUrls: ['./frame.component.scss']
+  templateUrl: './app-frame.component.html',
+  styleUrls: ['./app-frame.component.scss']
 })
-export class FrameComponent {
+export class AppFrameComponent {
   protected readonly desktopEntries = MENU_ENTRIES_FULL;
   protected readonly mobileEntries = MENU_ENTRIES_MOBILE;
 
