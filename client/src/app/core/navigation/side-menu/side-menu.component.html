@@ -1,0 +1,33 @@
+<div [ngClass]="{'w-full' : layoutType == SideMenuLayouts.Full, 'w-72' : layoutType != SideMenuLayouts.Compact}"
+  class="flex fixed top-0 left-0 h-full bg-[#f1f1f1] flex-col select-none py-9 justify-between rounded-r-lg">
+  <div class="px-6 flex flex-col gap-8 justify-center items-center">
+    <div class="rounded-full w-12 h-12 bg-amber-200">
+      <img src=""
+           alt="Profile picture"
+           *ngIf="!showDefaultAvatar else defaultAvatar"
+           (error)="showDefaultAvatar = true">
+    </div>
+
+    <div *ngIf="layoutType != SideMenuLayouts.Compact" class="w-full bg-[#F2EBFB] rounded-lg py-2.5 px-4 cursor-pointer justify-between">
+      <span class="font-light font-display">Hi, User</span>
+      <mat-icon>expand_more</mat-icon>
+    </div>
+  </div>
+
+  <div>
+    <ng-container *ngFor="let entry of entries">
+      <div class="flex flex-grow items-center py-4 px-9 gap-6 justify-start">
+        <mat-icon class="material-icons-outlined">{{entry.icon}}</mat-icon>
+        <p *ngIf="layoutType != SideMenuLayouts.Compact" class="font-display font-medium select-none">{{entry.text}}</p>
+      </div>
+    </ng-container>
+  </div>
+
+  <div>temp</div>
+</div>
+
+<ng-template #defaultAvatar>
+  <div class="w-full h-full flex justify-center items-center">
+    <span class="font-display font-regular text-xl">M</span>
+  </div>
+</ng-template>

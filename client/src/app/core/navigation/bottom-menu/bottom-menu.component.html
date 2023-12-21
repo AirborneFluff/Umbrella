@@ -1,1 +1,7 @@
-<p>bottom-menu works!</p>
+<div class="fixed bottom-0 left-0 w-full bg-[#FBFAFF] h-20">
+  <div class="flex justify-around items-center">
+    <ng-container *ngFor="let entry of entries">
+      <bottom-menu-button [icon]="entry.icon" [text]="entry.text"/>
+    </ng-container>
+  </div>
+</div>
