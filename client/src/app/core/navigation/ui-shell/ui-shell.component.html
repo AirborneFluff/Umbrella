@@ -1,0 +1,20 @@
+<ng-container *ngIf="showBottomMenu$ | async else sideMenu">
+  <app-bottom-menu/>
+
+  <div class="pb-20">
+    <ng-content/>
+    <div class="top-2 left-2 flex gap-1 md:hidden fixed">
+      <orb-button icon="menu" />
+    </div>
+    <ng-content/>
+  </div>
+</ng-container>
+
+<ng-template #sideMenu>
+  <ng-container *ngIf="sideMenuLayout$ | async as layout">
+    <app-side-menu [layoutType]="layout"/>
+    <div [ngClass]="{'pl-72' : layout == SideMenuLayouts.Full, 'pl-24' : layout == SideMenuLayouts.Compact}">
+      <ng-content/>
+    </div>
+  </ng-container>
+</ng-template>
