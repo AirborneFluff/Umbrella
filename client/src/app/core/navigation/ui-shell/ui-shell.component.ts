@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BreakpointObserver } from "@angular/cdk/layout";
-import {map, tap} from "rxjs";
+import { map } from "rxjs";
 import { Breakpoints } from "../breakpoints";
 import { SideMenuLayouts } from "../side-menu-layouts";
 

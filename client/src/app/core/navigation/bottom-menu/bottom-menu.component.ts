@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {MENU_ENTRIES_MOBILE} from "../../components/menu-entries";
 
 @Component({
   selector: 'app-bottom-menu',
@@ -7,5 +6,4 @@ import {MENU_ENTRIES_MOBILE} from "../../components/menu-entries";
   styleUrls: ['./bottom-menu.component.scss']
 })
 export class BottomMenuComponent {
-    protected readonly entries = MENU_ENTRIES_MOBILE;
 }
