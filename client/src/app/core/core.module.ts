@@ -8,6 +8,7 @@ import { BottomMenuComponent } from "./navigation/bottom-menu/bottom-menu.compon
 import { UiShellComponent } from './navigation/ui-shell/ui-shell.component';
 import { LayoutModule } from "@angular/cdk/layout";
 import { BottomMenuButtonComponent } from './navigation/bottom-menu-button/bottom-menu-button.component';
+import { SideMenuButtonComponent } from './navigation/side-menu-button/side-menu-button.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { BottomMenuButtonComponent } from './navigation/bottom-menu-button/botto
     BottomMenuComponent,
     UiShellComponent,
     BottomMenuButtonComponent,
+    SideMenuButtonComponent,
   ],
   imports: [
     CommonModule,

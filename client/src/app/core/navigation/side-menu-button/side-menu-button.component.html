@@ -1,0 +1,11 @@
+<div class="relative cursor-pointer">
+  <div class="flex flex-row gap-6 items-center py-4 px-9 justify-start">
+    <mat-icon class="material-icons-outlined">{{icon}}</mat-icon>
+    <p class="font-display font-medium select-none">{{text}}</p>
+  </div>
+
+  <div *ngIf="active" class="absolute w-full h-full top-0 left-0">
+    <div class="selected-background"></div>
+    <div class="absolute w-1 h-full top-0 left-0 bg-purple-500 rounded-sm"></div>
+  </div>
+</div>

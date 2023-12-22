@@ -11,6 +11,12 @@ export class SideMenuComponent {
   @Input() layoutType!: string;
   showDefaultAvatar = false;
 
+  get widthClass(): string {
+    if (this.layoutType == SideMenuLayouts.Full) return 'w-full';
+    if (this.layoutType == SideMenuLayouts.Regular) return 'w-72';
+    return 'w-24';
+  }
+
   protected readonly entries = MENU_ENTRIES_FULL;
   protected readonly SideMenuLayouts = SideMenuLayouts;
 }
