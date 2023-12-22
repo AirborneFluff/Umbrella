@@ -1,4 +1,4 @@
-<div class="flex fixed top-0 left-0 h-full bg-[#f1f1f1] flex-col select-none py-9 justify-between rounded-r-lg {{widthClass}}">
+<div class="flex h-full bg-[#ffffff] flex-col select-none py-9 justify-between rounded-r-lg {{widthClass}}">
   <div>
     <div class="px-6 flex flex-col gap-8 justify-center items-center mb-8">
       <div class="rounded-full w-12 h-12 bg-amber-200">
@@ -8,21 +8,21 @@
              (error)="showDefaultAvatar = true">
       </div>
 
-      <div *ngIf="layoutType != SideMenuLayouts.Compact" class="w-full bg-[#F2EBFB] rounded-lg py-2.5 px-4 cursor-pointer justify-between">
+      <div *ngIf="layoutType != SideMenuLayouts.Compact" class="flex w-full bg-[#F2EBFB] rounded-lg py-2.5 px-4 cursor-pointer justify-between">
         <span class="font-light font-display">Hi, User</span>
         <mat-icon>expand_more</mat-icon>
       </div>
     </div>
 
-    <app-side-menu-button icon="home" text="Home" />
-    <app-side-menu-button icon="dashboard_customize" text="Stock" />
-    <app-side-menu-button icon="qr_code_scanner" text="Products" />
-    <app-side-menu-button icon="design_services" text="Services" />
-    <app-side-menu-button icon="receipt_long" text="Supply" />
-    <app-side-menu-button icon="sell" text="Sales" />
+    <app-side-menu-button text="Home" icon="home" [compact]="isCompact" />
+    <app-side-menu-button text="Stock" icon="dashboard_customize" [compact]="isCompact" />
+    <app-side-menu-button text="Products" icon="qr_code_scanner" [compact]="isCompact" />
+    <app-side-menu-button text="Services" icon="design_services" [compact]="isCompact" />
+    <app-side-menu-button text="Supply" icon="receipt_long" [compact]="isCompact" />
+    <app-side-menu-button text="Sales" icon="sell" [compact]="isCompact" />
   </div>
 
-  <app-side-menu-button icon="help_outline" text="Support" />
+  <app-side-menu-button text="Support" icon="help_outline" [compact]="isCompact" />
 </div>
 
 <ng-template #defaultAvatar>

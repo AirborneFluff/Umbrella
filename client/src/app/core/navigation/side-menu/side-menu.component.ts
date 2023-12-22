@@ -1,7 +1,6 @@
-import {Component, Input} from '@angular/core';
-import { MENU_ENTRIES_FULL } from "../../components/menu-entries";
+import { Component, Inject, Input } from '@angular/core';
 import { SideMenuLayouts } from "../side-menu-layouts";
-
+import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
@@ -17,6 +16,9 @@ export class SideMenuComponent {
     return 'w-24';
   }
 
-  protected readonly entries = MENU_ENTRIES_FULL;
+  get isCompact(): boolean {
+    return this.layoutType == SideMenuLayouts.Compact;
+  }
+
   protected readonly SideMenuLayouts = SideMenuLayouts;
 }

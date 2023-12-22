@@ -8,7 +8,7 @@
 
 <ng-template #sideMenu>
   <ng-container *ngIf="sideMenuLayout$ | async as layout">
-    <app-side-menu [layoutType]="layout"/>
+    <app-side-menu class="fixed top-0 left-0 h-full" [layoutType]="layout"/>
     <div [ngClass]="{'pl-72' : layout == SideMenuLayouts.Full, 'pl-24' : layout == SideMenuLayouts.Compact}">
       <ng-content/>
     </div>

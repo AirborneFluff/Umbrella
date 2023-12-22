@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class SideMenuButtonComponent {
   @Input() active: boolean = false;
+  @Input() compact!: boolean;
   @Input() icon!: string;
   @Input() text!: string;
 }
