@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { SideMenuComponent } from '../side-menu/side-menu.component';
 import { SideMenuLayouts } from '../side-menu-layouts';
+import { SideMenuSheetComponent } from '../side-menu-sheet/side-menu-sheet.component';
 
 @Component({
   selector: 'app-bottom-menu',
@@ -14,7 +14,10 @@ export class BottomMenuComponent {
   }
 
   openSideMenu() {
-    this.bottomSheet.open(SideMenuComponent, {
+    //todo Use Material side nav instead?
+    this.bottomSheet.open(SideMenuSheetComponent, {
+      direction: 'ltr',
+      panelClass: 'w-full',
       data: SideMenuLayouts.Full
     });
   }

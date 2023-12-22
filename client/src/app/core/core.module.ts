@@ -9,6 +9,7 @@ import { UiShellComponent } from './navigation/ui-shell/ui-shell.component';
 import { LayoutModule } from "@angular/cdk/layout";
 import { BottomMenuButtonComponent } from './navigation/bottom-menu-button/bottom-menu-button.component';
 import { SideMenuButtonComponent } from './navigation/side-menu-button/side-menu-button.component';
+import { SideMenuSheetComponent } from './navigation/side-menu-sheet/side-menu-sheet.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { SideMenuButtonComponent } from './navigation/side-menu-button/side-menu
     UiShellComponent,
     BottomMenuButtonComponent,
     SideMenuButtonComponent,
+    SideMenuSheetComponent,
   ],
   imports: [
     CommonModule,
