@@ -7,4 +7,5 @@ import {Component, Input} from '@angular/core';
 })
 export class OrbButtonComponent {
   @Input() icon!: string;
+  @Input() size: 'sm' | 'lg' = 'sm';
 }
