@@ -25,7 +25,7 @@ export class UiShellComponent {
     })
   )
 
-  showBottomMenu$ = this.breakpoints$.pipe(
+  showMobileView$ = this.breakpoints$.pipe(
     map(result => !result.matches)
   )
   protected readonly SideMenuLayouts = SideMenuLayouts;

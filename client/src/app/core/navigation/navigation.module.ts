@@ -6,8 +6,8 @@ import { UiShellComponent } from './ui-shell/ui-shell.component';
 import { BottomMenuButtonComponent } from './bottom-menu-button/bottom-menu-button.component';
 import { SideMenuButtonComponent } from './side-menu-button/side-menu-button.component';
 import { SideMenuSheetComponent } from './side-menu-sheet/side-menu-sheet.component';
-import { SideMenuDrawerComponent } from './side-menu-drawer/side-menu-drawer.component';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 @NgModule({
@@ -17,11 +17,12 @@ import { SideMenuDrawerComponent } from './side-menu-drawer/side-menu-drawer.com
     UiShellComponent,
     BottomMenuButtonComponent,
     SideMenuButtonComponent,
-    SideMenuSheetComponent,
-    SideMenuDrawerComponent
+    SideMenuSheetComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatIconModule,
+    MatSidenavModule,
   ],
   exports: [
     UiShellComponent

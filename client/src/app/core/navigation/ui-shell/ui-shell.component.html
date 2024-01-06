@@ -1,16 +1,29 @@
-<ng-container *ngIf="showBottomMenu$ | async else sideMenu">
-  <app-bottom-menu/>
+<ng-container *ngIf="showMobileView$ | async else desktopView">
+    <app-bottom-menu/>
 
-  <div class="pb-20">
-    <ng-content/>
-  </div>
+    <mat-sidenav-container class="w-full min-h-full">
+      <mat-sidenav #sidenav mode="over" class="w-full sm:w-4/5">
+        <app-side-menu [layoutType]="SideMenuLayouts.Full"/>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <button (click)="sidenav.toggle()">Click me</button>
+        <div class="pb-20">
+          <ng-container *ngTemplateOutlet="content"/>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
 </ng-container>
 
-<ng-template #sideMenu>
+<ng-template #desktopView>
   <ng-container *ngIf="sideMenuLayout$ | async as layout">
     <app-side-menu class="fixed top-0 left-0 h-full" [layoutType]="layout"/>
-    <div [ngClass]="{'pl-72' : layout == SideMenuLayouts.Full, 'pl-24' : layout == SideMenuLayouts.Compact}">
-      <ng-content/>
+    <div [ngClass]="{'pl-72' : layout == SideMenuLayouts.Regular, 'pl-24' : layout == SideMenuLayouts.Compact}">
+      <ng-container *ngTemplateOutlet="content"/>
     </div>
   </ng-container>
+</ng-template>
+
+<ng-template #content>
+  <ng-content/>
 </ng-template>
