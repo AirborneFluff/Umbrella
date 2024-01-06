@@ -10,7 +10,7 @@ import { getPaginatedResult, getPaginationHeaders } from '../../../core/utilitie
   providedIn: 'root'
 })
 export class StockService {
-  baseUrl = environment.apiUrl + 'stockItems/';
+  private baseUrl = environment.apiUrl + 'stockItems/';
 
   constructor(private http: HttpClient) { }
 
