@@ -8,6 +8,7 @@ import { SideMenuButtonComponent } from './side-menu-button/side-menu-button.com
 import { SideMenuSheetComponent } from './side-menu-sheet/side-menu-sheet.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     CommonModule,
     MatIconModule,
     MatSidenavModule,
+    SharedModule,
   ],
   exports: [
     UiShellComponent

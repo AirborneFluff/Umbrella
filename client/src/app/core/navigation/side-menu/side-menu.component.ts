@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { SideMenuLayouts } from "../side-menu-layouts";
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 @Component({
@@ -8,6 +8,8 @@ import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 })
 export class SideMenuComponent {
   @Input() layoutType!: string;
+  @Input() showCloseButton: boolean = false;
+  @Output() onClose: EventEmitter<any> = new EventEmitter();
   showDefaultAvatar = false;
 
   get widthClass(): string {
