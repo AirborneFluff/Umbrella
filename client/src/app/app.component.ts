@@ -16,6 +16,7 @@ export class AppComponent {
 
   constructor(private api: ApiService, private auth: AuthService) {
     this.filterOptions = jsonConfig as FilterOption[];
+    this.login();
   }
 
   login() {
