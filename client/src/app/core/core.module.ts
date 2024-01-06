@@ -6,11 +6,13 @@ import { MenuEntryComponent } from "./components/menu-entry/menu-entry.component
 import { LayoutModule } from "@angular/cdk/layout";
 import { UiShellComponent } from './navigation/ui-shell/ui-shell.component';
 import { NavigationModule } from './navigation/navigation.module';
+import { IsVisibleDirective } from './directives/is-visible.directive';
 
 @NgModule({
   declarations: [
     AppFrameComponent,
-    MenuEntryComponent
+    MenuEntryComponent,
+    IsVisibleDirective
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { NavigationModule } from './navigation/navigation.module';
   ],
   exports: [
     AppFrameComponent,
-    UiShellComponent
+    UiShellComponent,
+    IsVisibleDirective
   ]
 })
 export class CoreModule { }
