@@ -6,10 +6,12 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { IsVisibleDirective } from './directives/is-visible.directive';
 
 @NgModule({
   declarations: [
-    OrbButtonComponent
+    OrbButtonComponent,
+    IsVisibleDirective
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     OrbButtonComponent,
     MatBottomSheetModule,
     MatListModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    IsVisibleDirective
   ]
 })
 export class SharedModule { }
