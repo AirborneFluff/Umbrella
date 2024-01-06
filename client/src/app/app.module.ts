@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { QueryFilterModule } from './shared/query-filter/query-filter.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreModule } from "./core/core.module";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     QueryFilterModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

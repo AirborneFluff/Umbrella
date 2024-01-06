@@ -1,0 +1,33 @@
+<div class="flex h-full bg-[#ffffff] flex-col select-none py-9 justify-between rounded-r-lg {{widthClass}}">
+  <mat-icon class="absolute right-3 top-3 text-3xl !w-8 !h-8" (click)="onClose.emit()">close</mat-icon>
+  <div>
+    <div class="px-6 flex flex-col gap-8 justify-center items-center mb-8">
+      <div class="rounded-full w-12 h-12 bg-amber-200">
+        <img src=""
+             alt="Profile picture"
+             *ngIf="!showDefaultAvatar else defaultAvatar"
+             (error)="showDefaultAvatar = true">
+      </div>
+
+      <div *ngIf="layoutType != SideMenuLayouts.Compact" class="flex w-full bg-[#F2EBFB] rounded-lg py-2.5 px-4 cursor-pointer justify-between">
+        <span class="font-light font-display">Hi, User</span>
+        <mat-icon>expand_more</mat-icon>
+      </div>
+    </div>
+
+    <app-side-menu-button text="Home" icon="home" [compact]="isCompact" />
+    <app-side-menu-button text="Stock" icon="dashboard_customize" [compact]="isCompact" />
+    <app-side-menu-button text="Products" icon="qr_code_scanner" [compact]="isCompact" />
+    <app-side-menu-button text="Services" icon="design_services" [compact]="isCompact" />
+    <app-side-menu-button text="Supply" icon="receipt_long" [compact]="isCompact" />
+    <app-side-menu-button text="Sales" icon="sell" [compact]="isCompact" />
+  </div>
+
+  <app-side-menu-button text="Support" icon="help_outline" [compact]="isCompact" />
+</div>
+
+<ng-template #defaultAvatar>
+  <div class="w-full h-full flex justify-center items-center">
+    <span class="font-display font-regular text-xl">M</span>
+  </div>
+</ng-template>
