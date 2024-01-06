@@ -1,10 +1,10 @@
 <div class="relative cursor-pointer">
-  <div class="flex flex-col gap-0.5 justify-center items-center py-2">
-    <mat-icon [ngClass]="{'text-purple-500' : active}" class="material-icons-outlined">
+  <div class="flex flex-col justify-center items-center py-2">
+    <mat-icon [ngClass]="{'text-purple-500' : active}">
       {{icon}}
     </mat-icon>
-    <p [ngClass]="{'text-purple-500' : active, 'font-medium' : active}"
-       class="font-display font-light select-none">{{text}}
+    <p [ngClass]="{'text-purple-500' : active, 'font-semibold' : active}"
+       class="font-display text-xs font-medium  select-none">{{text}}
     </p>
   </div>
 </div>
