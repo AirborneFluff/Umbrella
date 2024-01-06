@@ -5,11 +5,9 @@ import { BottomMenuComponent } from './bottom-menu/bottom-menu.component';
 import { UiShellComponent } from './ui-shell/ui-shell.component';
 import { BottomMenuButtonComponent } from './bottom-menu-button/bottom-menu-button.component';
 import { SideMenuButtonComponent } from './side-menu-button/side-menu-button.component';
-import { SideMenuSheetComponent } from './side-menu-sheet/side-menu-sheet.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SharedModule } from '../../shared/shared.module';
-
 
 @NgModule({
   declarations: [
@@ -18,7 +16,6 @@ import { SharedModule } from '../../shared/shared.module';
     UiShellComponent,
     BottomMenuButtonComponent,
     SideMenuButtonComponent,
-    SideMenuSheetComponent
   ],
   imports: [
     CommonModule,

@@ -1,14 +1,16 @@
 <ng-container *ngIf="showMobileView$ | async else desktopView">
-  <app-bottom-menu/>
-
   <mat-sidenav-container class="w-full min-h-full">
-    <mat-sidenav #sidenav mode="over" class="w-full sm:w-4/5">
+    <mat-sidenav #sidenav
+                 [fixedInViewport]="true"
+                 mode="over"
+                 class="w-full sm:w-4/5 fixed">
       <app-side-menu [layoutType]="SideMenuLayouts.Full" (onClose)="sidenav.close()"/>
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <orb-button icon="menu" (click)="sidenav.open()"/>
-      <div class="pb-20 bg-inherit">
+      <app-bottom-menu/>
+      <orb-button class="fixed top-1 left-1" icon="menu" (click)="sidenav.open()"/>
+      <div class="pb-16">
         <ng-container *ngTemplateOutlet="content"/>
       </div>
     </mat-sidenav-content>
