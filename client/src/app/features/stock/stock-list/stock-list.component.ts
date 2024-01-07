@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StockService } from '../services/stock.service';
-import { BehaviorSubject, map, shareReplay, Subscription, switchMap, take } from 'rxjs';
-import { Pagination, PaginationParams } from '../../../core/utilities/pagination';
+import { BehaviorSubject, map, shareReplay, Subscription, switchMap, take, tap } from 'rxjs';
+import { Pagination } from '../../../core/utilities/pagination';
 import { StockItem } from '../../../core/models/stock-item';
 import { BreakpointStream } from '../../../core/streams/breakpoint-stream';
 import { Breakpoints } from '../../../core/definitions/breakpoints';
+import { PagedSearchParams } from '../../../core/params/paged-search-params';
 
 @Component({
   selector: 'app-stock-list',
@@ -14,6 +15,7 @@ import { Breakpoints } from '../../../core/definitions/breakpoints';
 export class StockListComponent implements OnInit, OnDestroy {
   stockItems: StockItem[] = [];
   subscriptions = new Subscription();
+  pageSize = 50;
 
   constructor(private stockApi: StockService, private breakpoint$: BreakpointStream) {
   }
@@ -34,9 +36,9 @@ export class StockListComponent implements OnInit, OnDestroy {
     })
   )
 
-  private searchParams$ = new BehaviorSubject<PaginationParams>({
+  private searchParams$ = new BehaviorSubject<PagedSearchParams>({
     pageNumber: 1,
-    pageSize: 50
+    pageSize: this.pageSize
   });
 
   private pageStream$ = this.searchParams$.pipe(switchMap(params => this.stockApi.getPaginatedList(params)), shareReplay(1));
@@ -44,7 +46,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   pagination$ = this.pageStream$.pipe(map(result => result.pagination), shareReplay(1));
 
   loadNextPage() {
-    let params: PaginationParams;
+    let params: PagedSearchParams;
     let pagination: Pagination;
     this.pagination$.pipe(take(1)).subscribe(page => pagination = page);
     this.searchParams$.pipe(take(1)).subscribe(search => params = search);
@@ -54,6 +56,17 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   updateSearch(searchTerm: string) {
-    console.log(searchTerm)
+    this.searchParams$.next({
+      searchTerm: searchTerm, pageNumber: 1, pageSize: this.pageSize
+    });
+
+    this.searchParams$.pipe(
+      take(1),
+      tap(() => this.clearList())
+    ).subscribe();
+  }
+
+  private clearList() {
+    this.stockItems = [];
   }
 }

@@ -31,9 +31,16 @@ public sealed class StockItemsRepository : IStockItemsRepository
         _context.StockItems.Remove(stockItem);
     }
 
-    public async Task<PagedList<StockItem>> GetPagedList(PaginationParams stockParams)
+    public async Task<PagedList<StockItem>> GetPagedList(PagedSearchParams stockParams)
     {
         var query = _context.StockItems.AsQueryable();
+
+        if (stockParams.SearchTerm is not null)
+        {
+            //todo Try find solution to case sensitivity
+            query = query.Where(item => item.PartCode.ToLower().Contains(stockParams.SearchTerm.ToLower()));
+        }
+        
         return await PagedList<StockItem>.CreateAsync(query, stockParams.PageNumber, stockParams.PageSize);
     }
 }
