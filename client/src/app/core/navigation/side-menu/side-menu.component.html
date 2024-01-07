@@ -16,7 +16,7 @@
     </div>
 
     <app-side-menu-button text="Home" icon="home" [compact]="isCompact" />
-    <app-side-menu-button text="Stock" icon="dashboard_customize" [compact]="isCompact" />
+    <app-side-menu-button text="Stock" icon="dashboard_customize" [compact]="isCompact" routerLink="/stock" (click)="onClose.emit()"/>
     <app-side-menu-button text="Products" icon="qr_code_scanner" [compact]="isCompact" />
     <app-side-menu-button text="Services" icon="design_services" [compact]="isCompact" />
     <app-side-menu-button text="Supply" icon="receipt_long" [compact]="isCompact" />
