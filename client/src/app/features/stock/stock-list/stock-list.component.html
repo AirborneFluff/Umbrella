@@ -9,6 +9,6 @@
   <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
 </div>
 <div *ngIf="showCompactFilters$ | async" class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem]">
-  <orb-search (onSearch)="updateSearch($event)" class="flex-grow max-w-[32rem]"/>
-  <orb-button icon="tune"/>
+  <orb-search #searchBar (onSearch)="updateSearch($event)" class="flex-grow max-w-[32rem]"/>
+  <orb-button (click)="openFilters()" icon="tune"/>
 </div>
