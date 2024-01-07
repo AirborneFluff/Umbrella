@@ -15,7 +15,7 @@ public sealed class DataSeed
     {
         if (await context.StockItems.CountAsync() != 0) return;
         
-        var data = await File.ReadAllTextAsync("Data/Seeds/StockItems/StockItemSeed.json");
+        var data = await File.ReadAllTextAsync("Data/Seeds/StockItems/StockItemSeed_v2.json");
         var stockItems = JsonSerializer.Deserialize<List<StockItem>>(data);
         if (stockItems == null) return;
         
