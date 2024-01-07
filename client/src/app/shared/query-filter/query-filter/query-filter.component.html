@@ -30,7 +30,7 @@
         (click)="handleOptionClick(option)">
         <div class="flex justify-between items-center ">
           <p class="font-display text-base font-normal select-none">{{option.title}}</p>
-          <mat-icon *ngIf="option.children">chevron_right</mat-icon>
+          <mat-icon *ngIf="option.children.length > 0">chevron_right</mat-icon>
           <mat-icon *ngIf="option?.parameter?.active">done</mat-icon>
         </div>
         <div class="flex flex-row gap-x-2 flex-wrap">

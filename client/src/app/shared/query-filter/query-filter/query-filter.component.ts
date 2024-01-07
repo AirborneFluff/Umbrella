@@ -73,7 +73,7 @@ export class QueryFilterComponent implements OnInit {
   }
 
   handleOptionClick(option: FilterOption) {
-    if (option.children) {
+    if (option.children.length > 0) {
       this.pageForward(option);
       return;
     }
