@@ -1,4 +1,4 @@
-<div class="relative pt-12">
+<div [ngClass]="{'pt-12' : mobileView$ | async}">
   <mat-list class="items">
     <mat-list-item *ngFor="let item of stockItems">
       <span matListItemTitle>{{item.partCode}}</span>

@@ -3,6 +3,8 @@ import { StockService } from '../services/stock.service';
 import { BehaviorSubject, map, shareReplay, Subscription, switchMap, take } from 'rxjs';
 import { Pagination, PaginationParams } from '../../../core/utilities/pagination';
 import { StockItem } from '../../../core/models/stock-item';
+import { BreakpointStream } from '../../../core/streams/breakpoint-stream';
+import { Breakpoints } from '../../../core/definitions/breakpoints';
 
 @Component({
   selector: 'app-stock-list',
@@ -13,7 +15,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   stockItems: StockItem[] = [];
   subscriptions = new Subscription();
 
-  constructor(private stockApi: StockService) {
+  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream) {
   }
 
   ngOnInit(): void {
@@ -25,6 +27,12 @@ export class StockListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
+
+  mobileView$ = this.breakpoint$.pipe(
+    map(state => {
+      return !state.breakpoints[Breakpoints.md];
+    })
+  )
 
   private searchParams$ = new BehaviorSubject<PaginationParams>({
     pageNumber: 1,
