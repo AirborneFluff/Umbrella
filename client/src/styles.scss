@@ -6,7 +6,8 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 body {
-  background-color: #F1F1F1;
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 244 255 / var(--tw-bg-opacity));
 }
 
 .orb-shadow {
@@ -17,4 +18,8 @@ body {
   max-height: unset !important;
   padding: 0 !important;
   overflow: hidden !important;
+}
+
+.mat-drawer-container {
+  background-color: inherit !important;
 }
