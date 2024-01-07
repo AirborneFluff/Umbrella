@@ -8,7 +8,7 @@
 
   <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
 </div>
-<div *ngIf="mobileView$ | async" class="fixed top-0 right-0 flex">
-  <orb-search (onSearch)="updateSearch($event)"/>
+<div *ngIf="mobileView$ | async" class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem]">
+  <orb-search (onSearch)="updateSearch($event)" class="flex-grow"/>
   <orb-button icon="tune"/>
 </div>
