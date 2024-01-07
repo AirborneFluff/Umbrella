@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'orb-search',
@@ -6,6 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./orb-search.component.scss']
 })
 export class OrbSearchComponent {
+  @ViewChild('input') inputElement!: ElementRef;
+  @Output() searchTerm = new EventEmitter<string>();
   protected _expanded = false;
 
   public expand() {
@@ -14,5 +16,19 @@ export class OrbSearchComponent {
 
   public collapse() {
     this._expanded = false;
+  }
+
+  buttonClick() {
+    if (!this._expanded) {
+      this.expand();
+      return;
+    }
+
+    this.emitValue(this.inputElement.nativeElement.value);
+  }
+
+  emitValue(value: string) {
+    this.searchTerm.emit(value);
+    this.collapse();
   }
 }

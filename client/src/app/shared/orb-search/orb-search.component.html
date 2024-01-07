@@ -1,7 +1,12 @@
 <div
   [ngClass]="{'w-48' : _expanded}"
-  class="m-1 w-12 h-12 rounded-full bg-white flex justify-end items-center orb-shadow transition-all">
-  <button (click)="expand()" class="flex justify-center items-center w-12">
+  class="m-1 w-12 h-12 rounded-full bg-white flex justify-end items-center orb-shadow transition-all px-3">
+  <input #input
+      (change)="emitValue(input.value)"
+      *ngIf="_expanded"
+      class="focus:outline-none focus:blur-0 min-w-0 pl-2"
+      placeholder="Search">
+  <button (click)="buttonClick()" class="flex justify-center items-center w-12">
     <mat-icon>search</mat-icon>
   </button>
 </div>
