@@ -3,8 +3,10 @@ import { FilterOption } from '../filter-option';
 import { HttpParams } from '@angular/common/http';
 import { QueryFilter } from "../query-filter";
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { map, Observable, pairwise, startWith } from 'rxjs';
+import { map, Observable, pairwise, startWith, take } from 'rxjs';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { FilterDefinition } from '../filter-definition';
+import { FilterService } from '../services/filter.service';
 
 const ANIMATION_DURATION = 200;
 
@@ -46,7 +48,7 @@ const ANIMATION_DURATION = 200;
   ],
 })
 export class QueryFilterComponent implements OnInit {
-  @Input() options!: FilterOption[];
+  @Input() options: FilterOption[] = [];
   @Output() params: EventEmitter<HttpParams> = new EventEmitter<HttpParams>();
   @Output() onClose = new EventEmitter();
 
@@ -54,9 +56,13 @@ export class QueryFilterComponent implements OnInit {
   animationDirection: 'down' | 'up' | 'none' = 'none'
   previousOptions$!: Observable<FilterOption[]>;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private bottomSheetRef: MatBottomSheetRef) {
-    if (!data) return;
-    this.options = data;
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public entityName: FilterDefinition, private bottomSheetRef: MatBottomSheetRef, filterService: FilterService) {
+    if (!entityName) return;
+
+    filterService.getFilter(this.entityName).pipe(take(1)).subscribe(options => {
+      this.options = options;
+      this.filter = new QueryFilter(this.options);
+    })
   }
 
   ngOnInit() {
