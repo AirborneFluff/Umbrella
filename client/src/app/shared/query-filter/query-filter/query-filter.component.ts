@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FilterOption } from '../filter-option';
 import { HttpParams } from '@angular/common/http';
 import { QueryFilter } from "../query-filter";
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { map, Observable, pairwise, startWith } from 'rxjs';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 const ANIMATION_DURATION = 200;
 
@@ -47,11 +48,16 @@ const ANIMATION_DURATION = 200;
 export class QueryFilterComponent implements OnInit {
   @Input() options!: FilterOption[];
   @Output() params: EventEmitter<HttpParams> = new EventEmitter<HttpParams>();
-  @Output() close = new EventEmitter();
+  @Output() onClose = new EventEmitter();
 
   filter!: QueryFilter;
   animationDirection: 'down' | 'up' | 'none' = 'none'
   previousOptions$!: Observable<FilterOption[]>;
+
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private bottomSheetRef: MatBottomSheetRef) {
+    if (!data) return;
+    this.options = data;
+  }
 
   ngOnInit() {
     this.filter = new QueryFilter(this.options);
@@ -60,6 +66,10 @@ export class QueryFilterComponent implements OnInit {
       pairwise(),
       map(([previous, _]) => previous)
     )
+  }
+
+  close() {
+    this.bottomSheetRef.dismiss();
   }
 
   handleOptionClick(option: FilterOption) {
