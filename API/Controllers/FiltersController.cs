@@ -1,6 +1,7 @@
 ﻿using API.Entities;
 using API.Interfaces;
 using API.Utilities;
+using API.Utilities.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,16 @@ public sealed class FiltersController : BaseApiController
     public async Task<ActionResult> GetStockItemFilter()
     {
         var categories = await _unitOfWork.StockItems.GetCategories();
-        var config = QueryFilterConfigBuilder.FromList(categories);
+        var filterOptions = QueryFilterConfigBuilder.FromList(categories);
+        var rootOption = new QueryFilterOption()
+        {
+            Title = "Categories",
+            Children = filterOptions
+        };
+
+        var config = new List<QueryFilterOption>();
+        config.Add(rootOption);
+
         return Ok(config);
     }
     
