@@ -33,7 +33,11 @@ public static class WebApplicationExtensions
         {
             var context = service.GetRequiredService<DataContext>();
             await DataSeed.EnsureCreatedAsync(context);
-            await DataSeed.SeedStockItems(context);
+            
+            if (app.Environment.IsDevelopment())
+            {
+                await DataSeed.SeedStockItems(context);
+            }
         }
         catch (Exception ex)
         {
