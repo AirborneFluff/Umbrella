@@ -8,3 +8,6 @@
 
   <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
 </div>
+<div *ngIf="mobileView$ | async" class="fixed top-0 right-0">
+  <orb-search />
+</div>
