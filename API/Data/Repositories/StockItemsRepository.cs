@@ -31,7 +31,7 @@ public sealed class StockItemsRepository : IStockItemsRepository
         _context.StockItems.Remove(stockItem);
     }
 
-    public async Task<PagedList<StockItem>> GetPagedList(PagedSearchParams stockParams)
+    public async Task<PagedList<StockItem>> GetPagedList(StockItemParams stockParams)
     {
         var query = _context.StockItems.AsQueryable();
 
@@ -39,6 +39,13 @@ public sealed class StockItemsRepository : IStockItemsRepository
         {
             //todo Try find solution to case sensitivity
             query = query.Where(item => item.PartCode.ToLower().Contains(stockParams.SearchTerm.ToLower()));
+        }
+        
+        if (stockParams.Category is not null)
+        {
+            query = query
+                .Where(item => item.Category != null)
+                .Where(item => item.Category!.ToLower().Contains(stockParams.Category.ToLower()));
         }
         
         return await PagedList<StockItem>.CreateAsync(query, stockParams.PageNumber, stockParams.PageSize);

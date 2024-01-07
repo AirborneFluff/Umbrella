@@ -10,6 +10,6 @@ public interface IStockItemsRepository
     void Add(StockItem stockItem);
     void Remove(StockItem stockItem);
 
-    Task<PagedList<StockItem>> GetPagedList(PagedSearchParams stockParams);
+    Task<PagedList<StockItem>> GetPagedList(StockItemParams stockParams);
     Task<List<string>> GetCategories();
 }
