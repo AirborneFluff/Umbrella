@@ -30,9 +30,9 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  mobileView$ = this.breakpoint$.pipe(
+  showCompactFilters$ = this.breakpoint$.pipe(
     map(state => {
-      return !state.breakpoints[Breakpoints.md];
+      return !state.breakpoints[Breakpoints.xl];
     })
   )
 

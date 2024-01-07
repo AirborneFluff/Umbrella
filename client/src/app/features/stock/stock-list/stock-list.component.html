@@ -1,4 +1,4 @@
-<div [ngClass]="{'pt-12' : mobileView$ | async}">
+<div [ngClass]="{'pt-12' : showCompactFilters$ | async}">
   <mat-list class="items">
     <mat-list-item *ngFor="let item of stockItems">
       <span matListItemTitle>{{item.partCode}}</span>
@@ -8,7 +8,7 @@
 
   <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
 </div>
-<div *ngIf="mobileView$ | async" class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem]">
-  <orb-search (onSearch)="updateSearch($event)" class="flex-grow"/>
+<div *ngIf="showCompactFilters$ | async" class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem]">
+  <orb-search (onSearch)="updateSearch($event)" class="flex-grow max-w-[32rem]"/>
   <orb-button icon="tune"/>
 </div>
