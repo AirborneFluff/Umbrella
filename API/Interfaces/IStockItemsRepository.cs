@@ -11,4 +11,5 @@ public interface IStockItemsRepository
     void Remove(StockItem stockItem);
 
     Task<PagedList<StockItem>> GetPagedList(PagedSearchParams stockParams);
+    Task<List<string>> GetCategories();
 }

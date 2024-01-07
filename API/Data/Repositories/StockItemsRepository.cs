@@ -43,4 +43,13 @@ public sealed class StockItemsRepository : IStockItemsRepository
         
         return await PagedList<StockItem>.CreateAsync(query, stockParams.PageNumber, stockParams.PageSize);
     }
+
+    public async Task<List<string>> GetCategories()
+    {
+        return await _context.StockItems
+            .Where(item => item.Category != null)
+            .Select(item => item.Category!)
+            .Distinct()
+            .ToListAsync();
+    }
 }
