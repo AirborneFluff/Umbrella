@@ -52,4 +52,8 @@ export class StockListComponent implements OnInit, OnDestroy {
     params!.pageNumber = pagination!.currentPage + 1;
     this.searchParams$.next(params!);
   }
+
+  updateSearch(searchTerm: string) {
+    console.log(searchTerm)
+  }
 }

@@ -7,7 +7,7 @@ import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular
 })
 export class OrbSearchComponent {
   @ViewChild('input') inputElement!: ElementRef;
-  @Output() searchTerm = new EventEmitter<string>();
+  @Output() onSearch = new EventEmitter<string>();
   protected _expanded = false;
 
   public expand() {
@@ -24,11 +24,12 @@ export class OrbSearchComponent {
       return;
     }
 
-    this.emitValue(this.inputElement.nativeElement.value);
+    this.emitValue(this.inputElement.nativeElement.value)
   }
 
   emitValue(value: string) {
-    this.searchTerm.emit(value);
     this.collapse();
+    if (!value) return;
+    this.onSearch.emit(value);
   }
 }
