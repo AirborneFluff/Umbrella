@@ -4,16 +4,16 @@ namespace API.Utilities;
 
 public static class QueryFilterConfigBuilder
 {
-    public static IEnumerable<QueryFilterOption> FromList (List<string> categories)
+    public static IEnumerable<QueryFilterOption> FromList (List<string> item)
     {
-        for (int i = 0; i < categories.Count(); i++)
+        for (int i = 0; i < item.Count(); i++)
         {
             yield return new QueryFilterOption()
             {
-                Title = categories[i],
+                Title = item[i],
                 Parameter = new QueryFilterParam()
                 {
-                    Param = categories[i]
+                    Param = item[i]
                 }
             };
         }
