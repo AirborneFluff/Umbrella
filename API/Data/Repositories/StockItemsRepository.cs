@@ -1,5 +1,7 @@
 ﻿using API.Entities;
+using API.Helpers;
 using API.Interfaces;
+using API.Utilities.Params;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data.Repositories;
@@ -27,5 +29,11 @@ public sealed class StockItemsRepository : IStockItemsRepository
     public void Remove(StockItem stockItem)
     {
         _context.StockItems.Remove(stockItem);
+    }
+
+    public async Task<PagedList<StockItem>> GetPagedList(PaginationParams stockParams)
+    {
+        var query = _context.StockItems.AsQueryable();
+        return await PagedList<StockItem>.CreateAsync(query, stockParams.PageNumber, stockParams.PageSize);
     }
 }

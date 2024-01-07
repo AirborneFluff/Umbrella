@@ -5,6 +5,7 @@ using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
+using API.Utilities.Params;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,15 @@ public sealed partial class StockItemsController : BaseApiController
     {
         var stockItem = HttpContext.GetStockItem();
         return Ok(stockItem);
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult> GetStockItems([FromQuery] PaginationParams stockParams)
+    {
+        var result = await _unitOfWork.StockItems.GetPagedList(stockParams);
+        
+        Response.AddPaginationHeader(result);
+        return Ok(result);
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
