@@ -8,3 +8,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 body {
   background-color: #F1F1F1;
 }
+
+.orb-shadow {
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+}
