@@ -9,7 +9,9 @@
 
     <mat-sidenav-content class="bg-fuchsia-50">
       <app-bottom-menu/>
-      <orb-button class="fixed top-1 left-1 z-50" icon="menu" (click)="sidenav.open()"/>
+      <div class="fixed top-0 left-0 z-50">
+        <orb-button icon="menu" (click)="sidenav.open()"/>
+      </div>
       <div class="pb-16">
         <ng-container *ngTemplateOutlet="content"/>
       </div>
