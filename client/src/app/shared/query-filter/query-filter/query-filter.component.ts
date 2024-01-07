@@ -4,7 +4,7 @@ import { HttpParams } from '@angular/common/http';
 import { QueryFilter } from "../query-filter";
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { map, Observable, pairwise, startWith, take } from 'rxjs';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FilterDefinition } from '../filter-definition';
 import { FilterService } from '../services/filter.service';
 
@@ -49,6 +49,7 @@ const ANIMATION_DURATION = 200;
 })
 export class QueryFilterComponent implements OnInit {
   @Input() options: FilterOption[] = [];
+  @Input() entityName!: FilterDefinition;
   @Output() params: EventEmitter<HttpParams> = new EventEmitter<HttpParams>();
   @Output() onClose = new EventEmitter();
 
@@ -56,16 +57,14 @@ export class QueryFilterComponent implements OnInit {
   animationDirection: 'down' | 'up' | 'none' = 'none'
   previousOptions$!: Observable<FilterOption[]>;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public entityName: FilterDefinition, private bottomSheetRef: MatBottomSheetRef, filterService: FilterService) {
-    if (!entityName) return;
+  constructor(private filterService: FilterService) {  }
 
-    filterService.getFilter(this.entityName).pipe(take(1)).subscribe(options => {
+  ngOnInit() {
+    this.filterService.getFilter(this.entityName).pipe(take(1)).subscribe(options => {
       this.options = options;
       this.filter = new QueryFilter(this.options);
     })
-  }
 
-  ngOnInit() {
     this.filter = new QueryFilter(this.options);
     this.previousOptions$ = this.filter.navigationOptions$.pipe(
       startWith([]),
@@ -77,11 +76,6 @@ export class QueryFilterComponent implements OnInit {
   emitValue() {
     let value = this.filter.buildHttpParams();
     this.onClose.emit(value)
-    this.bottomSheetRef.dismiss(value);
-  }
-
-  close() {
-    this.bottomSheetRef.dismiss();
   }
 
   handleOptionClick(option: FilterOption) {

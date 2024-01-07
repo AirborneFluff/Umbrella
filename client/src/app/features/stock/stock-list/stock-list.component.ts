@@ -7,9 +7,11 @@ import { BreakpointStream } from '../../../core/streams/breakpoint-stream';
 import { Breakpoints } from '../../../core/definitions/breakpoints';
 import { PagedSearchParams } from '../../../core/params/paged-search-params';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { QueryFilterComponent } from '../../../shared/query-filter/query-filter/query-filter.component';
 import { OrbSearchComponent } from '../../../shared/orb-search/orb-search.component';
 import { FilterService } from '../../../shared/query-filter/services/filter.service';
+import {
+  QueryFilterSheetComponent
+} from '../../../shared/query-filter/query-filter-sheet/query-filter-sheet.component';
 
 @Component({
   selector: 'app-stock-list',
@@ -79,7 +81,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   openFilters() {
-    this.bottomSheet.open(QueryFilterComponent, {
+    this.bottomSheet.open(QueryFilterSheetComponent, {
       panelClass: "h-4/5",
       data: 'stockItem'
     });
