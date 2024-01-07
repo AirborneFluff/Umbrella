@@ -12,3 +12,9 @@ body {
 .orb-shadow {
   filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
 }
+
+.mat-bottom-sheet-container {
+  max-height: unset !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}

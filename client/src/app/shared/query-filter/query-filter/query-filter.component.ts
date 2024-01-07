@@ -74,6 +74,12 @@ export class QueryFilterComponent implements OnInit {
     )
   }
 
+  emitValue() {
+    let value = this.filter.buildHttpParams();
+    this.onClose.emit(value)
+    this.bottomSheetRef.dismiss(value);
+  }
+
   close() {
     this.bottomSheetRef.dismiss();
   }
@@ -105,7 +111,5 @@ export class QueryFilterComponent implements OnInit {
   private toggleParamActive(option: FilterOption) {
     if (!option.parameter) return;
     option.parameter.active = !option.parameter.active;
-
-    this.params.next(this.filter.buildHttpParams())
   }
 }
