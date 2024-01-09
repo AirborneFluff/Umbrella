@@ -1,5 +1,7 @@
 <div class="lg:flex">
-  <app-query-filter *ngIf="!(showCompactFilters$ | async)" entityName="stockItem"/>
+  <div class="w-48 relative">
+    <app-query-filter *ngIf="!(showCompactFilters$ | async)" entityName="stockItem"/>
+  </div>
 
   <div [ngClass]="{'pt-12' : showCompactFilters$ | async}">
     <mat-list class="items">
