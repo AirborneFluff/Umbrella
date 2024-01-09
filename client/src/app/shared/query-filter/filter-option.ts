@@ -1,10 +1,9 @@
-export interface FilterOption {
-  title: string,
-  children: FilterOption[],
-  parameter: FilterParam | undefined
+export interface QueryParameter extends QueryOption {
+  allowMultiple: boolean,
+  options: QueryOption[]
 }
 
-export interface FilterParam {
-  param: string,
-  active: boolean
+export interface QueryOption {
+  displayValue: string,
+  value: string
 }
