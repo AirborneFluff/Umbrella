@@ -23,14 +23,16 @@ public sealed class FiltersController : BaseApiController
     {
         var categories = await _unitOfWork.StockItems.GetCategories();
         var filterOptions = QueryFilterConfigBuilder.FromList(categories);
-        var rootOption = new QueryFilterOption()
+        var categoryParameter = new QueryFilterParameter()
         {
-            Title = "Categories",
-            Children = filterOptions
+            DisplayValue = "Category",
+            Value = "category",
+            AllowMultiple = false,
+            Options = filterOptions
         };
 
-        var config = new List<QueryFilterOption>();
-        config.Add(rootOption);
+        var config = new List<QueryFilterParameter>();
+        config.Add(categoryParameter);
 
         return Ok(config);
     }
