@@ -3,6 +3,7 @@
     <input #input
            (keyup.enter)="emitValue(input.value)"
            *ngIf="_expanded"
+           (blur)="collapse()"
            class="focus:outline-none focus:blur-0 min-w-0 w-full pl-2"
            placeholder="Search">
     <button (click)="buttonClick()" class="ml-auto flex justify-center items-center w-12">
