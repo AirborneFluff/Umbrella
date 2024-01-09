@@ -80,10 +80,10 @@ export class QueryFilter {
   }
 
   getActiveOptions(option: FilterOption): FilterOption[] {
-    if (!option.children) return [];
+    if (option.children.length == 0) return [];
 
     let params = option.children.flatMap(x => {
-      if (x.children) return this.getActiveOptions(x);
+      if (x.children.length > 0) return this.getActiveOptions(x);
       return x;
     })
 

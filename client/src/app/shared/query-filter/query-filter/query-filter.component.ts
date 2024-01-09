@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FilterOption } from '../filter-option';
 import { HttpParams } from '@angular/common/http';
 import { QueryFilter } from "../query-filter";
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { map, Observable, pairwise, startWith } from 'rxjs';
+import { map, Observable, pairwise, startWith, take } from 'rxjs';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { FilterDefinition } from '../filter-definition';
+import { FilterService } from '../services/filter.service';
 
 const ANIMATION_DURATION = 200;
 
@@ -45,15 +48,23 @@ const ANIMATION_DURATION = 200;
   ],
 })
 export class QueryFilterComponent implements OnInit {
-  @Input() options!: FilterOption[];
+  @Input() options: FilterOption[] = [];
+  @Input() entityName!: FilterDefinition;
   @Output() params: EventEmitter<HttpParams> = new EventEmitter<HttpParams>();
-  @Output() close = new EventEmitter();
+  @Output() onClose = new EventEmitter();
 
   filter!: QueryFilter;
   animationDirection: 'down' | 'up' | 'none' = 'none'
   previousOptions$!: Observable<FilterOption[]>;
 
+  constructor(private filterService: FilterService) {  }
+
   ngOnInit() {
+    this.filterService.getFilter(this.entityName).pipe(take(1)).subscribe(options => {
+      this.options = options;
+      this.filter = new QueryFilter(this.options);
+    })
+
     this.filter = new QueryFilter(this.options);
     this.previousOptions$ = this.filter.navigationOptions$.pipe(
       startWith([]),
@@ -62,8 +73,13 @@ export class QueryFilterComponent implements OnInit {
     )
   }
 
+  emitValue() {
+    let value = this.filter.buildHttpParams();
+    this.onClose.emit(value)
+  }
+
   handleOptionClick(option: FilterOption) {
-    if (option.children) {
+    if (option.children.length > 0) {
       this.pageForward(option);
       return;
     }
@@ -89,7 +105,5 @@ export class QueryFilterComponent implements OnInit {
   private toggleParamActive(option: FilterOption) {
     if (!option.parameter) return;
     option.parameter.active = !option.parameter.active;
-
-    this.params.next(this.filter.buildHttpParams())
   }
 }

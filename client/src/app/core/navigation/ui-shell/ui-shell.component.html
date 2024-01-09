@@ -4,12 +4,14 @@
                  [fixedInViewport]="true"
                  mode="over"
                  class="w-full sm:w-4/5 fixed">
-      <app-side-menu [layoutType]="SideMenuLayouts.Full" (onClose)="sidenav.close()"/>
+      <app-side-menu [layoutType]="SideMenuLayouts.Full" [showCloseButton]="true" (onClose)="sidenav.close()"/>
     </mat-sidenav>
 
-    <mat-sidenav-content>
+    <mat-sidenav-content class="bg-fuchsia-50">
       <app-bottom-menu/>
-      <orb-button class="fixed top-1 left-1" icon="menu" (click)="sidenav.open()"/>
+      <div class="fixed top-0 left-0 z-50">
+        <orb-button icon="menu" (click)="sidenav.open()"/>
+      </div>
       <div class="pb-16">
         <ng-container *ngTemplateOutlet="content"/>
       </div>
@@ -20,7 +22,7 @@
 <ng-template #desktopView>
   <ng-container *ngIf="sideMenuLayout$ | async as layout">
     <app-side-menu class="fixed top-0 left-0 h-full" [layoutType]="layout"/>
-    <div [ngClass]="{'pl-72' : layout == SideMenuLayouts.Regular, 'pl-24' : layout == SideMenuLayouts.Compact}">
+    <div [ngClass]="{'pl-72' : layout == SideMenuLayouts.Regular, 'pl-24' : layout == SideMenuLayouts.Compact}" class="bg-fuchsia-50">
       <ng-container *ngTemplateOutlet="content"/>
     </div>
   </ng-container>

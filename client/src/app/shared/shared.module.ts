@@ -7,11 +7,14 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { IsVisibleDirective } from './directives/is-visible.directive';
+import { OrbSearchComponent } from './orb-search/orb-search.component';
+import { QueryFilterModule } from './query-filter/query-filter.module';
 
 @NgModule({
   declarations: [
     OrbButtonComponent,
-    IsVisibleDirective
+    IsVisibleDirective,
+    OrbSearchComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +22,8 @@ import { IsVisibleDirective } from './directives/is-visible.directive';
     MatButtonModule,
     MatBottomSheetModule,
     MatListModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    QueryFilterModule
   ],
   exports: [
     MatIconModule,
@@ -27,7 +31,9 @@ import { IsVisibleDirective } from './directives/is-visible.directive';
     MatBottomSheetModule,
     MatListModule,
     MatPaginatorModule,
-    IsVisibleDirective
+    IsVisibleDirective,
+    OrbSearchComponent,
+    QueryFilterModule
   ]
 })
 export class SharedModule { }

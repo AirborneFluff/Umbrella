@@ -1,10 +1,20 @@
-<div class="relative pt-12">
-  <mat-list class="items">
-    <mat-list-item *ngFor="let item of stockItems">
-      <span matListItemTitle>{{item.partCode}}</span>
-      <span matListItemLine>{{item.description}}</span>
-    </mat-list-item>
-  </mat-list>
+<div class="lg:flex">
+  <div class="w-48 relative">
+    <app-query-filter *ngIf="!(showCompactFilters$ | async)" entityName="stockItem"/>
+  </div>
 
-  <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
+  <div [ngClass]="{'pt-12' : showCompactFilters$ | async}">
+    <mat-list class="items">
+      <mat-list-item *ngFor="let item of stockItems">
+        <span matListItemTitle>{{item.partCode}}</span>
+        <span matListItemLine>{{item.description}}</span>
+      </mat-list-item>
+    </mat-list>
+
+    <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
+  </div>
+</div>
+<div *ngIf="showCompactFilters$ | async" class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem]">
+  <orb-search #searchBar (onSearch)="updateSearch($event)" class="flex-grow max-w-[32rem]"/>
+  <orb-button (click)="openFilters()" icon="tune"/>
 </div>

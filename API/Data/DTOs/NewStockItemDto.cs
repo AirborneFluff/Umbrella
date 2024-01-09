@@ -9,4 +9,5 @@ public sealed class NewStockItemDto
     [Required]
     public required string Description { get; set; }
     public string? Location { get; set; }
+    public string? Category { get; set; }
 }

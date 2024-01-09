@@ -1,6 +1,6 @@
 export interface FilterOption {
   title: string,
-  children: FilterOption[] | undefined,
+  children: FilterOption[],
   parameter: FilterParam | undefined
 }
 

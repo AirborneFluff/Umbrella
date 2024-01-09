@@ -1,5 +1,5 @@
 <div class="flex h-full bg-[#ffffff] flex-col select-none py-9 justify-between rounded-r-lg {{widthClass}}">
-  <mat-icon class="absolute right-3 top-3 text-3xl !w-8 !h-8" (click)="onClose.emit()">close</mat-icon>
+  <mat-icon *ngIf="showCloseButton" class="absolute right-3 top-3 text-3xl !w-8 !h-8" (click)="onClose.emit()">close</mat-icon>
   <div>
     <div class="px-6 flex flex-col gap-8 justify-center items-center mb-8">
       <div class="rounded-full w-12 h-12 bg-amber-200">
@@ -16,7 +16,7 @@
     </div>
 
     <app-side-menu-button text="Home" icon="home" [compact]="isCompact" />
-    <app-side-menu-button text="Stock" icon="dashboard_customize" [compact]="isCompact" />
+    <app-side-menu-button text="Stock" icon="dashboard_customize" [compact]="isCompact" routerLink="/stock" (click)="onClose.emit()"/>
     <app-side-menu-button text="Products" icon="qr_code_scanner" [compact]="isCompact" />
     <app-side-menu-button text="Services" icon="design_services" [compact]="isCompact" />
     <app-side-menu-button text="Supply" icon="receipt_long" [compact]="isCompact" />

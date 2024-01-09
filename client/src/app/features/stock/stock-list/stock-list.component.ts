@@ -1,8 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StockService } from '../services/stock.service';
-import { BehaviorSubject, map, shareReplay, Subscription, switchMap, take } from 'rxjs';
-import { Pagination, PaginationParams } from '../../../core/utilities/pagination';
+import { BehaviorSubject, map, shareReplay, Subscription, switchMap, take, tap } from 'rxjs';
+import { Pagination } from '../../../core/utilities/pagination';
 import { StockItem } from '../../../core/models/stock-item';
+import { BreakpointStream } from '../../../core/streams/breakpoint-stream';
+import { Breakpoints } from '../../../core/definitions/breakpoints';
+import { PagedSearchParams } from '../../../core/params/paged-search-params';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { OrbSearchComponent } from '../../../shared/orb-search/orb-search.component';
+import { FilterService } from '../../../shared/query-filter/services/filter.service';
+import {
+  QueryFilterSheetComponent
+} from '../../../shared/query-filter/query-filter-sheet/query-filter-sheet.component';
 
 @Component({
   selector: 'app-stock-list',
@@ -10,10 +19,12 @@ import { StockItem } from '../../../core/models/stock-item';
   styleUrls: ['./stock-list.component.scss']
 })
 export class StockListComponent implements OnInit, OnDestroy {
+  @ViewChild('searchBar') searchBar!: OrbSearchComponent;
   stockItems: StockItem[] = [];
   subscriptions = new Subscription();
+  pageSize = 50;
 
-  constructor(private stockApi: StockService) {
+  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet, private filter: FilterService) {
   }
 
   ngOnInit(): void {
@@ -26,22 +37,54 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  private searchParams$ = new BehaviorSubject<PaginationParams>({
+  showCompactFilters$ = this.breakpoint$.pipe(
+    map(state => {
+      return !state.breakpoints[Breakpoints.xl];
+    })
+  )
+
+  private searchParams$ = new BehaviorSubject<PagedSearchParams>({
     pageNumber: 1,
-    pageSize: 50
+    pageSize: this.pageSize
   });
 
   private pageStream$ = this.searchParams$.pipe(switchMap(params => this.stockApi.getPaginatedList(params)), shareReplay(1));
   private dataStream$ = this.pageStream$.pipe(map(result => result.result), shareReplay(1));
-  pagination$ = this.pageStream$.pipe(map(result => result.pagination), shareReplay(1));
+  private pagination$ = this.pageStream$.pipe(map(result => result.pagination), shareReplay(1));
 
   loadNextPage() {
-    let params: PaginationParams;
     let pagination: Pagination;
     this.pagination$.pipe(take(1)).subscribe(page => pagination = page);
+
+    if (pagination!.totalPages == pagination!.currentPage) return;
+
+    let params: PagedSearchParams;
     this.searchParams$.pipe(take(1)).subscribe(search => params = search);
 
     params!.pageNumber = pagination!.currentPage + 1;
     this.searchParams$.next(params!);
+  }
+
+  updateSearch(searchTerm: string) {
+    this.searchParams$.next({
+      searchTerm: searchTerm, pageNumber: 1, pageSize: this.pageSize
+    });
+
+    this.searchParams$.pipe(
+      take(1),
+      tap(() => this.clearList())
+    ).subscribe();
+  }
+
+  private clearList() {
+    this.stockItems = [];
+  }
+
+  openFilters() {
+    this.bottomSheet.open(QueryFilterSheetComponent, {
+      panelClass: "h-4/5",
+      data: 'stockItem'
+    });
+    this.searchBar.collapse();
   }
 }

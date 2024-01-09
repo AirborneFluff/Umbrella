@@ -48,7 +48,7 @@ public sealed partial class StockItemsController : BaseApiController
     }
     
     [HttpGet]
-    public async Task<ActionResult> GetStockItems([FromQuery] PaginationParams stockParams)
+    public async Task<ActionResult> GetStockItems([FromQuery] StockItemParams stockParams)
     {
         var result = await _unitOfWork.StockItems.GetPagedList(stockParams);
         
