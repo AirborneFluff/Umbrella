@@ -1,6 +1,6 @@
 
 <div class="w-60 fixed p-2 pr-0 h-screen" *ngIf="!(showCompactFilters$ | async)">
-  <app-query-filter [compact]="false" entityName="stockItem"/>
+  <app-query-filter [compact]="false" entityName="stockItem" (params)="applyFilter($event)"/>
 </div>
 
 <div class="xl:pl-60 pt-14">

@@ -12,6 +12,7 @@ import { FilterService } from '../../../shared/query-filter/services/filter.serv
 import {
   QueryFilterSheetComponent
 } from '../../../shared/query-filter/query-filter-sheet/query-filter-sheet.component';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-stock-list',
@@ -23,6 +24,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   stockItems: StockItem[] = [];
   subscriptions = new Subscription();
   pageSize = 50;
+  filters!: HttpParams;
 
   constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet, private filter: FilterService) {
   }
@@ -48,7 +50,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     pageSize: this.pageSize
   });
 
-  private pageStream$ = this.searchParams$.pipe(switchMap(params => this.stockApi.getPaginatedList(params)), shareReplay(1));
+  private pageStream$ = this.searchParams$.pipe(switchMap(params => this.stockApi.getPaginatedList(params, this.filters)), shareReplay(1));
   private dataStream$ = this.pageStream$.pipe(map(result => result.result), shareReplay(1));
   private pagination$ = this.pageStream$.pipe(map(result => result.pagination), shareReplay(1));
 
@@ -84,7 +86,12 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.bottomSheet.open(QueryFilterSheetComponent, {
       panelClass: "h-4/5",
       data: 'stockItem'
-    });
+    }).afterDismissed().subscribe(val => this.applyFilter(val));
     this.searchBar.collapse();
+  }
+
+  applyFilter(event: HttpParams) {
+    this.filters = event;
+    this.updateSearch('');
   }
 }

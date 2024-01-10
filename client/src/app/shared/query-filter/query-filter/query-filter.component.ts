@@ -74,7 +74,7 @@ export class QueryFilterComponent implements OnInit {
   }
 
   emitValue() {
-    this.onClose.emit(this.filter.httpParameters)
+    this.params.emit(this.filter.httpParameters)
   }
 
   handleOptionClick(option: QueryOption | QueryParameter) {
