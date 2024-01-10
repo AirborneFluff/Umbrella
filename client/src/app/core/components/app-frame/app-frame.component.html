@@ -4,7 +4,7 @@
          [src]="userAvatarUrl$ | async"
          (error)="useDefaultImage()"
          alt="Profile picture">
-    <div class="hidden xl:flex w-full bg-[#F2EBFB] rounded-lg py-2.5 px-4 cursor-pointer justify-between">
+    <div class="hidden xl:flex w-full bg-item-light rounded-lg py-2.5 px-4 cursor-pointer justify-between">
       <span class="font-light font-display">Hi, {{currentUserName$ | async}}</span>
       <mat-icon>expand_more</mat-icon>
     </div>

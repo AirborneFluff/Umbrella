@@ -22,3 +22,7 @@ body {
 .mat-drawer-container {
   background-color: inherit !important;
 }
+
+.mdc-list-item {
+  @apply bg-item-light;
+}
