@@ -1,10 +1,10 @@
-<div class="lg:flex">
-  <div class="w-48 relative">
-    <app-query-filter *ngIf="!(showCompactFilters$ | async)" entityName="stockItem"/>
+<div class="lg:flex px-2">
+  <div class="w-60 relative pt-32" *ngIf="!(showCompactFilters$ | async)">
+    <app-query-filter [compact]="false" entityName="stockItem"/>
   </div>
 
   <div [ngClass]="{'pt-12' : showCompactFilters$ | async}">
-    <mat-list class="items">
+    <mat-list class="bg-item-light">
       <mat-list-item *ngFor="let item of stockItems">
         <span matListItemTitle>{{item.partCode}}</span>
         <span matListItemLine>{{item.description}}</span>

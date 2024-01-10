@@ -49,6 +49,7 @@ const ANIMATION_DURATION = 200;
 export class QueryFilterComponent implements OnInit {
   @Input() options: QueryParameter[] = [];
   @Input() entityName!: FilterDefinition;
+  @Input() compact = true;
   @Output() params: EventEmitter<HttpParams> = new EventEmitter<HttpParams>();
   @Output() onClose = new EventEmitter();
 
