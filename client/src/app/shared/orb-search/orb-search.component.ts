@@ -12,9 +12,7 @@ export class OrbSearchComponent {
 
   public expand() {
     this._expanded = true;
-    setTimeout(()=>{ // this will make the execution after the above boolean has changed
-      this.inputElement.nativeElement.focus();
-    },0);
+    setTimeout(()=> this.inputElement.nativeElement.focus(),0);
   }
 
   public collapse() {
