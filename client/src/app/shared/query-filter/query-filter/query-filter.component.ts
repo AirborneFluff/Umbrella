@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { QueryFilter } from "../query-filter";
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { map, Observable, pairwise, startWith, take } from 'rxjs';
+import { map, Observable, pairwise, startWith } from 'rxjs';
 import { FilterDefinition } from '../filter-definition';
 import { FilterService } from '../services/filter.service';
 import { QueryOption, QueryParameter } from '../filter-option';
@@ -55,18 +55,23 @@ export class QueryFilterComponent implements OnInit {
 
   animationDirection: 'down' | 'up' | 'none' = 'none'
 
-  filter: QueryFilter = new QueryFilter(this.options, this.entityName);
-  previousOptions$ = this.filter.navigationOptions$.pipe(
-    startWith([]),
-    pairwise(),
-    map(([previous, _]) => previous)
-  )
+  filter!: QueryFilter;
+  previousOptions$!: Observable<QueryOption[]>;
 
-  constructor(private filterService: FilterService) {  }
+  constructor(private filterService: FilterService) {}
 
   ngOnInit() {
     this.filterService.getFilterInstance(this.entityName)
-      .subscribe(filter => this.filter = filter);
+      .subscribe(filter => this.setFilter(filter));
+  }
+
+  private setFilter(filter: QueryFilter) {
+    this.filter = filter
+    this.previousOptions$ = this.filter.navigationOptions$.pipe(
+      startWith([]),
+      pairwise(),
+      map(([previous, _]) => previous)
+    )
   }
 
   emitValue() {
