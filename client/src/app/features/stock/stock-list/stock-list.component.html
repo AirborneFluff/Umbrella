@@ -2,7 +2,12 @@
   <app-query-filter [compact]="false" entityName="stockItem" (params)="applyFilter($event)"/>
 </div>
 
-<div class="xl:pl-60 pt-14">
+<div class="xl:pl-60 mt-12">
+  <div class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem] md:pl-24 xl:pl-72 xl:justify-start">
+    <orb-search #searchBar (onSearch)="updateSearch($event)" [alwaysOpen]="!(showCompactFilters$ | async)!" class="flex-grow"/>
+    <orb-button *ngIf="showCompactFilters$ | async" (click)="openFilters()" icon="tune"/>
+  </div>
+
   <mat-list class="!p-2">
     <mat-list-item *ngFor="let item of stockItems" class="!bg-item-light !rounded-lg !mb-0.5">
         <span matListItemTitle>{{item.partCode}}</span>
@@ -11,8 +16,4 @@
   </mat-list>
 
   <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
-</div>
-<div *ngIf="showCompactFilters$ | async" class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem]">
-  <orb-search #searchBar (onSearch)="updateSearch($event)" class="flex-grow max-w-[32rem]"/>
-  <orb-button (click)="openFilters()" icon="tune"/>
 </div>
