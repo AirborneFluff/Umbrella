@@ -11,6 +11,7 @@ import {
   QueryFilterSheetComponent
 } from '../../../shared/query-filter/query-filter-sheet/query-filter-sheet.component';
 import { HttpParams } from '@angular/common/http';
+import { FilterService } from '../../../shared/query-filter/services/filter.service';
 
 const PAGE_SIZE = 50;
 
@@ -29,7 +30,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     pageSize: PAGE_SIZE
   };
 
-  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet) {
+  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet, private queryFilter: FilterService) {
   }
 
   ngOnInit(): void {
@@ -72,6 +73,7 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   updateSearch(searchTerm: string) {
     this.filters = new HttpParams().set('searchTerm', searchTerm);
+    this.queryFilter.clearFilter('stockItem').subscribe();
     this.triggerApi$.next(undefined);
   }
 
