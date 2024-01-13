@@ -1,18 +1,18 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StockService } from '../services/stock.service';
-import { BehaviorSubject, map, shareReplay, Subscription, switchMap, take, tap } from 'rxjs';
-import { Pagination } from '../../../core/utilities/pagination';
+import { map, shareReplay, Subject, Subscription, switchMap, take, tap } from 'rxjs';
+import { Pagination, PaginationParams } from '../../../core/utilities/pagination';
 import { StockItem } from '../../../core/models/stock-item';
 import { BreakpointStream } from '../../../core/streams/breakpoint-stream';
 import { Breakpoints } from '../../../core/definitions/breakpoints';
-import { PagedSearchParams } from '../../../core/params/paged-search-params';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { OrbSearchComponent } from '../../../shared/orb-search/orb-search.component';
-import { FilterService } from '../../../shared/query-filter/services/filter.service';
 import {
   QueryFilterSheetComponent
 } from '../../../shared/query-filter/query-filter-sheet/query-filter-sheet.component';
 import { HttpParams } from '@angular/common/http';
+
+const PAGE_SIZE = 50;
 
 @Component({
   selector: 'app-stock-list',
@@ -23,16 +23,20 @@ export class StockListComponent implements OnInit, OnDestroy {
   @ViewChild('searchBar') searchBar!: OrbSearchComponent;
   stockItems: StockItem[] = [];
   subscriptions = new Subscription();
-  pageSize = 50;
-  filters!: HttpParams;
+  filters: HttpParams = new HttpParams();
+  paginationParams: PaginationParams = {
+    pageNumber: 1,
+    pageSize: PAGE_SIZE
+  };
 
-  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet, private filter: FilterService) {
+  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet) {
   }
 
   ngOnInit(): void {
     this.subscriptions.add(this.dataStream$.subscribe(data => {
       this.stockItems.push(...data);
     }))
+    this.triggerApi$.next(undefined);
   }
 
   ngOnDestroy() {
@@ -45,12 +49,14 @@ export class StockListComponent implements OnInit, OnDestroy {
     })
   )
 
-  private searchParams$ = new BehaviorSubject<PagedSearchParams>({
-    pageNumber: 1,
-    pageSize: this.pageSize
-  });
+  private triggerApi$ = new Subject();
+  private pageStream$ = this.triggerApi$.pipe(
+    switchMap(() => this.stockApi.getPaginatedList(this.paginationParams, this.filters)),
+    tap(result => {
+      if (result.pagination.currentPage == 1) this.clearList();
+    }),
+    shareReplay(1));
 
-  private pageStream$ = this.searchParams$.pipe(switchMap(params => this.stockApi.getPaginatedList(params, this.filters)), shareReplay(1));
   private dataStream$ = this.pageStream$.pipe(map(result => result.result), shareReplay(1));
   private pagination$ = this.pageStream$.pipe(map(result => result.pagination), shareReplay(1));
 
@@ -60,22 +66,13 @@ export class StockListComponent implements OnInit, OnDestroy {
 
     if (pagination!.totalPages == pagination!.currentPage) return;
 
-    let params: PagedSearchParams;
-    this.searchParams$.pipe(take(1)).subscribe(search => params = search);
-
-    params!.pageNumber = pagination!.currentPage + 1;
-    this.searchParams$.next(params!);
+    this.paginationParams.pageNumber += 1;
+    this.triggerApi$.next(undefined);
   }
 
   updateSearch(searchTerm: string) {
-    this.searchParams$.next({
-      searchTerm: searchTerm, pageNumber: 1, pageSize: this.pageSize
-    });
-
-    this.searchParams$.pipe(
-      take(1),
-      tap(() => this.clearList())
-    ).subscribe();
+    this.filters = new HttpParams().set('searchTerm', searchTerm);
+    this.triggerApi$.next(undefined);
   }
 
   private clearList() {
@@ -83,15 +80,16 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   openFilters() {
+    this.searchBar.collapse();
     this.bottomSheet.open(QueryFilterSheetComponent, {
       panelClass: "h-4/5",
       data: 'stockItem'
     }).afterDismissed().subscribe(val => this.applyFilter(val));
-    this.searchBar.collapse();
   }
 
   applyFilter(event: HttpParams) {
     this.filters = event;
-    this.updateSearch('');
+    this.paginationParams.pageNumber = 1;
+    this.triggerApi$.next(undefined);
   }
 }
