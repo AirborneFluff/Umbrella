@@ -1,94 +1,93 @@
-import { FilterOption } from "./filter-option";
 import {
   BehaviorSubject,
-  map,
-  shareReplay, startWith,
-  take,
-} from "rxjs";
-import {HttpParams} from "@angular/common/http";
+  map, Observable,
+  shareReplay, startWith
+} from 'rxjs';
+import { HttpParams } from "@angular/common/http";
+import { QueryOption, QueryParameter } from './filter-option';
+import { FilterDefinition } from './filter-definition';
 
 export class QueryFilter {
-  private readonly rootOptions: FilterOption[] = [];
-  private _navigationPath: number[] = [];
+  private readonly rootOptions: QueryParameter[] = [];
+  private parameterIndex: number = -1;
+  private activeOptions: [QueryParameter, QueryOption][] = [];
+  public entityName: FilterDefinition;
 
-  navigationPath$ = new BehaviorSubject<number[]>(this._navigationPath);
-  navigationOptions$ = this.navigationPath$.pipe(
-    map(path => {
-      return this.getOptionsByPath(this.rootOptions, path);
+  navigationPath$ = new BehaviorSubject<number>(this.parameterIndex);
+  navigationOptions$: Observable<QueryOption[]> = this.navigationPath$.pipe(
+    map(index => {
+      if (index == -1) return this.rootOptions;
+      return this.rootOptions[index].options
     }),
     startWith(this.rootOptions),
     shareReplay(1)
   )
-  navigationDepth$ = this.navigationPath$.pipe(
-    map(path => path.length),
-    startWith(0)
-  )
 
-  constructor(options: FilterOption[]) {
+  constructor(options: QueryParameter[], entityName: FilterDefinition) {
     this.rootOptions = options;
+    this.entityName = entityName;
   }
 
-  buildHttpParams(): HttpParams {
-    let params: HttpParams = new HttpParams();
+  get httpParameters(): HttpParams {
+    return this.activeOptions.reduce(
+      (acc, [param, option]) => acc.append(param.value, option.value),
+      new HttpParams()
+    );
+  }
 
-    const activeOptions = this.getActiveOptions({
-      parameter: undefined, title: '',
-      children: this.rootOptions
-    });
-
-    for (const key in activeOptions) {
-      const parameter = activeOptions[key].parameter
-      if (!parameter) continue;
-
-      params = params.append(parameter.param, true);
-    }
-
-    return params;
+  get currentParameter(): QueryParameter {
+    return this.rootOptions[this.parameterIndex]
   }
 
   navigateUp() {
-    this._navigationPath.pop();
-    this.navigationPath$.next(this._navigationPath);
+    this.parameterIndex = -1;
+    this.navigationPath$.next(this.parameterIndex);
   }
 
-  navigateDown(option: FilterOption) {
-    if (!option.children) return;
-
-    let currentOptions;
-    this.navigationOptions$.pipe(take(1)).subscribe(val => currentOptions = val);
-
-    const index = currentOptions!.indexOf(option);
-    if (index == -1) return;
-
-    this._navigationPath.push(index);
-    this.navigationPath$.next(this._navigationPath);
+  navigateDown(option: QueryParameter) {
+    this.parameterIndex = this.rootOptions.indexOf(option);
+    this.navigationPath$.next(this.parameterIndex);
   }
 
-  private getOptionsByPath(obj: FilterOption[], path: number[]): FilterOption[] {
-    if (!path.length) {
-      return obj;
+  getActiveOptions(parameter: QueryParameter): QueryOption[] {
+    return this.activeOptions
+      .filter(item => item[0] == parameter)
+      .map(item => item[1]);
+  }
+
+  isOptionEnabled(parameter: QueryParameter, option: QueryOption) {
+    if (parameter.options.indexOf(option) == -1) return null;
+    return this.activeOptions
+      .findIndex(item => item[0].value == parameter.value && item[1].value == option.value) >= 0;
+  }
+
+  toggleOption(parameter: QueryParameter, option: QueryOption) {
+    const enabled = this.isOptionEnabled(parameter, option);
+    if (enabled === null) return;
+
+    if (enabled) return this.removeParameterValue(parameter, option);
+    this.setParameterValue(parameter, option);
+  }
+
+  removeParameterValue(parameter: QueryParameter, option: QueryOption) {
+    if (parameter.options.indexOf(option) == -1) return;
+
+    const index = this.activeOptions.findIndex(item => item[0].value == parameter.value);
+    if (index >= 0) this.activeOptions.splice(index, 1);
+  }
+
+  setParameterValue(parameter: QueryParameter, option: QueryOption) {
+    if (parameter.options.indexOf(option) == -1) return;
+
+    if (!parameter.allowMultiple) {
+      const index = this.activeOptions.findIndex(item => item[0].value == parameter.value);
+      if (index >= 0) this.activeOptions.splice(index, 1);
     }
-    const pathClone = Object.create(path);
-    const index = pathClone.shift();
-    if (index == undefined) return obj;
 
-    const children = obj[index].children;
-    if (!!children) {
-      return this.getOptionsByPath(children, pathClone);
-    }
-    return obj;
+    this.activeOptions.push([parameter, option]);
   }
 
-  getActiveOptions(option: FilterOption): FilterOption[] {
-    if (option.children.length == 0) return [];
-
-    let params = option.children.flatMap(x => {
-      if (x.children.length > 0) return this.getActiveOptions(x);
-      return x;
-    })
-
-    params = params.filter(x => (x.parameter!.active));
-
-    return params;
+  clearFilters() {
+    this.activeOptions = [];
   }
 }

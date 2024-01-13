@@ -4,11 +4,13 @@ import { QueryFilterComponent } from './query-filter/query-filter.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { QueryFilterSheetComponent } from './query-filter-sheet/query-filter-sheet.component';
+import { GhostListComponent } from './ghost-list/ghost-list.component';
 
 @NgModule({
   declarations: [
     QueryFilterComponent,
-    QueryFilterSheetComponent
+    QueryFilterSheetComponent,
+    GhostListComponent
   ],
   exports: [
     QueryFilterComponent

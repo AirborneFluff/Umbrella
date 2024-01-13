@@ -8,7 +8,14 @@ module.exports = {
       sans: ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'],
       display: ['Poppins', 'Helvetica', 'Arial', 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      colors: {
+        'primary': '#5B7CFD',
+        'base-light': '#E7EEF7',
+        'item-light': '#FFFFFF',
+        'item-faded-light': '#F5F6F8'
+      },
+    },
   },
   plugins: [],
 }

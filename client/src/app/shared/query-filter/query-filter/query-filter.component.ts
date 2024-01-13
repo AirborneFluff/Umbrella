@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { FilterOption } from '../filter-option';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { QueryFilter } from "../query-filter";
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { map, Observable, pairwise, startWith, take } from 'rxjs';
-import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { map, Observable, pairwise, startWith } from 'rxjs';
 import { FilterDefinition } from '../filter-definition';
 import { FilterService } from '../services/filter.service';
+import { QueryOption, QueryParameter } from '../filter-option';
 
 const ANIMATION_DURATION = 200;
 
@@ -48,24 +47,26 @@ const ANIMATION_DURATION = 200;
   ],
 })
 export class QueryFilterComponent implements OnInit {
-  @Input() options: FilterOption[] = [];
+  options: QueryParameter[] = [];
   @Input() entityName!: FilterDefinition;
+  @Input() compact = true;
   @Output() params: EventEmitter<HttpParams> = new EventEmitter<HttpParams>();
   @Output() onClose = new EventEmitter();
 
-  filter!: QueryFilter;
   animationDirection: 'down' | 'up' | 'none' = 'none'
-  previousOptions$!: Observable<FilterOption[]>;
 
-  constructor(private filterService: FilterService) {  }
+  filter!: QueryFilter;
+  previousOptions$!: Observable<QueryOption[]>;
+
+  constructor(private filterService: FilterService) {}
 
   ngOnInit() {
-    this.filterService.getFilter(this.entityName).pipe(take(1)).subscribe(options => {
-      this.options = options;
-      this.filter = new QueryFilter(this.options);
-    })
+    this.filterService.getFilterInstance(this.entityName)
+      .subscribe(filter => this.setFilter(filter));
+  }
 
-    this.filter = new QueryFilter(this.options);
+  private setFilter(filter: QueryFilter) {
+    this.filter = filter
     this.previousOptions$ = this.filter.navigationOptions$.pipe(
       startWith([]),
       pairwise(),
@@ -74,17 +75,25 @@ export class QueryFilterComponent implements OnInit {
   }
 
   emitValue() {
-    let value = this.filter.buildHttpParams();
-    this.onClose.emit(value)
+    this.params.emit(this.filter.httpParameters)
   }
 
-  handleOptionClick(option: FilterOption) {
-    if (option.children.length > 0) {
-      this.pageForward(option);
+  clearFilters() {
+    this.filter.clearFilters();
+  }
+
+  handleOptionClick(option: QueryOption | QueryParameter) {
+    if ('options' in option) {
+      this.pageForward(option)
       return;
     }
 
-    this.toggleParamActive(option);
+    this.toggleParamActive(option)
+  }
+
+  isOptionEnabled(option: QueryOption) {
+    if (!this.filter.currentParameter) return false;
+    return this.filter.isOptionEnabled(this.filter.currentParameter, option);
   }
 
   private animate(direction: 'down' | 'up') {
@@ -97,13 +106,13 @@ export class QueryFilterComponent implements OnInit {
     this.animate('up');
   }
 
-  private pageForward(option: FilterOption) {
+  private pageForward(option: QueryParameter) {
     this.filter.navigateDown(option);
     this.animate('down');
   }
 
-  private toggleParamActive(option: FilterOption) {
-    if (!option.parameter) return;
-    option.parameter.active = !option.parameter.active;
+  private toggleParamActive(option: QueryOption) {
+    const parameter = this.filter.currentParameter;
+    this.filter.toggleOption(parameter, option);
   }
 }

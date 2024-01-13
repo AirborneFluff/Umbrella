@@ -1,0 +1,40 @@
+[
+  {
+    "allowMultiple": false,
+    "options": [
+      {
+        "displayValue": "DIY",
+        "value": "diy"
+      },
+      {
+        "displayValue": "Garden",
+        "value": "garden"
+      },
+      {
+        "displayValue": "Dairy",
+        "value": "dairy"
+      }
+    ],
+    "displayValue": "Category",
+    "value": "category"
+  },
+  {
+    "allowMultiple": true,
+    "options": [
+      {
+        "displayValue": "Red",
+        "value": "red"
+      },
+      {
+        "displayValue": "Blue",
+        "value": "blue"
+      },
+      {
+        "displayValue": "Green",
+        "value": "green"
+      }
+    ],
+    "displayValue": "Colour",
+    "value": "color"
+  }
+]

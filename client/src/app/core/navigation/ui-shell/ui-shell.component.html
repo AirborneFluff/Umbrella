@@ -7,7 +7,7 @@
       <app-side-menu [layoutType]="SideMenuLayouts.Full" [showCloseButton]="true" (onClose)="sidenav.close()"/>
     </mat-sidenav>
 
-    <mat-sidenav-content class="bg-fuchsia-50">
+    <mat-sidenav-content>
       <app-bottom-menu/>
       <div class="fixed top-0 left-0 z-50">
         <orb-button icon="menu" (click)="sidenav.open()"/>
@@ -22,7 +22,7 @@
 <ng-template #desktopView>
   <ng-container *ngIf="sideMenuLayout$ | async as layout">
     <app-side-menu class="fixed top-0 left-0 h-full" [layoutType]="layout"/>
-    <div [ngClass]="{'pl-72' : layout == SideMenuLayouts.Regular, 'pl-24' : layout == SideMenuLayouts.Compact}" class="bg-fuchsia-50">
+    <div [ngClass]="{'pl-72' : layout == SideMenuLayouts.Regular, 'pl-24' : layout == SideMenuLayouts.Compact}">
       <ng-container *ngTemplateOutlet="content"/>
     </div>
   </ng-container>
