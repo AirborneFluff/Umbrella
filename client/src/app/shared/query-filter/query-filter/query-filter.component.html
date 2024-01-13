@@ -11,16 +11,18 @@
     </div>
   </div>
 
-  <div class="relative overflow-auto overflow-x-hidden flex-grow min-h-[10rem]" *ngIf="filter else ghosts">
-    <div [@fadeIn]="animationDirection">
-      <ng-container *ngTemplateOutlet="optionsTemplate; context: {$implicit: {data: filter.navigationOptions$ | async}}">
-      </ng-container>
-    </div>
+  <div class="relative overflow-auto overflow-x-hidden flex-grow min-h-[10rem]" >
+    <ng-container *ngIf="filter else ghosts">
+      <div [@fadeIn]="animationDirection">
+        <ng-container *ngTemplateOutlet="optionsTemplate; context: {$implicit: {data: filter.navigationOptions$ | async}}">
+        </ng-container>
+      </div>
 
-    <div [@fadeOut]="animationDirection" class="pointer-events-none hidden absolute top-0 left-0 w-full">
-      <ng-container *ngTemplateOutlet="optionsTemplate; context: {$implicit: {data: previousOptions$ | async}}">
-      </ng-container>
-    </div>
+      <div [@fadeOut]="animationDirection" class="pointer-events-none hidden absolute top-0 left-0 w-full">
+        <ng-container *ngTemplateOutlet="optionsTemplate; context: {$implicit: {data: previousOptions$ | async}}">
+        </ng-container>
+      </div>
+    </ng-container>
   </div>
 
   <div class="flex justify-center items-center m-6">
