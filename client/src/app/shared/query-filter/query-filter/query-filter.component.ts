@@ -80,6 +80,7 @@ export class QueryFilterComponent implements OnInit {
 
   clearFilters() {
     this.filter.clearFilters();
+    this.params.emit(new HttpParams());
   }
 
   handleOptionClick(option: QueryOption | QueryParameter) {
