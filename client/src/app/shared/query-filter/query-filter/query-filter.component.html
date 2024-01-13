@@ -1,13 +1,17 @@
 <div class="flex flex-col relative bg-item-light rounded-lg h-full">
-  <div class="flex justify-between px-4 items-center select-none h-20 w-full">
+  <div class="flex justify-between px-4 items-center select-none w-full">
     <div class="cursor-pointer min-w-[1.5rem]">
-      <mat-icon *ngIf="(filter?.navigationPath$ | async)! != -1" (click)="pageBack()">chevron_left</mat-icon>
+      <ng-container *ngIf="filter">
+        <mat-icon *ngIf="(filter.navigationPath$ | async)! != -1" (click)="pageBack()">chevron_left</mat-icon>
+      </ng-container>
     </div>
 
     <p class="font-display my-5 text-2xl font-medium mx-auto text-center">Filters</p>
 
-    <div class="cursor-pointer" *ngIf="compact" (click)="onClose.emit()">
-      <mat-icon>close</mat-icon>
+    <div class="min-w-[1.5rem]">
+      <div class="cursor-pointer" *ngIf="compact" (click)="onClose.emit()">
+        <mat-icon>close</mat-icon>
+      </div>
     </div>
   </div>
 
