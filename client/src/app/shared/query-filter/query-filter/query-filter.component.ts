@@ -47,30 +47,26 @@ const ANIMATION_DURATION = 200;
   ],
 })
 export class QueryFilterComponent implements OnInit {
-  @Input() options: QueryParameter[] = [];
+  options: QueryParameter[] = [];
   @Input() entityName!: FilterDefinition;
   @Input() compact = true;
   @Output() params: EventEmitter<HttpParams> = new EventEmitter<HttpParams>();
   @Output() onClose = new EventEmitter();
 
   animationDirection: 'down' | 'up' | 'none' = 'none'
-  filter!: QueryFilter;
-  previousOptions$!: Observable<QueryOption[]>;
+
+  filter: QueryFilter = new QueryFilter(this.options, this.entityName);
+  previousOptions$ = this.filter.navigationOptions$.pipe(
+    startWith([]),
+    pairwise(),
+    map(([previous, _]) => previous)
+  )
 
   constructor(private filterService: FilterService) {  }
 
   ngOnInit() {
-    this.filterService.getFilter(this.entityName).pipe(take(1)).subscribe(options => {
-      this.options = options;
-      this.filter = new QueryFilter(this.options);
-    })
-
-    this.filter = new QueryFilter(this.options);
-    this.previousOptions$ = this.filter.navigationOptions$.pipe(
-      startWith([]),
-      pairwise(),
-      map(([previous, _]) => previous)
-    )
+    this.filterService.getFilterInstance(this.entityName)
+      .subscribe(filter => this.filter = filter);
   }
 
   emitValue() {

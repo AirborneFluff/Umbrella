@@ -5,11 +5,13 @@ import {
 } from 'rxjs';
 import { HttpParams } from "@angular/common/http";
 import { QueryOption, QueryParameter } from './filter-option';
+import { FilterDefinition } from './filter-definition';
 
 export class QueryFilter {
   private readonly rootOptions: QueryParameter[] = [];
   private parameterIndex: number = -1;
   private activeOptions: [QueryParameter, QueryOption][] = [];
+  public entityName: FilterDefinition;
 
   navigationPath$ = new BehaviorSubject<number>(this.parameterIndex);
   navigationOptions$: Observable<QueryOption[]> = this.navigationPath$.pipe(
@@ -21,8 +23,9 @@ export class QueryFilter {
     shareReplay(1)
   )
 
-  constructor(options: QueryParameter[]) {
+  constructor(options: QueryParameter[], entityName: FilterDefinition) {
     this.rootOptions = options;
+    this.entityName = entityName;
   }
 
   get httpParameters(): HttpParams {
