@@ -3,7 +3,7 @@
 </div>
 
 <div class="xl:pl-60 mt-12">
-  <div class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem] md:pl-24 xl:pl-72 xl:justify-start">
+  <div class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem] md:pl-24 xl:pl-72 xl:justify-start z-50">
     <orb-search #searchBar (onSearch)="updateSearch($event)" [alwaysOpen]="!(showCompactFilters$ | async)!" class="flex-grow"/>
     <orb-button *ngIf="showCompactFilters$ | async" (click)="openFilters()" icon="tune"/>
   </div>
