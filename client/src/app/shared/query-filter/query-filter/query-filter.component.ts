@@ -78,6 +78,10 @@ export class QueryFilterComponent implements OnInit {
     this.params.emit(this.filter.httpParameters)
   }
 
+  clearFilters() {
+    this.filter.clearFilters();
+  }
+
   handleOptionClick(option: QueryOption | QueryParameter) {
     if ('options' in option) {
       this.pageForward(option)

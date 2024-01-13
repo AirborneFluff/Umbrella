@@ -30,9 +30,14 @@
   </div>
 
   <div class="flex justify-center items-center m-6">
-    <p (click)="emitValue()"
-       class="font-display text-item-light text-lg font-medium text-center py-1 bg-primary rounded-lg basis-96 cursor-pointer">
-      Apply</p>
+    <div class="flex-grow">
+      <p (click)="emitValue()"
+         class="font-display text-item-light text-lg font-medium text-center py-1 bg-primary rounded-lg basis-96 cursor-pointer">
+        Apply</p>
+      <p (click)="clearFilters()"
+         class="font-display text-primary cursor-pointer text-md font-normal text-center basis-96 mt-3">
+        Clear Filters</p>
+    </div>
   </div>
 </div>
 

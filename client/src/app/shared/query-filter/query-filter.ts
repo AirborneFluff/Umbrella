@@ -86,4 +86,8 @@ export class QueryFilter {
 
     this.activeOptions.push([parameter, option]);
   }
+
+  clearFilters() {
+    this.activeOptions = [];
+  }
 }
