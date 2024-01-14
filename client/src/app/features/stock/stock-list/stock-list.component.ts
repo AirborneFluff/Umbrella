@@ -1,6 +1,16 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StockService } from '../services/stock.service';
-import { map, shareReplay, Subject, Subscription, switchMap, take, tap } from 'rxjs';
+import {
+  debounceTime,
+  map,
+  Observable,
+  shareReplay,
+  Subject,
+  Subscription,
+  switchMap,
+  take,
+  tap
+} from 'rxjs';
 import { Pagination, PaginationParams } from '../../../core/utilities/pagination';
 import { StockItem } from '../../../core/models/stock-item';
 import { BreakpointStream } from '../../../core/streams/breakpoint-stream';
@@ -20,8 +30,8 @@ const PAGE_SIZE = 50;
   templateUrl: './stock-list.component.html',
   styleUrls: ['./stock-list.component.scss']
 })
-export class StockListComponent implements OnInit, OnDestroy {
-  @ViewChild('searchBar') searchBar!: OrbSearchComponent;
+export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild(OrbSearchComponent) searchBar!: OrbSearchComponent;
   stockItems: StockItem[] = [];
   subscriptions = new Subscription();
   filters: HttpParams = new HttpParams();
@@ -29,6 +39,8 @@ export class StockListComponent implements OnInit, OnDestroy {
     pageNumber: 1,
     pageSize: PAGE_SIZE
   };
+
+  searchUpdates$!: Observable<string>;
 
   constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet, private queryFilter: FilterService) {
   }
@@ -42,6 +54,14 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    this.searchUpdates$ = this.searchBar.onSearch.pipe(
+      debounceTime(500));
+
+    this.subscriptions.add(
+      this.searchUpdates$.subscribe(val => this.updateSearch(val)));
   }
 
   showCompactFilters$ = this.breakpoint$.pipe(
