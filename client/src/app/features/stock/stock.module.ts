@@ -7,6 +7,7 @@ import { StockListComponent } from './stock-list/stock-list.component';
 import { SharedModule } from '../../shared/shared.module';
 import { StockItemFormComponent } from './stock-item-form/stock-item-form.component';
 import { NewStockItemComponent } from './new-stock-item/new-stock-item.component';
+import { EditStockItemComponent } from './edit-stock-item/edit-stock-item.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { NewStockItemComponent } from './new-stock-item/new-stock-item.component
     StockHomeComponent,
     StockListComponent,
     StockItemFormComponent,
-    NewStockItemComponent
+    NewStockItemComponent,
+    EditStockItemComponent
   ],
   imports: [
     CommonModule,
