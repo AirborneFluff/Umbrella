@@ -7,7 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./stock-item-form.component.scss']
 })
 export class StockItemFormComponent {
-  stockItemForm = new FormGroup({
+  form = new FormGroup({
     partCode: new FormControl('', {validators: [Validators.required]}),
     description: new FormControl('', {validators: [Validators.required]}),
     location: new FormControl([])
