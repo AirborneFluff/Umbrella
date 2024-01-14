@@ -9,6 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { IsVisibleDirective } from './directives/is-visible.directive';
 import { OrbSearchComponent } from './orb-search/orb-search.component';
 import { QueryFilterModule } from './query-filter/query-filter.module';
+import { AppFormsModule } from './app-forms/app-forms.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { QueryFilterModule } from './query-filter/query-filter.module';
     MatBottomSheetModule,
     MatListModule,
     MatPaginatorModule,
-    QueryFilterModule
+    QueryFilterModule,
+    AppFormsModule
   ],
   exports: [
     MatIconModule,
@@ -33,7 +35,8 @@ import { QueryFilterModule } from './query-filter/query-filter.module';
     MatPaginatorModule,
     IsVisibleDirective,
     OrbSearchComponent,
-    QueryFilterModule
+    QueryFilterModule,
+    AppFormsModule
   ]
 })
 export class SharedModule { }
