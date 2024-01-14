@@ -24,9 +24,9 @@ export class EditStockItemComponent implements AfterViewInit {
 
   save() {
     const item = this.formComponent.formValue;
-    // this.stockApi.addNew(item).subscribe({
-    //   next: newItem => console.log(newItem)
-    // })
+    this.stockApi.update(item).subscribe(val => {
+      this.formComponent.patchForm(item)
+    })
   }
 
   ngAfterViewInit(): void {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StockItem } from '../../../core/models/stock-item';
+import { StockSupplySource } from '../../../core/models/stock-supply-source';
 
 @Component({
   selector: 'app-stock-item-form',
@@ -9,15 +10,18 @@ import { StockItem } from '../../../core/models/stock-item';
 })
 export class StockItemFormComponent {
   protected form = new FormGroup({
-    partCode: new FormControl<string>('', {validators: [Validators.required]}),
+    id: new FormControl<string>({value: '', disabled: true}, {nonNullable: true}),
+    partCode: new FormControl<string>('', {validators: [Validators.required], nonNullable: true}),
     description: new FormControl<string>('', {validators: [Validators.required]}),
-    location: new FormControl<string>('',)
+    category: new FormControl<string>(''),
+    location: new FormControl<string>(''),
+    supplySources: new FormControl<StockSupplySource[]>([], {nonNullable: true})
   })
 
   constructor() {}
 
   get formValue(): StockItem {
-    return this.form.value as StockItem;
+    return this.form.getRawValue() as StockItem;
   }
 
   patchForm(item: StockItem) {

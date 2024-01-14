@@ -32,4 +32,9 @@ export class StockService {
   public addNew(item: Partial<StockItem>): Observable<StockItem> {
     return this.http.post<StockItem>(this.baseUrl, item)
   }
+
+  public update(item: StockItem): Observable<StockItem> {
+    const value: Omit<StockItem, 'id' | 'partCode'> = item;
+    return this.http.put<StockItem>(this.baseUrl + item.id, value);
+  }
 }
