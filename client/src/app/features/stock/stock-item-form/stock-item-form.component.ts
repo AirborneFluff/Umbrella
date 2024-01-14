@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { StockItem } from '../../../core/models/stock-item';
 
 @Component({
   selector: 'app-stock-item-form',
@@ -7,12 +8,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./stock-item-form.component.scss']
 })
 export class StockItemFormComponent {
-  form = new FormGroup({
-    partCode: new FormControl('', {validators: [Validators.required]}),
-    description: new FormControl('', {validators: [Validators.required]}),
-    location: new FormControl([])
+  protected form = new FormGroup({
+    partCode: new FormControl<string>('', {validators: [Validators.required]}),
+    description: new FormControl<string>('', {validators: [Validators.required]}),
+    location: new FormControl<string>('',)
   })
 
   constructor() {}
 
+  get formValue(): StockItem {
+    return this.form.value as StockItem;
+  }
 }
