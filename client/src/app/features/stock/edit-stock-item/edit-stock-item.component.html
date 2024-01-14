@@ -5,9 +5,15 @@
     </div>
     <h1 class="font-display font-semibold text-2xl">Edit stock item</h1>
 
-    <p (click)="save()"
-       class="ml-auto font-display text-item-light text-lg font-medium text-center py-1 px-4 bg-primary rounded-lg cursor-pointer">
-      Save</p>
+    <div (click)="save()"
+       class="ml-auto font-display text-item-light text-lg font-medium text-center py-1 px-2 bg-primary rounded-lg cursor-pointer">
+      <div class="w-16 h-8 flex justify-center items-center">
+        <span *ngIf="!busy else busySpinner">Save</span>
+      </div>
+      <ng-template #busySpinner>
+        <mat-spinner class="w-14 h-7" diameter="25"/>
+      </ng-template>
+    </div>
   </div>
   <app-stock-item-form *ngIf="stockItem$ | async else ghostForm" />
 </div>

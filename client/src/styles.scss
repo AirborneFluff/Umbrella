@@ -26,6 +26,9 @@ body {
 .mdc-list-item {
   @apply bg-item-light;
 }
+.mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: white !important;
+}
 
 .placeholder {
   min-height: 1em;

@@ -11,6 +11,7 @@ import { OrbSearchComponent } from './orb-search/orb-search.component';
 import { QueryFilterModule } from './query-filter/query-filter.module';
 import { AppFormsModule } from './app-forms/app-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatPaginatorModule,
     QueryFilterModule,
     AppFormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatIconModule,
@@ -39,7 +41,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     OrbSearchComponent,
     QueryFilterModule,
     AppFormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule { }

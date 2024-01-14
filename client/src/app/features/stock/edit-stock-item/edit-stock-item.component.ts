@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./edit-stock-item.component.scss']
 })
 export class EditStockItemComponent implements AfterViewInit {
+  busy = false;
   @ViewChild(StockItemFormComponent, {static: false}) formComponent!: StockItemFormComponent;
 
   constructor(private stockApi: StockService,
@@ -29,9 +30,12 @@ export class EditStockItemComponent implements AfterViewInit {
 
   save() {
     const item = this.formComponent.formValue;
+    this.busy = true;
+
     this.stockApi.update(item).subscribe(() => {
-        this.router.navigate(['../'], { relativeTo: this.route })
-      })
+      this.busy = false;
+      this.router.navigate(['../'], { relativeTo: this.route })
+    })
   }
 
   ngAfterViewInit(): void {
