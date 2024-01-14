@@ -19,4 +19,8 @@ export class StockItemFormComponent {
   get formValue(): StockItem {
     return this.form.value as StockItem;
   }
+
+  patchForm(item: StockItem) {
+    this.form.patchValue(item);
+  }
 }
