@@ -4,6 +4,7 @@ import { StockService } from '../services/stock.service';
 import { StockItemIdStream } from '../../../core/streams/stock-item-id-stream';
 import { notNullOrUndefined } from '../../../core/pipes/not-null';
 import { shareReplay, switchMap, take } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-stock-item',
@@ -13,7 +14,11 @@ import { shareReplay, switchMap, take } from 'rxjs';
 export class EditStockItemComponent implements AfterViewInit {
   @ViewChild(StockItemFormComponent, {static: false}) formComponent!: StockItemFormComponent;
 
-  constructor(private stockApi: StockService, private id$: StockItemIdStream, private changeDetector: ChangeDetectorRef) {
+  constructor(private stockApi: StockService,
+              private id$: StockItemIdStream,
+              private changeDetector: ChangeDetectorRef,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   stockItem$ = this.id$.pipe(
@@ -24,9 +29,9 @@ export class EditStockItemComponent implements AfterViewInit {
 
   save() {
     const item = this.formComponent.formValue;
-    this.stockApi.update(item).subscribe(val => {
-      this.formComponent.patchForm(item)
-    })
+    this.stockApi.update(item).subscribe(() => {
+        this.router.navigate(['../'], { relativeTo: this.route })
+      })
   }
 
   ngAfterViewInit(): void {
