@@ -12,12 +12,12 @@ const routes: Routes = [
     component: StockListComponent,
   },
   {
-    path: `:${NavigationParams.STOCK_ITEM_ID}`,
-    component: EditStockItemComponent
-  },
-  {
     path: 'new',
     component: NewStockItemComponent
+  },
+  {
+    path: `:${NavigationParams.STOCK_ITEM_ID}`,
+    component: EditStockItemComponent
   }
 ];
 

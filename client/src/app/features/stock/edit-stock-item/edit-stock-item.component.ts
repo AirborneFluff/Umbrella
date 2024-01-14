@@ -21,7 +21,7 @@ export class EditStockItemComponent {
 
   stockItem$ = this.id$.pipe(
     notNullOrUndefined(),
-    switchMap(id => this.stockApi.getByPartCode(id))
+    switchMap(id => this.stockApi.getById(id))
   )
 
   save() {

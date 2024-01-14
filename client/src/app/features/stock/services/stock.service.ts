@@ -15,8 +15,8 @@ export class StockService {
 
   constructor(private http: HttpClient) { }
 
-  public getByPartCode(partCode: string): Observable<StockItem> {
-    return this.http.get<StockItem>(this.baseUrl + partCode);
+  public getById(id: string): Observable<StockItem> {
+    return this.http.get<StockItem>(this.baseUrl + id);
   }
 
   public getPaginatedList(pageParams: PaginationParams, additionalParams?: HttpParams): Observable<PaginatedResult<StockItem[]>> {

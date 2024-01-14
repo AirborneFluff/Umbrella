@@ -40,8 +40,8 @@ public sealed partial class StockItemsController : BaseApiController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
-    [HttpGet("{partCode}")]
-    public async Task<ActionResult> GetStockItem(string partCode)
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetStockItem(string id)
     {
         var stockItem = HttpContext.GetStockItem();
         return Ok(stockItem);
@@ -58,8 +58,8 @@ public sealed partial class StockItemsController : BaseApiController
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
-    [HttpPut("{partCode}")]
-    public async Task<ActionResult> UpdateStockItem(UpdateStockItemDto item, string partCode)
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateStockItem(UpdateStockItemDto item, string id)
     {
         var stockItem = HttpContext.GetStockItem();
         
@@ -74,8 +74,8 @@ public sealed partial class StockItemsController : BaseApiController
 
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
-    [HttpDelete("{partCode}")]
-    public async Task<ActionResult> RemoveStockItem(string partCode)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> RemoveStockItem(string id)
     {
         var stockItem = HttpContext.GetStockItem();
         _unitOfWork.StockItems.Remove(stockItem);
