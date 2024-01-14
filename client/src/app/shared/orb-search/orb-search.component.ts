@@ -35,7 +35,6 @@ export class OrbSearchComponent implements OnInit {
   }
 
   emitValue(value: string) {
-    if (!value) return;
     this.onSearch.emit(value);
   }
 }

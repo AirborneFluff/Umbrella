@@ -1,7 +1,7 @@
 <div class="p-1 w-full flex justify-end items-center">
   <div [ngClass]="{'w-full' : _expanded}" class="h-12 w-12 rounded-full flex justify-between items-center orb-shadow transition-all px-3 bg-item-light">
     <input #input
-           (keyup.enter)="emitValue(input.value)"
+           (input)="emitValue(input.value)"
            *ngIf="_expanded"
            (blur)="collapse()"
            class="focus:outline-none focus:blur-0 min-w-0 w-full pl-2"
