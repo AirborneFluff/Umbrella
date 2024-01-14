@@ -9,5 +9,17 @@
        class="ml-auto font-display text-item-light text-lg font-medium text-center py-1 px-4 bg-primary rounded-lg cursor-pointer">
       Save</p>
   </div>
-  <app-stock-item-form />
+  <app-stock-item-form *ngIf="stockItem$ | async else ghostForm" />
 </div>
+
+<ng-template #ghostForm>
+  <app-form-field>
+    <input appInputGhost class="placeholder">
+  </app-form-field>
+  <app-form-field>
+    <input appInputGhost class="placeholder">
+  </app-form-field>
+  <app-form-field>
+    <input appInputGhost class="placeholder">
+  </app-form-field>
+</ng-template>
