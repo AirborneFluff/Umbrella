@@ -1,4 +1,6 @@
-<div class="relative cursor-pointer text-item-faded-light">
+<div
+  [ngClass]="{'cursor-pointer' :  enabled, 'opacity-20' : disabled}"
+  class="relative text-item-faded-light">
   <div class="flex flex-col justify-center items-center py-2">
     <mat-icon [ngClass]="{'text-purple-500' : active}">
       {{icon}}
