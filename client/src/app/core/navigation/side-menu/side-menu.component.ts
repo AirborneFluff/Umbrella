@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SideMenuLayouts } from "../side-menu-layouts";
-import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { RootFeatureStream } from '../../streams/root-feature-stream';
+import { RootFeatures } from '../../definitions/root-features';
+import { notNullOrUndefined } from '../../pipes/not-null';
+
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
@@ -11,6 +14,10 @@ export class SideMenuComponent {
   @Input() showCloseButton: boolean = false;
   @Output() onClose: EventEmitter<any> = new EventEmitter();
   showDefaultAvatar = false;
+
+  constructor(private root$: RootFeatureStream) {}
+
+  protected activeRoot$ = this.root$.pipe(notNullOrUndefined())
 
   get widthClass(): string {
     if (this.layoutType == SideMenuLayouts.Full) return 'w-full';
@@ -23,4 +30,5 @@ export class SideMenuComponent {
   }
 
   protected readonly SideMenuLayouts = SideMenuLayouts;
+  protected readonly RootFeatures = RootFeatures;
 }
