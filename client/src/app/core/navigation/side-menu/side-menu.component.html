@@ -16,7 +16,12 @@
     </div>
 
     <app-side-menu-button text="Home" icon="home" [compact]="isCompact" [disabled]="true" />
-    <app-side-menu-button text="Stock" icon="dashboard_customize" [compact]="isCompact" routerLink="/stock" (click)="onClose.emit()"/>
+    <app-side-menu-button
+      text="Stock" icon="dashboard_customize"
+      routerLink="/stock"
+      [active]="(activeRoot$ | async) == RootFeatures.STOCK_ROOT"
+      [compact]="isCompact"
+      (click)="onClose.emit()"/>
     <app-side-menu-button text="Products" icon="qr_code_scanner" [compact]="isCompact"  [disabled]="true"/>
     <app-side-menu-button text="Services" icon="design_services" [compact]="isCompact"  [disabled]="true"/>
     <app-side-menu-button text="Supply" icon="receipt_long" [compact]="isCompact"  [disabled]="true"/>
