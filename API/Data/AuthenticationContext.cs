@@ -21,13 +21,18 @@ public sealed class AuthenticationContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<Organisation>()
             .HasMany(o => o.Members)
             .WithOne(au => au.Organisation);
-
-        modelBuilder.Entity<OrganisationMember>()
-            .HasKey(member => new { member.MemberId, member.OrganisationId });
-
+        
         modelBuilder.Entity<Organisation>()
             .HasOne(o => o.Owner)
             .WithOne(au => au.Organisation)
             .HasForeignKey<Organisation>(o => o.OwnerId);
+
+        modelBuilder.Entity<Organisation>()
+            .HasIndex(o => o.NormalizedName)
+            .IsUnique();
+
+        modelBuilder.Entity<OrganisationMember>()
+            .HasKey(member => new { member.MemberId, member.OrganisationId });
+
     }
 }

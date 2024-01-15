@@ -4,9 +4,11 @@
   },
   "Cosmos": {
     "URI" : "https://localhost:8081",
-    "PrimaryKey" : "<Primary Key>"
+    "PrimaryKey" : "<Primary Key>",
+    "DatabaseName" : "<dbName>"
   },
   "OwnerCredentials": {
+    "OrganisationName" : "<sample name>",
     "UserName" : "<admin username>",
     "Password" : "<admin password>"
   },
