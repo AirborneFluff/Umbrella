@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SideMenuLayouts } from "../side-menu-layouts";
-import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
