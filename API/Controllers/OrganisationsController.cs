@@ -1,4 +1,5 @@
-﻿using API.Data;
+﻿using API.Authentication;
+using API.Data;
 using API.Data.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +27,8 @@ public sealed class OrganisationsController : BaseApiController
         {
             Email = organisationDto.Email,
             UserName = organisationDto.Email,
-            OrganisationId = organisationId
+            OrganisationId = organisationId,
+            Permissions = PermissionGroups.PowerUser
         };
 
         var result = await _userManager.CreateAsync(owner, organisationDto.Password);
