@@ -19,8 +19,7 @@ export class EditStockItemComponent implements AfterViewInit {
               private id$: StockItemIdStream,
               private changeDetector: ChangeDetectorRef,
               private router: Router,
-              private route: ActivatedRoute) {
-  }
+              private route: ActivatedRoute) {}
 
   stockItem$ = this.id$.pipe(
     notNullOrUndefined(),
@@ -46,5 +45,4 @@ export class EditStockItemComponent implements AfterViewInit {
         this.formComponent.patchForm(item)
       });
   }
-
 }
