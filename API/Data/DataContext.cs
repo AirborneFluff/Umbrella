@@ -22,5 +22,11 @@ public sealed class DataContext : DbContext
         modelBuilder.Entity<StockSupplier>()
             .ToContainer("StockSuppliers")
             .HasKey(item => item.Id);
+
+        modelBuilder.Entity<StockItem>()
+            .HasPartitionKey(s => s.PartitionKey);
+        
+        modelBuilder.Entity<StockSupplier>()
+            .HasPartitionKey(s => s.PartitionKey);
     }
 }

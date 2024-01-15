@@ -9,26 +9,31 @@ namespace API.Data.Repositories;
 public sealed class StockItemsRepository : IStockItemsRepository
 {
     private readonly DataContext _context;
+    private readonly string _partitionKey;
 
-    public StockItemsRepository(DataContext context)
+    public StockItemsRepository(DataContext context, string partitionKey)
     {
         _context = context;
+        _partitionKey = partitionKey;
     }
 
     public Task<StockItem?> GetByPartCode(string partCode)
     {
         return _context.StockItems
+            .WithPartitionKey(_partitionKey)
             .FirstOrDefaultAsync(item => item.PartCode == partCode);
     }
 
     public Task<StockItem?> GetById(string id)
     {
         return _context.StockItems
+            .WithPartitionKey(_partitionKey)
             .FirstOrDefaultAsync(item => item.Id == id);
     }
 
     public void Add(StockItem stockItem)
     {
+        stockItem.PartitionKey = _partitionKey;
         _context.StockItems.Add(stockItem);
     }
 
@@ -39,7 +44,9 @@ public sealed class StockItemsRepository : IStockItemsRepository
 
     public async Task<PagedList<StockItem>> GetPagedList(StockItemParams stockParams)
     {
-        var query = _context.StockItems.AsQueryable();
+        var query = _context.StockItems
+            .WithPartitionKey(_partitionKey)
+            .AsQueryable();
 
         if (stockParams.SearchTerm is not null)
         {
@@ -60,6 +67,7 @@ public sealed class StockItemsRepository : IStockItemsRepository
     public async Task<List<string>> GetCategories()
     {
         return await _context.StockItems
+            .WithPartitionKey(_partitionKey)
             .Where(item => item.Category != null)
             .Select(item => item.Category!)
             .Distinct()

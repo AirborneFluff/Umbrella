@@ -1,9 +1,7 @@
-﻿using System.Net;
-using API.Data.Repositories;
-using API.Entities;
+﻿using API.Data.Repositories;
+using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
-using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
@@ -11,9 +9,10 @@ namespace API.Data;
 public sealed class UnitOfWork : IUnitOfWork
 {
     private readonly DataContext _context;
-    
-    public IStockItemsRepository StockItems => new StockItemsRepository(_context);
-    public IStockSuppliersRepository StockSuppliers => new StockSuppliersRepository(_context);
+    private readonly string _partitionKey;
+
+    public IStockItemsRepository StockItems => new StockItemsRepository(_context, _partitionKey);
+    public IStockSuppliersRepository StockSuppliers => new StockSuppliersRepository(_context, _partitionKey);
 
     public async Task<OperationResult> SaveChangesAsync()
     {
@@ -28,8 +27,9 @@ public sealed class UnitOfWork : IUnitOfWork
         }
     }
 
-    public UnitOfWork(DataContext context)
+    public UnitOfWork(DataContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
+        _partitionKey = httpContextAccessor.HttpContext!.User.GetOrganisationId();
     }
 }
