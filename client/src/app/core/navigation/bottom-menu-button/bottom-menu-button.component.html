@@ -1,12 +1,16 @@
 <div
-  [ngClass]="{'cursor-pointer' :  enabled, 'opacity-20' : disabled}"
+  [ngClass]="{'cursor-pointer' :  enabled, 'opacity-20' : disabled, 'bg-primary-highlight': active}"
   class="relative text-item-faded-light">
   <div class="flex flex-col justify-center items-center py-2">
-    <mat-icon [ngClass]="{'text-purple-500' : active}">
+    <mat-icon>
       {{icon}}
     </mat-icon>
-    <p [ngClass]="{'text-purple-500' : active, 'font-semibold' : active}"
-       class="font-display text-xs font-medium  select-none">{{text}}
+    <p
+       class="font-display text-xs font-medium select-none">{{text}}
     </p>
+  </div>
+
+  <div *ngIf="active" class="absolute w-full h-full top-0 left-0">
+    <div class="absolute h-0.5 w-full top-0 left-0 bg-primary-deep rounded-sm"></div>
   </div>
 </div>
