@@ -34,9 +34,13 @@ public static class WebApplicationExtensions
             var context = service.GetRequiredService<DataContext>();
             await DataSeed.EnsureCreatedAsync(context);
             
+            var userManager = service.GetRequiredService<UserManager<AppUser>>();
+            var user = await userManager.Users.FirstOrDefaultAsync();
+            if (user is null) return;
+            
             if (app.Environment.IsDevelopment())
             {
-                await DataSeed.SeedStockItems(context);
+                await DataSeed.SeedStockItems(context, user.OrganisationId);
             }
         }
         catch (Exception ex)

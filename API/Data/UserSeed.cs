@@ -13,19 +13,35 @@ public sealed class UserSeed
     {
         if (await userManager.Users.AnyAsync()) return;
         
+        var organisationName = config["OwnerCredentials:OrganisationName"];
         var ownerUserName = config["OwnerCredentials:UserName"];
         var ownerPassword = config["OwnerCredentials:Password"];
 
-        if (ownerUserName is null || ownerPassword is null)
+        if (ownerUserName is null || ownerPassword is null|| organisationName is null)
             throw new Exception("Owner UserName and Password not configured");
+
+        var organisationId = Guid.NewGuid().ToString();
 
         var user = new AppUser()
         {
+            OrganisationId = organisationId,
             UserName = ownerUserName,
             Email = ownerUserName,
             Permissions = PermissionGroups.PowerUser
         };
+
+        var organisation = new Organisation()
+        {
+            Id = organisationId,
+            OwnerId = user.Id,
+            Name = organisationName
+        };
+
+        user.Organisation = organisation;
+        
+        
         var result = await userManager.CreateAsync(user, ownerPassword);
         if (!result.Succeeded) throw new Exception("Issue creating owner account");
     }
+    
 }
