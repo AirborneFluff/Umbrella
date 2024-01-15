@@ -1,23 +1,27 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'orb-search',
   templateUrl: './orb-search.component.html',
   styleUrls: ['./orb-search.component.scss']
 })
-export class OrbSearchComponent {
+export class OrbSearchComponent implements OnInit {
   @ViewChild('input') inputElement!: ElementRef;
   @Output() onSearch = new EventEmitter<string>();
+  @Input() alwaysOpen: boolean = false;
   protected _expanded = false;
+
+  public ngOnInit() {
+    if (this.alwaysOpen) this.expand();
+  }
 
   public expand() {
     this._expanded = true;
-    setTimeout(()=>{ // this will make the execution after the above boolean has changed
-      this.inputElement.nativeElement.focus();
-    },0);
+    setTimeout(()=> this.inputElement.nativeElement.focus(),0);
   }
 
   public collapse() {
+    if (this.alwaysOpen) return;
     this._expanded = false;
   }
 
@@ -31,8 +35,6 @@ export class OrbSearchComponent {
   }
 
   emitValue(value: string) {
-    this.collapse();
-    if (!value) return;
     this.onSearch.emit(value);
   }
 }

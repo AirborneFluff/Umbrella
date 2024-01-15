@@ -26,3 +26,28 @@ body {
 .mdc-list-item {
   @apply bg-item-light;
 }
+.mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: white !important;
+}
+
+.placeholder {
+  min-height: 1em;
+  vertical-align: middle;
+  cursor: wait;
+  background-color: #000;
+  opacity: .2;
+  overflow: hidden;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  color: transparent;
+  width: 100%;
+
+  -webkit-animation: placeholder-glow 2s ease-in-out infinite;
+  animation: placeholder-glow 2s ease-in-out infinite;
+}
+
+@keyframes placeholder-glow {
+  50% {
+    opacity: .05;
+  }
+}

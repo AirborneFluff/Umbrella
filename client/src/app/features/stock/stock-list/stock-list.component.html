@@ -1,18 +1,20 @@
-<div class="w-60 fixed p-2 pr-0 h-screen" *ngIf="!(showCompactFilters$ | async)">
+<div class="w-60 fixed p-2 pb-16 pr-0 h-screen" *ngIf="!(showCompactFilters$ | async)">
   <app-query-filter [compact]="false" entityName="stockItem" (params)="applyFilter($event)"/>
 </div>
 
-<div class="xl:pl-60 pt-14">
+<div class="xl:pl-60 mt-16">
+  <div class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem] md:pl-24 xl:pl-72 xl:justify-start z-50">
+    <orb-search [alwaysOpen]="!(showCompactFilters$ | async)!" class="flex-grow"/>
+    <orb-button *ngIf="showCompactFilters$ | async" (click)="openFilters()" icon="tune"/>
+    <orb-button routerLink="new" icon="add"/>
+  </div>
+
   <mat-list class="!p-2">
-    <mat-list-item *ngFor="let item of stockItems" class="!bg-item-light !rounded-lg !mb-0.5">
+    <mat-list-item *ngFor="let item of stockItems" class="!bg-item-light !rounded-lg !mb-0.5 !cursor-pointer" [routerLink]="[item.id]">
         <span matListItemTitle>{{item.partCode}}</span>
         <span matListItemLine>{{item.description}}</span>
     </mat-list-item>
   </mat-list>
 
   <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
-</div>
-<div *ngIf="showCompactFilters$ | async" class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem]">
-  <orb-search #searchBar (onSearch)="updateSearch($event)" class="flex-grow max-w-[32rem]"/>
-  <orb-button (click)="openFilters()" icon="tune"/>
 </div>

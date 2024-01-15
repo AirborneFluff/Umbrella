@@ -1,6 +1,16 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StockService } from '../services/stock.service';
-import { map, shareReplay, Subject, Subscription, switchMap, take, tap } from 'rxjs';
+import {
+  debounceTime,
+  map,
+  Observable,
+  shareReplay,
+  Subject,
+  Subscription,
+  switchMap,
+  take,
+  tap
+} from 'rxjs';
 import { Pagination, PaginationParams } from '../../../core/utilities/pagination';
 import { StockItem } from '../../../core/models/stock-item';
 import { BreakpointStream } from '../../../core/streams/breakpoint-stream';
@@ -11,6 +21,7 @@ import {
   QueryFilterSheetComponent
 } from '../../../shared/query-filter/query-filter-sheet/query-filter-sheet.component';
 import { HttpParams } from '@angular/common/http';
+import { FilterService } from '../../../shared/query-filter/services/filter.service';
 
 const PAGE_SIZE = 50;
 
@@ -19,8 +30,8 @@ const PAGE_SIZE = 50;
   templateUrl: './stock-list.component.html',
   styleUrls: ['./stock-list.component.scss']
 })
-export class StockListComponent implements OnInit, OnDestroy {
-  @ViewChild('searchBar') searchBar!: OrbSearchComponent;
+export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild(OrbSearchComponent) searchBar!: OrbSearchComponent;
   stockItems: StockItem[] = [];
   subscriptions = new Subscription();
   filters: HttpParams = new HttpParams();
@@ -29,7 +40,9 @@ export class StockListComponent implements OnInit, OnDestroy {
     pageSize: PAGE_SIZE
   };
 
-  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet) {
+  searchUpdates$!: Observable<string>;
+
+  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet, private queryFilter: FilterService) {
   }
 
   ngOnInit(): void {
@@ -41,6 +54,14 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    this.searchUpdates$ = this.searchBar.onSearch.pipe(
+      debounceTime(500));
+
+    this.subscriptions.add(
+      this.searchUpdates$.subscribe(val => this.updateSearch(val)));
   }
 
   showCompactFilters$ = this.breakpoint$.pipe(
@@ -72,6 +93,7 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   updateSearch(searchTerm: string) {
     this.filters = new HttpParams().set('searchTerm', searchTerm);
+    this.queryFilter.clearFilter('stockItem').subscribe();
     this.triggerApi$.next(undefined);
   }
 

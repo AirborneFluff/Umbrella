@@ -6,6 +6,7 @@ import { map, Observable, pairwise, startWith } from 'rxjs';
 import { FilterDefinition } from '../filter-definition';
 import { FilterService } from '../services/filter.service';
 import { QueryOption, QueryParameter } from '../filter-option';
+import { notNullOrUndefined } from '../../../core/pipes/not-null';
 
 const ANIMATION_DURATION = 200;
 
@@ -61,7 +62,8 @@ export class QueryFilterComponent implements OnInit {
   constructor(private filterService: FilterService) {}
 
   ngOnInit() {
-    this.filterService.getFilterInstance(this.entityName)
+    this.filterService.getFilterInstance(this.entityName, true)
+      .pipe(notNullOrUndefined())
       .subscribe(filter => this.setFilter(filter));
   }
 
@@ -79,7 +81,8 @@ export class QueryFilterComponent implements OnInit {
   }
 
   clearFilters() {
-    this.filter.clearFilters();
+    this.filter.reset();
+    this.params.emit(new HttpParams());
   }
 
   handleOptionClick(option: QueryOption | QueryParameter) {

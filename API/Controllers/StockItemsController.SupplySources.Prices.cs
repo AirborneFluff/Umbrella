@@ -14,8 +14,8 @@ public sealed partial class StockItemsController
 {
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
-    [HttpPost("{partCode}/supplySources/{sourceIndex:int}/prices")]
-    public async Task<ActionResult> AddPriceBreak(NewPriceBreakDto price, string partCode, int sourceIndex)
+    [HttpPost("{id}/supplySources/{sourceIndex:int}/prices")]
+    public async Task<ActionResult> AddPriceBreak(NewPriceBreakDto price, string id, int sourceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         
@@ -33,8 +33,8 @@ public sealed partial class StockItemsController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
-    [HttpGet("{partCode}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
-    public async Task<ActionResult> GetPriceBreak(string partCode, int sourceIndex, int priceIndex)
+    [HttpGet("{id}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
+    public async Task<ActionResult> GetPriceBreak(string id, int sourceIndex, int priceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
@@ -47,8 +47,8 @@ public sealed partial class StockItemsController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
-    [HttpGet("{partCode}/supplySources/{sourceIndex:int}/prices")]
-    public async Task<ActionResult> GetAllPriceBreaks(string partCode, int sourceIndex)
+    [HttpGet("{id}/supplySources/{sourceIndex:int}/prices")]
+    public async Task<ActionResult> GetAllPriceBreaks(string id, int sourceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
@@ -59,8 +59,8 @@ public sealed partial class StockItemsController
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
-    [HttpPut("{partCode}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
-    public async Task<ActionResult> UpdatePriceBreak(NewPriceBreakDto price, string partCode, int sourceIndex, int priceIndex)
+    [HttpPut("{id}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
+    public async Task<ActionResult> UpdatePriceBreak(NewPriceBreakDto price, string id, int sourceIndex, int priceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         
@@ -81,8 +81,8 @@ public sealed partial class StockItemsController
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
-    [HttpDelete("{partCode}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
-    public async Task<ActionResult> RemovePriceBreak(string partCode, int sourceIndex, int priceIndex)
+    [HttpDelete("{id}/supplySources/{sourceIndex:int}/prices/{priceIndex:int}")]
+    public async Task<ActionResult> RemovePriceBreak(string id, int sourceIndex, int priceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         

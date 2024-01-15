@@ -15,8 +15,8 @@ export class StockService {
 
   constructor(private http: HttpClient) { }
 
-  public getByPartCode(partCode: string): Observable<StockItem> {
-    return this.http.get<StockItem>(this.baseUrl + partCode);
+  public getById(id: string): Observable<StockItem> {
+    return this.http.get<StockItem>(this.baseUrl + id);
   }
 
   public getPaginatedList(pageParams: PaginationParams, additionalParams?: HttpParams): Observable<PaginatedResult<StockItem[]>> {
@@ -27,5 +27,14 @@ export class StockService {
     }
 
     return getPaginatedResult<StockItem[]>(this.baseUrl, params, this.http);
+  }
+
+  public addNew(item: Partial<StockItem>): Observable<StockItem> {
+    return this.http.post<StockItem>(this.baseUrl, item)
+  }
+
+  public update(item: StockItem): Observable<StockItem> {
+    const value: Omit<StockItem, 'id' | 'partCode'> = item;
+    return this.http.put<StockItem>(this.baseUrl + item.id, value);
   }
 }

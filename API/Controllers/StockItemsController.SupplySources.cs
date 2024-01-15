@@ -14,8 +14,8 @@ public sealed partial class StockItemsController
 {
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
-    [HttpPost("{partCode}/supplySources")]
-    public async Task<ActionResult> AddSupplySource(StockSupplySourceDto supplySource, string partCode)
+    [HttpPost("{id}/supplySources")]
+    public async Task<ActionResult> AddSupplySource(StockSupplySourceDto supplySource, string id)
     {
         var stockItem = HttpContext.GetStockItem();
         
@@ -35,16 +35,16 @@ public sealed partial class StockItemsController
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
-    [HttpGet("{partCode}/supplySources")]
-    public async Task<ActionResult> GetAllSupplySources(string partCode)
+    [HttpGet("{id}/supplySources")]
+    public async Task<ActionResult> GetAllSupplySources(string id)
     {
         var stockItem = HttpContext.GetStockItem();
         return Ok(stockItem.SupplySources);
     }
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
-    [HttpGet("{partCode}/supplySources/{sourceIndex:int}")]
-    public async Task<ActionResult> GetSupplySourceByIndex(string partCode, int sourceIndex)
+    [HttpGet("{id}/supplySources/{sourceIndex:int}")]
+    public async Task<ActionResult> GetSupplySourceByIndex(string id, int sourceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         var supplySource = stockItem.SupplySources.ElementAtOrDefault(sourceIndex);
@@ -55,8 +55,8 @@ public sealed partial class StockItemsController
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
-    [HttpPut("{partCode}/supplySources/{sourceIndex:int}")]
-    public async Task<ActionResult> UpdateSupplySource(StockSupplySourceDto sourceUpdates, string partCode, int sourceIndex)
+    [HttpPut("{id}/supplySources/{sourceIndex:int}")]
+    public async Task<ActionResult> UpdateSupplySource(StockSupplySourceDto sourceUpdates, string id, int sourceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         
@@ -82,8 +82,8 @@ public sealed partial class StockItemsController
     
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
-    [HttpDelete("{partCode}/supplySources/{sourceIndex:int}")]
-    public async Task<ActionResult> RemoveSupplySource(string partCode, int sourceIndex)
+    [HttpDelete("{id}/supplySources/{sourceIndex:int}")]
+    public async Task<ActionResult> RemoveSupplySource(string id, int sourceIndex)
     {
         var stockItem = HttpContext.GetStockItem();
         

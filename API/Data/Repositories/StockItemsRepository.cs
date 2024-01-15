@@ -21,6 +21,12 @@ public sealed class StockItemsRepository : IStockItemsRepository
             .FirstOrDefaultAsync(item => item.PartCode == partCode);
     }
 
+    public Task<StockItem?> GetById(string id)
+    {
+        return _context.StockItems
+            .FirstOrDefaultAsync(item => item.Id == id);
+    }
+
     public void Add(StockItem stockItem)
     {
         _context.StockItems.Add(stockItem);

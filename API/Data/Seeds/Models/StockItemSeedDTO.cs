@@ -1,8 +1,9 @@
-﻿namespace API.Entities;
+﻿using API.Entities;
 
-public sealed class StockItem
+namespace API.Data.Seeds.Models;
+
+public class StockItemSeedDTO
 {
-    public required string Id { get; set; } = Guid.NewGuid().ToString();
     public required string PartCode { get; set; }
     public required string Description { get; set; }
     public string? Location { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using API.Data.Seeds.Models;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +17,18 @@ public sealed class DataSeed
         if (await context.StockItems.CountAsync() != 0) return;
         
         var data = await File.ReadAllTextAsync("Data/Seeds/StockItems/StockItemSeed_v2.json");
-        var stockItems = JsonSerializer.Deserialize<List<StockItem>>(data);
-        if (stockItems == null) return;
+        var stockItemDTOs = JsonSerializer.Deserialize<List<StockItemSeedDTO>>(data);
+        if (stockItemDTOs == null) return;
+
+        var stockItems = stockItemDTOs.Select(item => new StockItem
+        {
+            Id = default,
+            PartCode = item.PartCode,
+            Description = item.Description,
+            Category = item.Category,
+            Location = item.Location,
+            SupplySources = item.SupplySources
+        });
         
         context.StockItems.AddRange(stockItems);
         await context.SaveChangesAsync();

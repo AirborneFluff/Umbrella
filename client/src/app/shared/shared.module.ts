@@ -10,6 +10,8 @@ import { IsVisibleDirective } from './directives/is-visible.directive';
 import { OrbSearchComponent } from './orb-search/orb-search.component';
 import { QueryFilterModule } from './query-filter/query-filter.module';
 import { AppFormsModule } from './app-forms/app-forms.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { AppFormsModule } from './app-forms/app-forms.module';
     MatListModule,
     MatPaginatorModule,
     QueryFilterModule,
-    AppFormsModule
+    AppFormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatIconModule,
@@ -36,7 +40,9 @@ import { AppFormsModule } from './app-forms/app-forms.module';
     IsVisibleDirective,
     OrbSearchComponent,
     QueryFilterModule,
-    AppFormsModule
+    AppFormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule { }
