@@ -39,6 +39,7 @@ public sealed class AccountController : BaseApiController
         {
             new Claim(ExtendedClaimTypes.Id, user.Id),
             new Claim(ExtendedClaimTypes.Email, user.Email),
+            new Claim(ExtendedClaimTypes.OrganisationId, user.OrganisationId),
             new Claim(ExtendedClaimTypes.Permissions, user.Permissions.ToString()),
             new Claim(ExtendedClaimTypes.PermissionsHash, permissionsHash)
         };
@@ -54,6 +55,7 @@ public sealed class AccountController : BaseApiController
         {
             Email = user.Email,
             Id = user.Id,
+            OrganisationId = user.OrganisationId,
             Permissions = user.Permissions,
             PermissionsHash = permissionsHash
         });

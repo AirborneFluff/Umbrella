@@ -6,4 +6,5 @@ public static class ExtendedClaimTypes
     public const string Email = "email";
     public const string Permissions = "permissions";
     public const string PermissionsHash = "permissionsHash";
+    public const string OrganisationId = "organisationId";
 }
