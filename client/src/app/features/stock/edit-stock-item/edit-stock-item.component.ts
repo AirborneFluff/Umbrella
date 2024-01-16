@@ -22,6 +22,7 @@ export class EditStockItemComponent implements AfterViewInit {
               private route: ActivatedRoute) {}
 
   stockItem$ = this.id$.pipe(
+    take(1),
     notNullOrUndefined(),
     switchMap(id => this.stockApi.getById(id)),
     shareReplay(1)
@@ -39,7 +40,6 @@ export class EditStockItemComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.stockItem$
-      .pipe(take(1))
       .subscribe(item => {
         this.changeDetector.detectChanges();
         this.formComponent.patchForm(item)
