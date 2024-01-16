@@ -41,8 +41,8 @@ export class RootFeatureStream extends InjectableStream<string | undefined> {
 
   private getRootValue(url: string): string | undefined {
     const fragments = url.split('/');
-    if (fragments.length <= 1) return undefined;
+    if (fragments.length <= 2) return undefined;
 
-    return fragments[1];
+    return fragments[2];
   }
 }

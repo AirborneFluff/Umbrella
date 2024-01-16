@@ -18,7 +18,7 @@
     <app-side-menu-button text="Home" icon="home" [compact]="isCompact" [disabled]="true" />
     <app-side-menu-button
       text="Stock" icon="dashboard_customize"
-      routerLink="/stock"
+      routerLink="/app/stock"
       [active]="(activeRoot$ | async) == RootFeatures.STOCK_ROOT"
       [compact]="isCompact"
       (click)="onClose.emit()"/>
