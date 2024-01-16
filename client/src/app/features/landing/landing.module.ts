@@ -5,12 +5,14 @@ import { LandingRoutingModule } from './landing-routing.module';
 import { LandingScreenComponent } from './landing-screen/landing-screen.component';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from '../../shared/shared.module';
+import { RegisterOrganisationComponent } from './register-organisation/register-organisation.component';
 
 
 @NgModule({
   declarations: [
     LandingScreenComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterOrganisationComponent
   ],
   imports: [
     CommonModule,
