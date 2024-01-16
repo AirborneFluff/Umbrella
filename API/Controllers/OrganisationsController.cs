@@ -10,12 +10,10 @@ namespace API.Controllers;
 public sealed class OrganisationsController : BaseApiController
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly IMapper _mapper;
 
-    public OrganisationsController(UserManager<AppUser> userManager, IMapper mapper)
+    public OrganisationsController(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
-        _mapper = mapper;
     }
 
     [HttpPost]
@@ -44,6 +42,6 @@ public sealed class OrganisationsController : BaseApiController
         var result = await _userManager.CreateAsync(owner, organisationDto.Password);
         if (!result.Succeeded) return BadRequest(result.Errors);
         
-        return Ok(_mapper.Map<AppUserDto>(owner));
+        return Ok();
     }
 }
