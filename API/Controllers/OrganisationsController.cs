@@ -1,22 +1,21 @@
 ﻿using API.Authentication;
-using API.Data;
 using API.Data.DTOs;
 using API.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
 public sealed class OrganisationsController : BaseApiController
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly AuthenticationContext _context;
+    private readonly IMapper _mapper;
 
-    public OrganisationsController(UserManager<AppUser> userManager, AuthenticationContext context)
+    public OrganisationsController(UserManager<AppUser> userManager, IMapper mapper)
     {
         _userManager = userManager;
-        _context = context;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -45,6 +44,6 @@ public sealed class OrganisationsController : BaseApiController
         var result = await _userManager.CreateAsync(owner, organisationDto.Password);
         if (!result.Succeeded) return BadRequest(result.Errors);
         
-        return BadRequest("There was an issue adding Organisation");
+        return Ok(_mapper.Map<AppUserDto>(owner));
     }
 }

@@ -4,6 +4,7 @@ using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Helpers;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -17,11 +18,13 @@ public sealed class AccountController : BaseApiController
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IMapper _mapper;
 
-    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IMapper mapper)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _mapper = mapper;
     }
     
     [HttpPost("login")]
@@ -51,20 +54,14 @@ public sealed class AccountController : BaseApiController
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity));
 
-        return Ok(new AppUserDto()
-        {
-            Email = user.Email,
-            Id = user.Id,
-            OrganisationId = user.OrganisationId,
-            Permissions = user.Permissions,
-            PermissionsHash = permissionsHash
-        });
+        return Ok(_mapper.Map<AppUser>(user));
     }
 
     [Authorize]
     [HttpGet]
     public async Task<ActionResult> GetUser()
     {
+
         return Ok(User.GetDetails());
     }
 
