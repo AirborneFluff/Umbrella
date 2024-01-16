@@ -15,21 +15,18 @@ public static class ClaimsPrincipleExtensions
         var email = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.Email);
         var organisationId = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.OrganisationId);
         var permissions = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.Permissions);
-        var hash = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.PermissionsHash);
         
         if (id == null) throw new Exception("User has no id");
         if (email == null) throw new Exception("User has no email");
         if (organisationId == null) throw new Exception("User has no organisation Id");
         if (permissions == null) throw new Exception("User has no permissions");
-        if (hash == null) throw new Exception("User has no hash");
         
         return new AppUserDto()
         {
             Id = id.Value,
             Email = email.Value,
             OrganisationId = organisationId.Value,
-            Permissions = ulong.Parse(permissions.Value),
-            PermissionsHash = hash.Value
+            Permissions = ulong.Parse(permissions.Value)
         };
     }
 

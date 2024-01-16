@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { StockItem } from '../../../core/models/stock-item';
-import { PaginatedResult, PaginationParams } from '../../../core/utilities/pagination';
-import { getPaginatedResult, getPaginationHeaders } from '../../../core/utilities/pagination-helper';
-import { mergeParams } from '../../../core/utilities/http-params-helper';
+import { StockItem } from '../models/stock-item';
+import { PaginatedResult, PaginationParams } from '../utilities/pagination';
+import { getPaginatedResult, getPaginationHeaders } from '../utilities/pagination-helper';
+import { mergeParams } from '../utilities/http-params-helper';
 
 @Injectable({
   providedIn: 'root'

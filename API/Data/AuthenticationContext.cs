@@ -16,23 +16,11 @@ public sealed class AuthenticationContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<AppUser>()
-            .HasOne(user => user.Organisation);
-
-        modelBuilder.Entity<Organisation>()
-            .HasMany(o => o.Members)
-            .WithOne(au => au.Organisation);
-        
-        modelBuilder.Entity<Organisation>()
-            .HasOne(o => o.Owner)
-            .WithOne(au => au.Organisation)
-            .HasForeignKey<Organisation>(o => o.OwnerId);
+            .HasOne(user => user.Organisation)
+            .WithMany(org => org.Members);
 
         modelBuilder.Entity<Organisation>()
             .HasIndex(o => o.NormalizedName)
             .IsUnique();
-
-        modelBuilder.Entity<OrganisationMember>()
-            .HasKey(member => new { member.MemberId, member.OrganisationId });
-
     }
 }

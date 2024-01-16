@@ -1,0 +1,24 @@
+<div class="max-w-screen-sm mx-auto px-2 mt-6">
+  <div class="flex items-center text-center gap-1 mb-2">
+    <div class="cursor-pointer px-2 py-4 flex justify-center items-center" routerLink="../">
+      <mat-icon>chevron_left</mat-icon>
+    </div>
+    <h1 class="font-display font-semibold text-2xl">Login</h1>
+  </div>
+  <app-form-field>
+    <input appInput placeholder="Email" [formControl]="form.controls['email']"/>
+  </app-form-field>
+  <app-form-field>
+    <input appInput placeholder="Password" type="password" [formControl]="form.controls['password']"/>
+  </app-form-field>
+
+  <div (click)="login()"
+    class="ml-auto font-display text-item-light text-lg font-medium text-center py-1 px-2 bg-primary rounded-lg cursor-pointer">
+    <div class="flex justify-center items-center">
+      <span *ngIf="!busy else busySpinner">Login</span>
+    </div>
+    <ng-template #busySpinner>
+      <mat-spinner diameter="28"/>
+    </ng-template>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { StockItemFormComponent } from '../stock-item-form/stock-item-form.component';
-import { StockService } from '../services/stock.service';
+import { StockService } from '../../../core/services/stock.service';
 import { StockItemIdStream } from '../../../core/streams/stock-item-id-stream';
 import { notNullOrUndefined } from '../../../core/pipes/not-null';
 import { shareReplay, switchMap, take } from 'rxjs';
@@ -22,6 +22,7 @@ export class EditStockItemComponent implements AfterViewInit {
               private route: ActivatedRoute) {}
 
   stockItem$ = this.id$.pipe(
+    take(1),
     notNullOrUndefined(),
     switchMap(id => this.stockApi.getById(id)),
     shareReplay(1)
@@ -39,7 +40,6 @@ export class EditStockItemComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.stockItem$
-      .pipe(take(1))
       .subscribe(item => {
         this.changeDetector.detectChanges();
         this.formComponent.patchForm(item)

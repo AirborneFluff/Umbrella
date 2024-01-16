@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { StockItemFormComponent } from '../stock-item-form/stock-item-form.component';
-import { StockService } from '../services/stock.service';
+import { StockService } from '../../../core/services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

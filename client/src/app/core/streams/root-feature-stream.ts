@@ -5,7 +5,7 @@ import {
   filter,
   map,
   shareReplay,
-  startWith,
+  startWith, tap,
 } from 'rxjs';
 
 import { InjectableStream } from './injectable-stream';
@@ -21,9 +21,9 @@ export class RootFeatureStream extends InjectableStream<string | undefined> {
         filter(event => event instanceof NavigationEnd),
         startWith(undefined),
         map(value => {
-          if (!(value as NavigationEnd)?.url) return undefined;
+          if (!(value as NavigationEnd)?.urlAfterRedirects) return undefined;
 
-          const rootValue = this.getRootValue((value as NavigationEnd).url);
+          const rootValue = this.getRootValue((value as NavigationEnd).urlAfterRedirects);
           if (!this.isValidFeature(rootValue)) return undefined;
 
           return rootValue;
@@ -41,8 +41,8 @@ export class RootFeatureStream extends InjectableStream<string | undefined> {
 
   private getRootValue(url: string): string | undefined {
     const fragments = url.split('/');
-    if (fragments.length <= 1) return undefined;
+    if (fragments.length <= 2) return undefined;
 
-    return fragments[1];
+    return fragments[2];
   }
 }

@@ -10,6 +10,4 @@ public sealed class AppUser : IdentityUser
     public required string OrganisationId { get; set; }
     
     public Organisation? Organisation { get; set; }
-    public Organisation? OwnedOrganisation { get; set; }
-    public IEnumerable<OrganisationMember>? OrganisationsAsMember { get; set; }
 }

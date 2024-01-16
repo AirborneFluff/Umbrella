@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { StockService } from '../services/stock.service';
+import { StockService } from '../../../core/services/stock.service';
 import {
   debounceTime,
   map,

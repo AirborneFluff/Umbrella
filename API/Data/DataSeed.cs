@@ -14,7 +14,9 @@ public sealed class DataSeed
 
     public static async Task SeedStockItems(DataContext context, string organisationId)
     {
-        if (await context.StockItems.CountAsync() != 0) return;
+        if (await context.StockItems
+                .WithPartitionKey(organisationId)
+                .CountAsync() != 0) return;
         
         var data = await File.ReadAllTextAsync("Data/Seeds/StockItems/StockItemSeed_v2.json");
         var stockItemDTOs = JsonSerializer.Deserialize<List<StockItemSeedDTO>>(data);

@@ -4,13 +4,18 @@ public static class PermissionGroups
 {
     public static ulong PowerUser => GetPermissionValue(_powerUser);
     public static ulong StoresManager => GetPermissionValue(_storesManager);
+    public static ulong ReadOnlyUser => GetPermissionValue(_readOnly);
     
     private static UserPermissions[] _powerUser => (UserPermissions[])Enum.GetValues(typeof(UserPermissions));
     private static readonly UserPermissions[] _storesManager =
     {
-        
         UserPermissions.ManageStockItems,
         UserPermissions.ManageStockSuppliers,
+        UserPermissions.ReadStockItems
+    };
+
+    private static readonly UserPermissions[] _readOnly =
+    {
         UserPermissions.ReadStockItems
     };
 

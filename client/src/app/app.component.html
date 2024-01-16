@@ -1,3 +1,7 @@
-<app-ui-shell>
+<app-ui-shell *ngIf="account.currentUser$ | async else noShell">
   <router-outlet/>
 </app-ui-shell>
+
+<ng-template #noShell>
+  <router-outlet/>
+</ng-template>
