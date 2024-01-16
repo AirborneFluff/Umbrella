@@ -36,6 +36,6 @@
 
 <ng-template #defaultAvatar>
   <div class="w-full h-full flex justify-center items-center">
-    <span class="font-display font-regular text-xl">M</span>
+    <span class="font-display font-regular text-xl">{{accountInitial$ | async}}</span>
   </div>
 </ng-template>

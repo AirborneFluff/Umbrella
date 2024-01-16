@@ -4,6 +4,7 @@ import { RootFeatureStream } from '../../streams/root-feature-stream';
 import { RootFeatures } from '../../definitions/root-features';
 import { notNullOrUndefined } from '../../pipes/not-null';
 import { AccountService } from '../../services/account.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-side-menu',
@@ -19,6 +20,11 @@ export class SideMenuComponent {
   constructor(private root$: RootFeatureStream, protected account: AccountService) {}
 
   protected activeRoot$ = this.root$.pipe(notNullOrUndefined())
+
+  accountInitial$ = this.account.currentUser$.pipe(
+    notNullOrUndefined(),
+    map(user => user.email[0].toUpperCase())
+  )
 
   get widthClass(): string {
     if (this.layoutType == SideMenuLayouts.Full) return 'w-full';
