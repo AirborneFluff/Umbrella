@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from './auth/services/auth.service';
+import { AccountService } from './core/services/account.service';
 import { TEST_EMAIL, TEST_PASSWORD } from './developer.secrets';
 
 @Component({
@@ -8,21 +8,7 @@ import { TEST_EMAIL, TEST_PASSWORD } from './developer.secrets';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'client';
-
-  constructor(private auth: AuthService) {
-    this.login();
-  }
-
-  login() {
-    this.auth.login({email: TEST_EMAIL, password: TEST_PASSWORD}).subscribe();
-  }
-
-  logout() {
-    this.auth.logout().subscribe();
-  }
-
-  getUser() {
-    this.auth.getUser().subscribe(value => console.log(value))
+  constructor(protected account: AccountService) {
+    account.login({email: TEST_EMAIL, password: TEST_PASSWORD}).subscribe();
   }
 }
