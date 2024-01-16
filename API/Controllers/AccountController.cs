@@ -57,11 +57,10 @@ public sealed class AccountController : BaseApiController
         return Ok(_mapper.Map<AppUser>(user));
     }
 
-    [Authorize]
     [HttpGet]
     public async Task<ActionResult> GetUser()
     {
-
+        if (!User.Claims.Any()) return Ok();
         return Ok(User.GetDetails());
     }
 
