@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { catchError, Observable, of, ReplaySubject, tap } from 'rxjs';
+import {
+  catchError,
+  concat,
+  distinctUntilChanged,
+  Observable,
+  of,
+  ReplaySubject,
+  shareReplay,
+  take,
+  tap
+} from 'rxjs';
 import { AppUser } from '../models/app-user';
 import { HttpClient } from '@angular/common/http';
 import { LoginParams } from '../models/login-params';
@@ -11,10 +21,14 @@ import { LoginParams } from '../models/login-params';
 export class AccountService {
   private baseUrl = environment.apiUrl;
   private currentUserSource$ = new ReplaySubject<AppUser | undefined>(1);
-  public currentUser$ = this.currentUserSource$.asObservable();
+  public currentUser$ = concat(
+    this.getUserDetails().pipe(take(1)),
+    this.currentUserSource$
+  ).pipe(
+    distinctUntilChanged(),
+    shareReplay(1))
 
   constructor(private http: HttpClient) {
-    this.getUserDetails().subscribe(val => this.currentUserSource$.next(val));
   }
 
   private getUserDetails(): Observable<AppUser | undefined> {
