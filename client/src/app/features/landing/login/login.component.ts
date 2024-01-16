@@ -29,5 +29,4 @@ export class LoginComponent {
       error: e => console.log(e)
     })
   }
-
 }
