@@ -9,6 +9,7 @@ import { TEST_EMAIL, TEST_PASSWORD } from './developer.secrets';
 })
 export class AppComponent {
   constructor(protected account: AccountService) {
-    account.login({email: TEST_EMAIL, password: TEST_PASSWORD}).subscribe();
+    //account.logout().subscribe();
+    //account.login({email: TEST_EMAIL, password: TEST_PASSWORD}).subscribe();
   }
 }
