@@ -68,7 +68,6 @@ public sealed class AccountController : BaseApiController
         return Ok(User.GetDetails());
     }
 
-    [Authorize]
     [HttpPost("logout")]
     public async Task<ActionResult> Logout()
     {
