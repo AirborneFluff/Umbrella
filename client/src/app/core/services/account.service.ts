@@ -6,8 +6,7 @@ import {
   distinctUntilChanged,
   Observable,
   of,
-  ReplaySubject,
-  shareReplay,
+  shareReplay, Subject,
   take,
   tap
 } from 'rxjs';
@@ -20,7 +19,7 @@ import { LoginParams } from '../models/login-params';
 })
 export class AccountService {
   private baseUrl = environment.apiUrl;
-  private currentUserSource$ = new ReplaySubject<AppUser | undefined>(1);
+  private currentUserSource$ = new Subject<AppUser | undefined>();
   public currentUser$ = concat(
     this.getUserDetails().pipe(take(1)),
     this.currentUserSource$
@@ -47,8 +46,8 @@ export class AccountService {
   }
 
   public logout() {
-    return this.http.post(this.baseUrl + "Account/logout", {}).pipe(
+    this.http.post(this.baseUrl + "Account/logout", {}).pipe(
       tap(() => this.currentUserSource$.next(undefined))
-    )
+    ).subscribe();
   }
 }
