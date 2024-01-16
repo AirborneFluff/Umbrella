@@ -14,6 +14,5 @@ public sealed class Organisation
         set {}
     }
 
-    public AppUser? Owner { get; set; }
-    public IEnumerable<OrganisationMember>? Members { get; set; }
+    public ICollection<AppUser> Members { get; set; } = new List<AppUser>();
 }

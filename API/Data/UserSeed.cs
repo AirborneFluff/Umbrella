@@ -20,28 +20,29 @@ public sealed class UserSeed
         if (ownerUserName is null || ownerPassword is null|| organisationName is null)
             throw new Exception("Owner UserName and Password not configured");
 
-        var organisationId = Guid.NewGuid().ToString();
-
-        var user = new AppUser()
-        {
-            OrganisationId = organisationId,
-            UserName = ownerUserName,
-            Email = ownerUserName,
-            Permissions = PermissionGroups.PowerUser
-        };
-
+        
+        var ownerId = Guid.NewGuid().ToString();
+        
         var organisation = new Organisation()
         {
-            Id = organisationId,
-            OwnerId = user.Id,
-            Name = organisationName
+            Name = organisationName,
+            OwnerId = ownerId
         };
-
-        user.Organisation = organisation;
         
+        var owner = new AppUser
+        {
+            Id = ownerId,
+            UserName = ownerUserName,
+            Email = ownerUserName,
+            Permissions = PermissionGroups.PowerUser,
+            Organisation = organisation,
+            OrganisationId = organisation.Id
+        };
         
-        var result = await userManager.CreateAsync(user, ownerPassword);
-        if (!result.Succeeded) throw new Exception("Issue creating owner account");
+        organisation.Members.Add(owner);
+        
+        var result = await userManager.CreateAsync(owner, ownerPassword);
+        if (!result.Succeeded) throw new Exception("Error adding seed account");
     }
     
 }
