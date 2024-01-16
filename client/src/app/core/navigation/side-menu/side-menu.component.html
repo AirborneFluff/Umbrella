@@ -9,10 +9,10 @@
              (error)="showDefaultAvatar = true">
       </div>
 
-      <div *ngIf="layoutType != SideMenuLayouts.Compact" class="flex w-full bg-item-light rounded-lg py-2.5 px-4 cursor-pointer justify-between">
-        <span class="font-light font-display">Hi, User</span>
-        <mat-icon>expand_more</mat-icon>
-      </div>
+<!--      <div class="flex w-full bg-item-light rounded-lg py-2.5 px-4 cursor-pointer justify-between">-->
+<!--        <span class="font-light font-display">Hi, User</span>-->
+<!--        <mat-icon>expand_more</mat-icon>-->
+<!--      </div>-->
     </div>
 
     <app-side-menu-button text="Home" icon="home" [compact]="isCompact" [disabled]="true" />
@@ -28,7 +28,10 @@
     <app-side-menu-button text="Sales" icon="sell" [compact]="isCompact"  [disabled]="true"/>
   </div>
 
-  <app-side-menu-button text="Support" icon="help_outline" [compact]="isCompact"  [disabled]="true"/>
+  <div>
+    <app-side-menu-button text="Support" icon="help_outline" [compact]="isCompact"  [disabled]="true"/>
+    <app-side-menu-button text="Logout" icon="logout" [compact]="isCompact" (click)="account.logout()"/>
+  </div>
 </div>
 
 <ng-template #defaultAvatar>
