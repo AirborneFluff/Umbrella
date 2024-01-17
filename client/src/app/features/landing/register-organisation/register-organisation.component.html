@@ -37,9 +37,9 @@
       Passwords must match</app-form-error>
   </app-form-field>
 
-  <div *ngIf="!success"
-    (click)="register()"
-    class="ml-auto mt-8 font-display text-item-light text-lg font-medium text-center py-2 bg-primary rounded-lg cursor-pointer">
+  <div [ngClass]="{'pointer-events-none cursor-auto bg-gray-500' : !form.valid}"
+       (click)="register()"
+       class="ml-auto mt-8 font-display text-item-light text-lg font-medium text-center py-2 bg-primary rounded-lg cursor-pointer">
     <div class="flex justify-center items-center">
       <span *ngIf="!busy else busySpinner">Register</span>
     </div>
