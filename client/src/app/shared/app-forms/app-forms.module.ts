@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormFieldComponent } from './form-field/form-field.component';
 import { AppInputDirective } from './directives/app-input.directive';
 import { AppInputGhostDirective } from './directives/app-input-ghost.directive';
+import { FormLabelComponent } from './form-label/form-label.component';
+import { FormErrorComponent } from './form-error/form-error.component';
 
 
 
@@ -10,15 +12,19 @@ import { AppInputGhostDirective } from './directives/app-input-ghost.directive';
   declarations: [
     FormFieldComponent,
     AppInputDirective,
-    AppInputGhostDirective
+    AppInputGhostDirective,
+    FormLabelComponent,
+    FormErrorComponent,
   ],
   exports: [
     FormFieldComponent,
     AppInputDirective,
-    AppInputGhostDirective
+    AppInputGhostDirective,
+    FormLabelComponent,
+    FormErrorComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ]
 })
 export class AppFormsModule { }
