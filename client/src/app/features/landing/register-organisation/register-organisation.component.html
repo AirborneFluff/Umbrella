@@ -5,31 +5,22 @@
     </div>
     <h1 class="font-display font-semibold text-2xl">Register</h1>
   </div>
-  <app-form-field>
+  <app-form-field [requiredError]="form.controls['organisationName'].hasError('required') && form.controls['organisationName'].dirty">
     <app-form-label>Organisation Name</app-form-label>
     <input appInput placeholder="Organisation Name" [formControl]="form.controls['organisationName']"/>
-    <app-form-error *ngIf="form.controls['organisationName'].hasError('required') && form.controls['organisationName'].dirty else orgErrors">An Organisation Name is required</app-form-error>
-    <ng-template #orgErrors>
-      <app-form-error *ngIf="form.controls['organisationName'].errors && form.controls['organisationName'].dirty">Must be between 3-32 character long</app-form-error>
-    </ng-template>
+    <app-form-error *ngIf="form.controls['organisationName'].errors && form.controls['organisationName'].dirty">Must be between 3-32 character long</app-form-error>
   </app-form-field>
-  <app-form-field>
+  <app-form-field [requiredError]="form.controls['email'].hasError('required') && form.controls['email'].dirty">
     <app-form-label>Administrator Email</app-form-label>
     <input appInput placeholder="Email" [formControl]="form.controls['email']"/>
-    <app-form-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].dirty else emailErrors">An Email is required</app-form-error>
-    <ng-template #emailErrors>
-      <app-form-error *ngIf="form.controls['email'].errors && form.controls['email'].dirty">Must be a valid email</app-form-error>
-    </ng-template>
+    <app-form-error *ngIf="form.controls['email'].errors && form.controls['email'].dirty">Must be a valid email</app-form-error>
   </app-form-field>
-  <app-form-field>
+  <app-form-field [requiredError]="form.controls['password'].hasError('required') && form.controls['password'].dirty">
     <app-form-label>Password</app-form-label>
     <input appInput placeholder="Password" type="password" [formControl]="form.controls['password']"/>
-    <app-form-error *ngIf="form.controls['password'].hasError('required') && form.controls['password'].dirty else passwordError">Password is required</app-form-error>
-    <ng-template #passwordError>
-      <app-form-error *ngIf="form.controls['password'].errors && form.controls['password'].dirty">Password not secure enough</app-form-error>
-    </ng-template>
+    <app-form-error *ngIf="form.controls['password'].errors && form.controls['password'].dirty">Password not secure enough</app-form-error>
   </app-form-field>
-  <app-form-field>
+  <app-form-field [requiredError]="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].dirty">
     <app-form-label>Confirm Password</app-form-label>
     <input appInput placeholder="Confirm Password" type="password" [formControl]="form.controls['confirmPassword']"/>
     <app-form-error
