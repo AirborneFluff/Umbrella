@@ -15,7 +15,6 @@ type FormControlName = keyof typeof RegisterOrganisationComponent.prototype.form
 })
 export class RegisterOrganisationComponent implements OnDestroy {
   busy = false;
-  success: boolean | undefined;
 
   subscriptions = new Subscription();
 
@@ -71,8 +70,7 @@ export class RegisterOrganisationComponent implements OnDestroy {
     this.organisation.createOrganisation(this.formValue).pipe(
       finalize(() => this.busy = false)
     ).subscribe({
-      next: () => this.success = true,
-      error: e => console.log(e)
+      //todo Some redirection to setup page?
     })
   }
 }
