@@ -8,23 +8,28 @@ import {
 import { catchError, Observable, throwError } from 'rxjs';
 import { AccountService } from '../services/account.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
 
-  constructor(private account: AccountService, private router: Router) {}
+  constructor(private account: AccountService, private router: Router, private snackBar: MatSnackBar) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((requestError: HttpErrorResponse) => {
-        this.handleError(requestError?.status);
+        this.handleError(requestError);
         return throwError(() => requestError);
       })
     );
   }
 
-  handleError(errorCode: number) {
-    switch (errorCode) {
+  handleError(error: HttpErrorResponse) {
+    this.snackBar.open(this.getSnackbarMessage(error), 'Dismiss', {
+      duration: 10000
+    });
+
+    switch (error?.status) {
       case 401:
         this.handleUnauthorized();
         break;
@@ -37,5 +42,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       this.account.logout();
       this.router.navigateByUrl('');
     }
+  }
+
+  getSnackbarMessage(error: HttpErrorResponse): string {
+    return `There was a problem. Error - ${error.status}: ${error.statusText}`
   }
 }
