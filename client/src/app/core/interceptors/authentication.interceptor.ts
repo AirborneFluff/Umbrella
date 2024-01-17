@@ -24,7 +24,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     );
   }
 
-  handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse) {
     this.snackBar.open(this.getSnackbarMessage(error), 'Dismiss', {
       duration: 10000
     });
@@ -36,7 +36,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     }
   }
 
-  handleUnauthorized() {
+  private handleUnauthorized() {
     const fragments = this.router.url.split('/');
     if (fragments[1] == 'app') {
       this.account.logout();
@@ -44,7 +44,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     }
   }
 
-  getSnackbarMessage(error: HttpErrorResponse): string {
+  private getSnackbarMessage(error: HttpErrorResponse): string {
     return `There was a problem. Error - ${error.status}: ${error.statusText}`
   }
 }
