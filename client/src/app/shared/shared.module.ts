@@ -16,6 +16,7 @@ import { AppInputDirective } from './app-forms/directives/app-input.directive';
 import { AppInputGhostDirective } from './app-forms/directives/app-input-ghost.directive';
 import { FormLabelComponent } from './app-forms/form-label/form-label.component';
 import { FormErrorComponent } from './app-forms/form-error/form-error.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { FormErrorComponent } from './app-forms/form-error/form-error.component'
     QueryFilterModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule
   ],
   exports: [
     MatIconModule,
@@ -55,6 +57,7 @@ import { FormErrorComponent } from './app-forms/form-error/form-error.component'
     AppInputGhostDirective,
     FormLabelComponent,
     FormErrorComponent,
+    MatSnackBarModule
   ]
 })
 export class SharedModule { }
