@@ -1,16 +1,16 @@
-<app-form-field [requiredError]="form.controls['partCode'].hasError('required') && form.controls['partCode'].dirty">
+<app-form-field [requiredError]="hasRequiredError('partCode')">
   <app-form-label>Partcode</app-form-label>
-  <input appInput placeholder="Partcode" [formControl]="form.controls['partCode']">
+  <input appInput placeholder="Partcode" [formControl]="getControl('partCode')">
 </app-form-field>
-<app-form-field [requiredError]="form.controls['description'].hasError('required') && form.controls['description'].dirty">
+<app-form-field [requiredError]="hasRequiredError('description')">
   <app-form-label>Description</app-form-label>
-  <input appInput placeholder="Description" [formControl]="form.controls['description']">
+  <input appInput placeholder="Description" [formControl]="getControl('description')">
 </app-form-field>
 <app-form-field>
   <app-form-label>Location</app-form-label>
-  <input appInput placeholder="Location" [formControl]="form.controls['location']">
+  <input appInput placeholder="Location" [formControl]="getControl('location')">
 </app-form-field>
 <app-form-field>
   <app-form-label>Category</app-form-label>
-  <input appInput placeholder="Category" [formControl]="form.controls['category']">
+  <input appInput placeholder="Category" [formControl]="getControl('category')">
 </app-form-field>
