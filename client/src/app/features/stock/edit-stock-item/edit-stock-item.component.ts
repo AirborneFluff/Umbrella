@@ -3,7 +3,7 @@ import { StockItemFormComponent } from '../stock-item-form/stock-item-form.compo
 import { StockService } from '../../../core/services/stock.service';
 import { StockItemIdStream } from '../../../core/streams/stock-item-id-stream';
 import { notNullOrUndefined } from '../../../core/pipes/not-null';
-import { shareReplay, switchMap, take } from 'rxjs';
+import { finalize, shareReplay, switchMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -32,8 +32,9 @@ export class EditStockItemComponent implements AfterViewInit {
     const item = this.formComponent.formValue;
     this.busy = true;
 
-    this.stockApi.update(item).subscribe(() => {
-      this.busy = false;
+    this.stockApi.update(item).pipe(
+      finalize(() => this.busy = false)
+    ).subscribe(() => {
       this.router.navigate(['../'], { relativeTo: this.route })
     })
   }

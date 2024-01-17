@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegisterOrganisationParams } from '../../../core/models/register-organisation-params';
 import { OrganisationService } from '../../../core/services/organisation.service';
 import { matchValues } from '../../../core/form-validators/match-values-validator';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { passwordStrengthValidator } from '../../../core/form-validators/password-strength-validator';
 
 type FormControlName = keyof typeof RegisterOrganisationComponent.prototype.form.controls;
@@ -15,7 +15,6 @@ type FormControlName = keyof typeof RegisterOrganisationComponent.prototype.form
 })
 export class RegisterOrganisationComponent implements OnDestroy {
   busy = false;
-  success: boolean | undefined;
 
   subscriptions = new Subscription();
 
@@ -68,9 +67,10 @@ export class RegisterOrganisationComponent implements OnDestroy {
 
   register() {
     this.busy = true;
-    this.organisation.createOrganisation(this.formValue).subscribe({
-      next: () => this.success = true,
-      error: e => console.log(e)
+    this.organisation.createOrganisation(this.formValue).pipe(
+      finalize(() => this.busy = false)
+    ).subscribe({
+      //todo Some redirection to setup page?
     })
   }
 }
