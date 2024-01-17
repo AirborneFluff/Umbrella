@@ -9,15 +9,24 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { IsVisibleDirective } from './directives/is-visible.directive';
 import { OrbSearchComponent } from './orb-search/orb-search.component';
 import { QueryFilterModule } from './query-filter/query-filter.module';
-import { AppFormsModule } from './app-forms/app-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormFieldComponent } from './app-forms/form-field/form-field.component';
+import { AppInputDirective } from './app-forms/directives/app-input.directive';
+import { AppInputGhostDirective } from './app-forms/directives/app-input-ghost.directive';
+import { FormLabelComponent } from './app-forms/form-label/form-label.component';
+import { FormErrorComponent } from './app-forms/form-error/form-error.component';
 
 @NgModule({
   declarations: [
     OrbButtonComponent,
     IsVisibleDirective,
-    OrbSearchComponent
+    OrbSearchComponent,
+    FormFieldComponent,
+    AppInputDirective,
+    AppInputGhostDirective,
+    FormLabelComponent,
+    FormErrorComponent,
   ],
   imports: [
     CommonModule,
@@ -27,9 +36,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatListModule,
     MatPaginatorModule,
     QueryFilterModule,
-    AppFormsModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   exports: [
     MatIconModule,
@@ -40,9 +48,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     IsVisibleDirective,
     OrbSearchComponent,
     QueryFilterModule,
-    AppFormsModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FormFieldComponent,
+    AppInputDirective,
+    AppInputGhostDirective,
+    FormLabelComponent,
+    FormErrorComponent,
   ]
 })
 export class SharedModule { }
