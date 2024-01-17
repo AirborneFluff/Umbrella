@@ -3,7 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginParams } from '../../../core/models/login-params';
 import { AccountService } from '../../../core/services/account.service';
 import { Router } from '@angular/router';
-import { catchError, delay, finalize } from 'rxjs';
+import { finalize } from 'rxjs';
+import { passwordStrengthValidator } from '../../../core/form-validators/password-strength-validator';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +16,12 @@ export class LoginComponent {
   error: string | undefined;
 
   protected form = new FormGroup({
-    email: new FormControl<string>('', {validators: [Validators.required], nonNullable: true}),
-    password: new FormControl<string>('', {validators: [Validators.required], nonNullable: true}),
+    email: new FormControl<string>('', {
+      validators: [Validators.required, Validators.email], nonNullable: true
+    }),
+    password: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(6), Validators.maxLength(32), passwordStrengthValidator()], nonNullable: true
+    }),
   })
 
   constructor(private account: AccountService, private router: Router) {}
