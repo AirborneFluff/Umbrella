@@ -13,6 +13,7 @@ import {
 import { AppUser } from '../models/app-user';
 import { HttpClient } from '@angular/common/http';
 import { LoginParams } from '../models/login-params';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class AccountService {
     distinctUntilChanged(),
     shareReplay(1))
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   private getUserDetails(): Observable<AppUser | undefined> {
@@ -46,8 +47,9 @@ export class AccountService {
   }
 
   public logout() {
-    this.http.post(this.baseUrl + "Account/logout", {}).pipe(
-      tap(() => this.currentUserSource$.next(undefined))
-    ).subscribe();
+    this.http.post(this.baseUrl + "Account/logout", {}).subscribe(() => {
+      this.currentUserSource$.next(undefined);
+      this.router.navigateByUrl('');
+    });
   }
 }
