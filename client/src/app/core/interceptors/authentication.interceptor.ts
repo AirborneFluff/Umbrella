@@ -25,26 +25,26 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 
   private handleError(error: HttpErrorResponse) {
-    this.snackBar.open(this.getSnackbarMessage(error), 'Dismiss', {
-      duration: 10000
-    });
 
     switch (error?.status) {
       case 401:
         this.handleUnauthorized();
         break;
+      default:
+        this.postSnackbar(error);
     }
   }
 
   private handleUnauthorized() {
     const fragments = this.router.url.split('/');
     if (fragments[1] == 'app') {
-      this.account.logout();
-      this.router.navigateByUrl('');
+      this.account.logout('login');
     }
   }
 
-  private getSnackbarMessage(error: HttpErrorResponse): string {
-    return `There was a problem. Error - ${error.status}: ${error.statusText}`
+  private postSnackbar(error: HttpErrorResponse) {
+    this.snackBar.open(`There was a problem. Error - ${error.status}: ${error.statusText}`, 'Dismiss', {
+      duration: 10000
+    });
   }
 }
