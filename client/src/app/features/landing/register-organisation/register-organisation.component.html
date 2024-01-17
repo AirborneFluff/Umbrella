@@ -8,12 +8,18 @@
   <app-form-field>
     <app-form-label>Organisation Name</app-form-label>
     <input appInput placeholder="Organisation Name" [formControl]="form.controls['organisationName']"/>
-    <app-form-error *ngIf="form.controls['organisationName'].hasError('required') && form.controls['organisationName'].dirty">An Organisation Name is required</app-form-error>
+    <app-form-error *ngIf="form.controls['organisationName'].hasError('required') && form.controls['organisationName'].dirty else orgErrors">An Organisation Name is required</app-form-error>
+    <ng-template #orgErrors>
+      <app-form-error *ngIf="form.controls['organisationName'].errors && form.controls['organisationName'].dirty">Must be between 3-32 character long</app-form-error>
+    </ng-template>
   </app-form-field>
   <app-form-field>
     <app-form-label>Administrator Email</app-form-label>
     <input appInput placeholder="Email" [formControl]="form.controls['email']"/>
-    <app-form-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].dirty">An Email is required</app-form-error>
+    <app-form-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].dirty else emailErrors">An Email is required</app-form-error>
+    <ng-template #emailErrors>
+      <app-form-error *ngIf="form.controls['email'].errors && form.controls['email'].dirty">Must be a valid email</app-form-error>
+    </ng-template>
   </app-form-field>
   <app-form-field>
     <app-form-label>Password</app-form-label>

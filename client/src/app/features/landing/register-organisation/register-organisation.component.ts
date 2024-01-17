@@ -19,13 +19,13 @@ export class RegisterOrganisationComponent implements OnDestroy {
 
   protected form = new FormGroup({
     organisationName: new FormControl<string>('', {
-      validators: [Validators.required], nonNullable: true
+      validators: [Validators.required, Validators.minLength(3), Validators.maxLength(32)], nonNullable: true
     }),
     email: new FormControl<string>('', {
-      validators: [Validators.required], nonNullable: true
+      validators: [Validators.required, Validators.email], nonNullable: true
     }),
     password: new FormControl<string>('', {
-      validators: [Validators.required, Validators.minLength(6), passwordStrengthValidator()], nonNullable: true
+      validators: [Validators.required, Validators.minLength(6), Validators.maxLength(32), passwordStrengthValidator()], nonNullable: true
     }),
     confirmPassword: new FormControl<string>('', {
       validators: [Validators.required, matchValues('password')], nonNullable: true
