@@ -17,12 +17,25 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((requestError: HttpErrorResponse) => {
-        if (requestError?.status === 401) {
-          this.account.logout();
-          this.router.navigateByUrl('');
-        }
+        this.handleError(requestError?.status);
         return throwError(() => requestError);
       })
     );
+  }
+
+  handleError(errorCode: number) {
+    switch (errorCode) {
+      case 401:
+        this.handleUnauthorized();
+        break;
+    }
+  }
+
+  handleUnauthorized() {
+    const fragments = this.router.url.split('/');
+    if (fragments[1] == 'app') {
+      this.account.logout();
+      this.router.navigateByUrl('');
+    }
   }
 }

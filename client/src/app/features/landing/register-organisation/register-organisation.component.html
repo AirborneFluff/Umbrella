@@ -5,22 +5,32 @@
     </div>
     <h1 class="font-display font-semibold text-2xl">Register</h1>
   </div>
-  <app-form-field>
-    <input appInput placeholder="Organisation Name" [formControl]="form.controls['organisationName']"/>
+  <app-form-field [requiredError]="hasRequiredError('organisationName')">
+    <app-form-label>Organisation Name</app-form-label>
+    <input appInput placeholder="Organisation Name" [formControl]="getControl('organisationName')"/>
+    <app-form-error *ngIf="hasErrors('organisationName')">Must be between 3-32 character long</app-form-error>
   </app-form-field>
-  <app-form-field>
-    <input appInput placeholder="Owner Email" [formControl]="form.controls['email']"/>
+  <app-form-field [requiredError]="hasRequiredError('email')">
+    <app-form-label>Administrator Email</app-form-label>
+    <input appInput placeholder="Email" [formControl]="getControl('email')"/>
+    <app-form-error *ngIf="hasErrors('email')">Must be a valid email</app-form-error>
   </app-form-field>
-  <app-form-field>
-    <input appInput placeholder="Password" type="password" [formControl]="form.controls['password']"/>
+  <app-form-field [requiredError]="hasRequiredError('password')">
+    <app-form-label>Password</app-form-label>
+    <input appInput placeholder="Password" type="password" [formControl]="getControl('password')"/>
+    <app-form-error *ngIf="hasErrors('password')">Password not secure enough</app-form-error>
   </app-form-field>
-  <app-form-field>
-    <input appInput placeholder="Confirm Password" type="password" [formControl]="form.controls['password']"/>
+  <app-form-field [requiredError]="hasRequiredError('confirmPassword')">
+    <app-form-label>Confirm Password</app-form-label>
+    <input appInput placeholder="Confirm Password" type="password" [formControl]="getControl('confirmPassword')"/>
+    <app-form-error
+      *ngIf="hasErrors('confirmPassword')">
+      Passwords must match</app-form-error>
   </app-form-field>
 
-  <div *ngIf="!success"
-    (click)="register()"
-    class="ml-auto font-display text-item-light text-lg font-medium text-center py-1 px-2 bg-primary rounded-lg cursor-pointer">
+  <div [ngClass]="{'pointer-events-none cursor-auto bg-gray-500' : !form.valid}"
+       (click)="register()"
+       class="ml-auto mt-8 font-display text-item-light text-lg font-medium text-center py-2 bg-primary rounded-lg cursor-pointer">
     <div class="flex justify-center items-center">
       <span *ngIf="!busy else busySpinner">Register</span>
     </div>

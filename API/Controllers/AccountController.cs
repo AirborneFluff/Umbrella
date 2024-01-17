@@ -31,10 +31,10 @@ public sealed class AccountController : BaseApiController
     public async Task<ActionResult> Login([FromBody] LoginDto login)
     {
         var user = await _userManager.Users.FirstOrDefaultAsync(user => user.Email == login.Email);
-        if (user == null) return NotFound();
+        if (user == null) return Unauthorized("Invalid login credentials");
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
-        if (!result.Succeeded) return Unauthorized();
+        if (!result.Succeeded) return Unauthorized("Invalid login credentials");
 
         var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
 

@@ -34,7 +34,10 @@ export class AppInputDirective implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.valid$ = this.control.valueChanges!.pipe(
-      map(() => this.control.valid),
+      map(() => {
+        if (!this.control.dirty) return true;
+        return this.control.valid
+      }),
       distinctUntilChanged()
     )
     this.subscriptions.add(
