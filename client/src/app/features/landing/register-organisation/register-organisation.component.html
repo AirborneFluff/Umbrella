@@ -6,21 +6,34 @@
     <h1 class="font-display font-semibold text-2xl">Register</h1>
   </div>
   <app-form-field>
+    <app-form-label>Organisation Name</app-form-label>
     <input appInput placeholder="Organisation Name" [formControl]="form.controls['organisationName']"/>
+    <app-form-error *ngIf="form.controls['organisationName'].hasError('required') && form.controls['organisationName'].dirty">An Organisation Name is required</app-form-error>
   </app-form-field>
   <app-form-field>
-    <input appInput placeholder="Owner Email" [formControl]="form.controls['email']"/>
+    <app-form-label>Administrator Email</app-form-label>
+    <input appInput placeholder="Email" [formControl]="form.controls['email']"/>
+    <app-form-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].dirty">An Email is required</app-form-error>
   </app-form-field>
   <app-form-field>
+    <app-form-label>Password</app-form-label>
     <input appInput placeholder="Password" type="password" [formControl]="form.controls['password']"/>
+    <app-form-error *ngIf="form.controls['password'].hasError('required') && form.controls['password'].dirty else passwordError">Password is required</app-form-error>
+    <ng-template #passwordError>
+      <app-form-error *ngIf="form.controls['password'].errors && form.controls['password'].dirty">Password not secure enough</app-form-error>
+    </ng-template>
   </app-form-field>
   <app-form-field>
-    <input appInput placeholder="Confirm Password" type="password" [formControl]="form.controls['password']"/>
+    <app-form-label>Confirm Password</app-form-label>
+    <input appInput placeholder="Confirm Password" type="password" [formControl]="form.controls['confirmPassword']"/>
+    <app-form-error
+      *ngIf="form.controls['confirmPassword'].hasError('isMatching') && form.controls['confirmPassword'].dirty">
+      Passwords must match</app-form-error>
   </app-form-field>
 
   <div *ngIf="!success"
     (click)="register()"
-    class="ml-auto font-display text-item-light text-lg font-medium text-center py-1 px-2 bg-primary rounded-lg cursor-pointer">
+    class="ml-auto mt-8 font-display text-item-light text-lg font-medium text-center py-2 bg-primary rounded-lg cursor-pointer">
     <div class="flex justify-center items-center">
       <span *ngIf="!busy else busySpinner">Register</span>
     </div>
