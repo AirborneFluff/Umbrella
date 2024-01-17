@@ -46,10 +46,10 @@ export class AccountService {
     );
   }
 
-  public logout() {
+  public logout(redirectUrl?: string) {
     this.http.post(this.baseUrl + "Account/logout", {}).subscribe(() => {
       this.currentUserSource$.next(undefined);
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl(redirectUrl ?? '');
     });
   }
 }
