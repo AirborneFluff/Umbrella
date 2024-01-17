@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { passwordStrengthValidator } from '../../../core/form-validators/password-strength-validator';
 
+type FormControlName = keyof typeof LoginComponent.prototype.form.controls;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,7 +17,7 @@ export class LoginComponent {
   busy = false;
   error: string | undefined;
 
-  protected form = new FormGroup({
+  form = new FormGroup({
     email: new FormControl<string>('', {
       validators: [Validators.required, Validators.email], nonNullable: true
     }),
@@ -28,6 +30,22 @@ export class LoginComponent {
 
   get formValue(): LoginParams {
     return this.form.getRawValue() as LoginParams;
+  }
+
+  getControl(controlName: FormControlName) {
+    return this.form.controls[controlName] as FormControl;
+  }
+
+  hasRequiredError(controlName: FormControlName) {
+    const control = this.getControl(controlName);
+    if (!control.dirty) return false;
+    return control.hasError('required');
+  }
+
+  hasErrors(controlName: FormControlName) {
+    const control = this.getControl(controlName);
+    if (!control.dirty) return false;
+    return !!control.errors;
   }
 
   login() {
