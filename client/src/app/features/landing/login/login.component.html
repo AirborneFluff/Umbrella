@@ -6,9 +6,11 @@
     <h1 class="font-display font-semibold text-2xl">Login</h1>
   </div>
   <app-form-field>
+    <app-form-label>Email</app-form-label>
     <input appInput placeholder="Email" [formControl]="form.controls['email']"/>
   </app-form-field>
   <app-form-field>
+    <app-form-label>Password</app-form-label>
     <input appInput placeholder="Password" type="password" [formControl]="form.controls['password']"/>
   </app-form-field>
 
