@@ -68,9 +68,7 @@ export class RegisterOrganisationComponent implements OnDestroy {
 
   register() {
     this.busy = true;
-    const out = this.formValue;
-    out.organisationName = '';
-    this.organisation.createOrganisation(out).pipe(
+    this.organisation.createOrganisation(this.formValue).pipe(
       finalize(() => this.busy = false)
     ).subscribe({
       next: () => this.success = true,
