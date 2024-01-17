@@ -6,6 +6,8 @@ import { matchValues } from '../../../core/form-validators/match-values-validato
 import { Subscription } from 'rxjs';
 import { passwordStrengthValidator } from '../../../core/form-validators/password-strength-validator';
 
+type FormControlName = keyof typeof RegisterOrganisationComponent.prototype.form.controls;
+
 @Component({
   selector: 'app-register-organisation',
   templateUrl: './register-organisation.component.html',
@@ -17,7 +19,7 @@ export class RegisterOrganisationComponent implements OnDestroy {
 
   subscriptions = new Subscription();
 
-  protected form = new FormGroup({
+  form = new FormGroup({
     organisationName: new FormControl<string>('', {
       validators: [Validators.required, Validators.minLength(3), Validators.maxLength(32)], nonNullable: true
     }),
@@ -48,6 +50,21 @@ export class RegisterOrganisationComponent implements OnDestroy {
     return this.form.getRawValue() as RegisterOrganisationParams;
   }
 
+  getControl(controlName: FormControlName) {
+    return this.form.controls[controlName] as FormControl;
+  }
+
+  hasRequiredError(controlName: FormControlName) {
+    const control = this.getControl(controlName);
+    if (!control.dirty) return false;
+    return control.hasError('required');
+  }
+
+  hasErrors(controlName: FormControlName) {
+    const control = this.getControl(controlName);
+    if (!control.dirty) return false;
+    return !!control.errors;
+  }
 
   register() {
     this.busy = true;

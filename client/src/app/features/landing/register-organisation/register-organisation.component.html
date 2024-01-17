@@ -5,26 +5,26 @@
     </div>
     <h1 class="font-display font-semibold text-2xl">Register</h1>
   </div>
-  <app-form-field [requiredError]="form.controls['organisationName'].hasError('required') && form.controls['organisationName'].dirty">
+  <app-form-field [requiredError]="hasRequiredError('organisationName')">
     <app-form-label>Organisation Name</app-form-label>
-    <input appInput placeholder="Organisation Name" [formControl]="form.controls['organisationName']"/>
-    <app-form-error *ngIf="form.controls['organisationName'].errors && form.controls['organisationName'].dirty">Must be between 3-32 character long</app-form-error>
+    <input appInput placeholder="Organisation Name" [formControl]="getControl('organisationName')"/>
+    <app-form-error *ngIf="hasErrors('organisationName')">Must be between 3-32 character long</app-form-error>
   </app-form-field>
-  <app-form-field [requiredError]="form.controls['email'].hasError('required') && form.controls['email'].dirty">
+  <app-form-field [requiredError]="hasRequiredError('email')">
     <app-form-label>Administrator Email</app-form-label>
-    <input appInput placeholder="Email" [formControl]="form.controls['email']"/>
-    <app-form-error *ngIf="form.controls['email'].errors && form.controls['email'].dirty">Must be a valid email</app-form-error>
+    <input appInput placeholder="Email" [formControl]="getControl('email')"/>
+    <app-form-error *ngIf="hasErrors('email')">Must be a valid email</app-form-error>
   </app-form-field>
-  <app-form-field [requiredError]="form.controls['password'].hasError('required') && form.controls['password'].dirty">
+  <app-form-field [requiredError]="hasRequiredError('password')">
     <app-form-label>Password</app-form-label>
-    <input appInput placeholder="Password" type="password" [formControl]="form.controls['password']"/>
-    <app-form-error *ngIf="form.controls['password'].errors && form.controls['password'].dirty">Password not secure enough</app-form-error>
+    <input appInput placeholder="Password" type="password" [formControl]="getControl('password')"/>
+    <app-form-error *ngIf="hasErrors('password')">Password not secure enough</app-form-error>
   </app-form-field>
-  <app-form-field [requiredError]="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].dirty">
+  <app-form-field [requiredError]="hasRequiredError('confirmPassword')">
     <app-form-label>Confirm Password</app-form-label>
-    <input appInput placeholder="Confirm Password" type="password" [formControl]="form.controls['confirmPassword']"/>
+    <input appInput placeholder="Confirm Password" type="password" [formControl]="getControl('confirmPassword')"/>
     <app-form-error
-      *ngIf="form.controls['confirmPassword'].hasError('isMatching') && form.controls['confirmPassword'].dirty">
+      *ngIf="hasErrors('confirmPassword')">
       Passwords must match</app-form-error>
   </app-form-field>
 
