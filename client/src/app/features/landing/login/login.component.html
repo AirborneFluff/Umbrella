@@ -12,10 +12,11 @@
   <app-form-field>
     <app-form-label>Password</app-form-label>
     <input appInput placeholder="Password" type="password" [formControl]="form.controls['password']"/>
+    <app-form-error *ngIf="error">{{error}}</app-form-error>
   </app-form-field>
 
   <div (click)="login()"
-    class="ml-auto font-display text-item-light text-lg font-medium text-center py-1 px-2 bg-primary rounded-lg cursor-pointer">
+    class="ml-auto mt-8 font-display text-item-light text-lg font-medium text-center py-2 bg-primary rounded-lg cursor-pointer">
     <div class="flex justify-center items-center">
       <span *ngIf="!busy else busySpinner">Login</span>
     </div>
