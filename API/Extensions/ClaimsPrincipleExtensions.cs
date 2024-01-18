@@ -45,8 +45,7 @@ public static class ClaimsPrincipleExtensions
             .FirstOrDefault(x => x.Type == ExtendedClaimTypes.Permissions);
         if (permissionsClaims is null) return false;
 
-        var permissionBit = (ulong)1 << (int)permission;
-        var bitwise = ulong.Parse(permissionsClaims.Value) & permissionBit;
+        var bitwise = ulong.Parse(permissionsClaims.Value) & (ulong)permission;
         return bitwise > 0;
     }
 }
