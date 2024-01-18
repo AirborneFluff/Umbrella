@@ -4,10 +4,10 @@ using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Helpers;
+using API.Utilities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +18,17 @@ public sealed class AccountController : BaseApiController
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
+    private readonly RoleManager<AppRole> _roleManager;
     private readonly IMapper _mapper;
 
-    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IMapper mapper)
+    public AccountController(SignInManager<AppUser> signInManager,
+        UserManager<AppUser> userManager,
+        RoleManager<AppRole> roleManager,
+        IMapper mapper)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _roleManager = roleManager;
         _mapper = mapper;
     }
     
@@ -37,6 +42,15 @@ public sealed class AccountController : BaseApiController
         if (!result.Succeeded) return Unauthorized("Invalid login credentials");
 
         var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
+        var roleNames = await _userManager
+            .GetRolesAsync(user);
+        
+        var tasks = roleNames
+            .Select(roleName => _roleManager.FindByNameAsync(roleName));
+        var roleResult = await Task.WhenAll(tasks);
+        var roles = roleResult.OfType<AppRole>();
+        
+        user.Permissions = RolePermissionsConverter.ConvertToPermissionsValue(roles);
 
         var claims = new List<Claim>
         {
@@ -54,7 +68,7 @@ public sealed class AccountController : BaseApiController
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity));
 
-        return Ok(_mapper.Map<AppUser>(user));
+        return Ok(_mapper.Map<AppUserDto>(user));
     }
 
     [HttpGet]
