@@ -36,7 +36,6 @@ public sealed class UserSeed
             Id = ownerId,
             UserName = ownerUserName,
             Email = ownerUserName,
-            Permissions = PermissionGroups.PowerUser,
             Organisation = organisation,
             OrganisationId = organisation.Id
         };
@@ -45,16 +44,17 @@ public sealed class UserSeed
         {
             UserName = "demo",
             Email = "demo",
-            Permissions = PermissionGroups.ReadOnlyUser,
             OrganisationId = organisation.Id
         };
         
         organisation.Members.Add(owner);
         organisation.Members.Add(demoUser);
-        await userManager.CreateAsync(demoUser, "Demologin@1");
         
-        var result = await userManager.CreateAsync(owner, ownerPassword);
-        if (!result.Succeeded) throw new Exception("Error adding seed account");
+        await userManager.CreateAsync(demoUser, "Demologin@1");
+        await userManager.AddToRoleAsync(demoUser, nameof(UserPermissions.ReadStockItems));
+        
+        await userManager.CreateAsync(owner, ownerPassword);
+        await userManager.AddToRolesAsync(owner, Enum.GetValues<UserPermissions>().Select(role => role.ToString()));
     }
 
     private static async Task CreateRoles(RoleManager<AppRole> roleManager)
@@ -66,6 +66,4 @@ public sealed class UserSeed
             .ToArray();
         await Task.WhenAll(tasks);
     }
-    
-    
 }
