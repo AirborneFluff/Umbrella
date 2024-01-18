@@ -38,9 +38,10 @@ public sealed class OrganisationsController : BaseApiController
         
         organisation.Members.Add(owner);
 
-        await _userManager.AddToRolesAsync(owner, Enum.GetValues<UserPermissions>().Select(role => role.ToString()));
         var result = await _userManager.CreateAsync(owner, organisationDto.Password);
         if (!result.Succeeded) return BadRequest(result.Errors);
+        
+        await _userManager.AddToRolesAsync(owner, Enum.GetValues<UserPermissions>().Select(role => role.ToString()));
         return Ok();
     }
 }
