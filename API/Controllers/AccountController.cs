@@ -54,7 +54,7 @@ public sealed class AccountController : BaseApiController
             new ClaimsPrincipal(claimsIdentity));
 
         var dto = _mapper.Map<AppUserDto>(user);
-        dto.Permissions = userPermissions;
+        dto.Permissions = userPermissions.ToString();
 
         return Ok(dto);
     }

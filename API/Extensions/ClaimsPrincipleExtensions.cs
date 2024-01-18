@@ -15,13 +15,13 @@ public static class ClaimsPrincipleExtensions
         var email = userClaims.GetValueOrThrow(ExtendedClaimTypes.Email, "User had no Email");
         var organisationId = userClaims.GetValueOrThrow(ExtendedClaimTypes.OrganisationId, "User had no OrganisationId");
         var permissions  = userClaims.GetValueOrThrow(ExtendedClaimTypes.Permissions, "User had no Permissions Value");
-        
+
         return new AppUserDto()
         {
             Id = id,
             Email = email,
             OrganisationId = organisationId,
-            Permissions = ulong.Parse(permissions)
+            Permissions = permissions
         };
     }
 
