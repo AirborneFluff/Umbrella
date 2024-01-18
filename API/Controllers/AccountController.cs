@@ -53,7 +53,10 @@ public sealed class AccountController : BaseApiController
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity));
 
-        return Ok(_mapper.Map<AppUserDto>(user));
+        var dto = _mapper.Map<AppUserDto>(user);
+        dto.Permissions = userPermissions;
+
+        return Ok(dto);
     }
 
     [HttpGet]
