@@ -40,23 +40,11 @@ public sealed class AccountController : BaseApiController
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
         if (!result.Succeeded) return Unauthorized("Invalid login credentials");
-
-        var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
-        var roleNames = await _userManager
-            .GetRolesAsync(user);
-
-        var roles = await _roleManager.GetRoles(roleNames);
         
-        user.Permissions = RolePermissionsConverter.ConvertToPermissionsValue(roles);
-
-        var claims = new List<Claim>
-        {
-            new Claim(ExtendedClaimTypes.Id, user.Id),
-            new Claim(ExtendedClaimTypes.Email, user.Email),
-            new Claim(ExtendedClaimTypes.OrganisationId, user.OrganisationId),
-            new Claim(ExtendedClaimTypes.Permissions, user.Permissions.ToString()),
-            new Claim(ExtendedClaimTypes.PermissionsHash, permissionsHash)
-        };
+        var roleNames = await _userManager.GetRolesAsync(user);
+        var roles = await _roleManager.GetRoles(roleNames);
+        var userPermissions = RolePermissionsConverter.ConvertToPermissionsValue(roles);
+        var claims = user.CreateClaims(userPermissions);
 
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
