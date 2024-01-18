@@ -9,24 +9,19 @@ public static class ClaimsPrincipleExtensions
 {
     public static AppUserDto GetDetails(this ClaimsPrincipal principal)
     {
-        var userClaims = principal.Claims.Select(x => new UserClaim(x.Type, x.Value)).ToList();
-        
-        var id = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.Id);
-        var email = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.Email);
-        var organisationId = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.OrganisationId);
-        var permissions = userClaims.Find(claim => claim.Type == ExtendedClaimTypes.Permissions);
-        
-        if (id == null) throw new Exception("User has no id");
-        if (email == null) throw new Exception("User has no email");
-        if (organisationId == null) throw new Exception("User has no organisation Id");
-        if (permissions == null) throw new Exception("User has no permissions");
+        var userClaims = principal.Claims.ToDictionary(x => x.Type, x => x.Value);
+
+        var id = userClaims.GetValueOrThrow(ExtendedClaimTypes.Id, "User had no Id");
+        var email = userClaims.GetValueOrThrow(ExtendedClaimTypes.Email, "User had no Email");
+        var organisationId = userClaims.GetValueOrThrow(ExtendedClaimTypes.OrganisationId, "User had no OrganisationId");
+        var permissions  = userClaims.GetValueOrThrow(ExtendedClaimTypes.Permissions, "User had no Permissions Value");
         
         return new AppUserDto()
         {
-            Id = id.Value,
-            Email = email.Value,
-            OrganisationId = organisationId.Value,
-            Permissions = ulong.Parse(permissions.Value)
+            Id = id,
+            Email = email,
+            OrganisationId = organisationId,
+            Permissions = ulong.Parse(permissions)
         };
     }
 
