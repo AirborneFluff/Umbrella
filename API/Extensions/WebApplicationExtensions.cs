@@ -15,8 +15,9 @@ public static class WebApplicationExtensions
         {
             var context = service.GetRequiredService<AuthenticationContext>();
             var userManager = service.GetRequiredService<UserManager<AppUser>>();
+            var roleManager = service.GetRequiredService<RoleManager<AppRole>>();
             await context.Database.MigrateAsync();
-            await UserSeed.SeedRolesAndOwner(userManager, app.Configuration);
+            await UserSeed.SeedRolesAndOwner(userManager, roleManager, app.Configuration);
         }
         catch (Exception ex)
         {

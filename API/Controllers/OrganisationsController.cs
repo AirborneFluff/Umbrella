@@ -32,7 +32,6 @@ public sealed class OrganisationsController : BaseApiController
             Id = ownerId,
             Email = organisationDto.Email,
             UserName = organisationDto.Email,
-            Permissions = PermissionGroups.PowerUser,
             Organisation = organisation,
             OrganisationId = organisation.Id
         };
@@ -42,6 +41,7 @@ public sealed class OrganisationsController : BaseApiController
         var result = await _userManager.CreateAsync(owner, organisationDto.Password);
         if (!result.Succeeded) return BadRequest(result.Errors);
         
+        await _userManager.AddToRolesAsync(owner, Enum.GetValues<UserPermissions>().Select(role => role.ToString()));
         return Ok();
     }
 }

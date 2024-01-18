@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
-public sealed class AuthenticationContext : IdentityDbContext<AppUser>
+public sealed class AuthenticationContext : IdentityDbContext<AppUser, AppRole, string>
 {
     public DbSet<Organisation> Organisations => Set<Organisation>();
     

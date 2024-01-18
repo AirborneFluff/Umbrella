@@ -4,10 +4,10 @@ using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Helpers;
+using API.Utilities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +18,17 @@ public sealed class AccountController : BaseApiController
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
+    private readonly RoleManager<AppRole> _roleManager;
     private readonly IMapper _mapper;
 
-    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IMapper mapper)
+    public AccountController(SignInManager<AppUser> signInManager,
+        UserManager<AppUser> userManager,
+        RoleManager<AppRole> roleManager,
+        IMapper mapper)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _roleManager = roleManager;
         _mapper = mapper;
     }
     
@@ -35,17 +40,11 @@ public sealed class AccountController : BaseApiController
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
         if (!result.Succeeded) return Unauthorized("Invalid login credentials");
-
-        var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
-
-        var claims = new List<Claim>
-        {
-            new Claim(ExtendedClaimTypes.Id, user.Id),
-            new Claim(ExtendedClaimTypes.Email, user.Email),
-            new Claim(ExtendedClaimTypes.OrganisationId, user.OrganisationId),
-            new Claim(ExtendedClaimTypes.Permissions, user.Permissions.ToString()),
-            new Claim(ExtendedClaimTypes.PermissionsHash, permissionsHash)
-        };
+        
+        var roleNames = await _userManager.GetRolesAsync(user);
+        var roles = await _roleManager.GetRoles(roleNames);
+        var userPermissions = RolePermissionsConverter.ConvertToPermissionsValue(roles);
+        var claims = user.CreateClaims(userPermissions);
 
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -54,7 +53,10 @@ public sealed class AccountController : BaseApiController
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity));
 
-        return Ok(_mapper.Map<AppUser>(user));
+        var dto = _mapper.Map<AppUserDto>(user);
+        dto.Permissions = userPermissions.ToString();
+
+        return Ok(dto);
     }
 
     [HttpGet]
