@@ -44,11 +44,8 @@ public sealed class AccountController : BaseApiController
         var permissionsHash = EnumUtilities.GetNameAndValueHash<UserPermissions>();
         var roleNames = await _userManager
             .GetRolesAsync(user);
-        
-        var tasks = roleNames
-            .Select(roleName => _roleManager.FindByNameAsync(roleName));
-        var roleResult = await Task.WhenAll(tasks);
-        var roles = roleResult.OfType<AppRole>();
+
+        var roles = await _roleManager.GetRoles(roleNames);
         
         user.Permissions = RolePermissionsConverter.ConvertToPermissionsValue(roles);
 
