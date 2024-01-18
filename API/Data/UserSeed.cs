@@ -1,4 +1,5 @@
-﻿using API.Authentication;
+﻿using System.Collections.ObjectModel;
+using API.Authentication;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +10,10 @@ public sealed class UserSeed
 {
     public static async Task SeedRolesAndOwner(
         UserManager<AppUser> userManager,
+        RoleManager<AppRole> roleManager,
         IConfiguration config)
     {
+        await CreateRoles(roleManager);
         if (await userManager.Users.AnyAsync()) return;
         
         var organisationName = config["OwnerCredentials:OrganisationName"];
@@ -53,5 +56,16 @@ public sealed class UserSeed
         var result = await userManager.CreateAsync(owner, ownerPassword);
         if (!result.Succeeded) throw new Exception("Error adding seed account");
     }
+
+    private static async Task CreateRoles(RoleManager<AppRole> roleManager)
+    {
+        if (roleManager.Roles.Any()) return;
+        
+        var tasks = Enum.GetValues<UserPermissions>()
+            .Select(role => roleManager.CreateAsync(new AppRole(role.ToString(), (ulong)role)))
+            .ToArray();
+        await Task.WhenAll(tasks);
+    }
+    
     
 }

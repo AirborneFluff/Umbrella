@@ -36,16 +36,17 @@ public static class ApplicationServiceExtensions
         builder.Services.AddDbContext<AuthenticationContext>(options => {
             var connStr = builder.Configuration.GetConnectionString("DefaultConnection");
             if (connStr == null) throw new Exception("DefaultConnection not configured");
-            
+
             options.UseSqlite(connStr);
         });
         
         builder.Services
-            .AddDefaultIdentity<AppUser>(options =>
+            .AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedAccount = false;
             })
+            .AddRoles<AppRole>()
             .AddEntityFrameworkStores<AuthenticationContext>();
     }
 
