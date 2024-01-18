@@ -41,7 +41,7 @@ public static class ApplicationServiceExtensions
         });
         
         builder.Services
-            .AddIdentity<AppUser, AppRole>(options =>
+            .AddDefaultIdentity<AppUser>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedAccount = false;
