@@ -5,6 +5,8 @@ import { OrganisationService } from '../../../core/services/organisation.service
 import { matchValues } from '../../../core/form-validators/match-values-validator';
 import { finalize, Subscription } from 'rxjs';
 import { passwordStrengthValidator } from '../../../core/form-validators/password-strength-validator';
+import { Router } from '@angular/router';
+import { ComponentCanDeactivate } from '../../../core/guards/prevent-unsaved-changes.guard';
 
 type FormControlName = keyof typeof RegisterOrganisationComponent.prototype.form.controls;
 
@@ -13,7 +15,7 @@ type FormControlName = keyof typeof RegisterOrganisationComponent.prototype.form
   templateUrl: './register-organisation.component.html',
   styleUrls: ['./register-organisation.component.scss']
 })
-export class RegisterOrganisationComponent implements OnDestroy {
+export class RegisterOrganisationComponent implements OnDestroy, ComponentCanDeactivate {
   busy = false;
 
   subscriptions = new Subscription();
@@ -26,19 +28,24 @@ export class RegisterOrganisationComponent implements OnDestroy {
       validators: [Validators.required, Validators.email], nonNullable: true
     }),
     password: new FormControl<string>('', {
-      validators: [Validators.required, Validators.minLength(6), Validators.maxLength(32), passwordStrengthValidator()], nonNullable: true
+      validators: [Validators.required, Validators.minLength(6), Validators.maxLength(32), passwordStrengthValidator()],
+      nonNullable: true
     }),
     confirmPassword: new FormControl<string>('', {
       validators: [Validators.required, matchValues('password')], nonNullable: true
     }),
-  })
+  });
 
-  constructor(private organisation: OrganisationService) {
+  constructor(private organisation: OrganisationService, private router: Router) {
     this.subscriptions.add(
       this.form.controls['password'].valueChanges.subscribe(() => {
         this.form.controls['confirmPassword'].updateValueAndValidity();
       })
-    )
+    );
+  }
+
+  canDeactivate(): boolean {
+    return this.form.pristine;
   }
 
   ngOnDestroy() {
@@ -69,8 +76,8 @@ export class RegisterOrganisationComponent implements OnDestroy {
     this.busy = true;
     this.organisation.createOrganisation(this.formValue).pipe(
       finalize(() => this.busy = false)
-    ).subscribe({
-      //todo Some redirection to setup page?
+    ).subscribe(() => {
+      this.router.navigateByUrl('login');
     })
   }
 }

@@ -4,5 +4,5 @@ namespace API.Interfaces;
 
 public interface IStockMetadataRepository
 {
-    public Task AddCategoryMetadata(StockMetadata metadata);
+    Task<StockMetadata> GetAsync();
 }

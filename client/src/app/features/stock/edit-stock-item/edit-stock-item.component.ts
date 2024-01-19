@@ -5,13 +5,14 @@ import { StockItemIdStream } from '../../../core/streams/stock-item-id-stream';
 import { notNullOrUndefined } from '../../../core/pipes/not-null';
 import { finalize, shareReplay, switchMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ComponentCanDeactivate } from '../../../core/guards/prevent-unsaved-changes.guard';
 
 @Component({
   selector: 'app-edit-stock-item',
   templateUrl: './edit-stock-item.component.html',
   styleUrls: ['./edit-stock-item.component.scss']
 })
-export class EditStockItemComponent implements AfterViewInit {
+export class EditStockItemComponent implements AfterViewInit, ComponentCanDeactivate {
   busy = false;
   @ViewChild(StockItemFormComponent, {static: false}) formComponent!: StockItemFormComponent;
 
@@ -27,6 +28,10 @@ export class EditStockItemComponent implements AfterViewInit {
     switchMap(id => this.stockApi.getById(id)),
     shareReplay(1)
   )
+
+  canDeactivate() {
+    return this.formComponent.form.pristine;
+  }
 
   save() {
     const item = this.formComponent.formValue;

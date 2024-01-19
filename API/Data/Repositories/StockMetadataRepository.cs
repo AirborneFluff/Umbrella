@@ -15,10 +15,17 @@ public sealed class StockMetadataRepository : IStockMetadataRepository
         _partitionKey = partitionKey;
     }
 
-
-    public async Task AddCategoryMetadata(StockMetadata metadata)
+    public async Task<StockMetadata> GetAsync()
     {
-        metadata.OrganisationId = _partitionKey;
-        _context.StockMetadata.Add(metadata);
+        var meta = await _context.StockMetadata
+            .WithPartitionKey(_partitionKey)
+            .SingleOrDefaultAsync();
+
+        if (meta is not null) return meta;
+        
+        meta = new StockMetadata(_partitionKey);
+        _context.StockMetadata.Add(meta);
+
+        return meta;
     }
 }
