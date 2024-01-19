@@ -18,7 +18,7 @@ public class RolePermissionsConverterTest
             .Select(role => new AppRole(role.ToString()))
             .AsEnumerable();
 
-        var expect = (ulong)(0x01 | 0x02 | 0x04 | 0x08);
+        var expect = (ulong)(0x01 | 0x02 | 0x04 | 0x08 | 0x10);
         
         // Act
         var result = RolePermissionsConverter.ConvertToPermissionsValue(roles);
@@ -33,11 +33,11 @@ public class RolePermissionsConverterTest
         // Arrange
         var roles = new List<AppRole>()
         {
-            new AppRole(nameof(UserPermissions.ManageStockItems)),
+            new AppRole(nameof(UserPermissions.CreateStockItems)),
             new AppRole(nameof(UserPermissions.ManageUsers))
         };
 
-        var expect = (ulong)(UserPermissions.ManageStockItems | UserPermissions.ManageUsers);
+        var expect = (ulong)(UserPermissions.CreateStockItems | UserPermissions.ManageUsers);
         
         // Act
         var result = RolePermissionsConverter.ConvertToPermissionsValue(roles);
@@ -65,12 +65,12 @@ public class RolePermissionsConverterTest
     public void ConvertToRoles_ShouldReturnCorrectList()
     {
         // Arrange
-        var permissions = (ulong)(UserPermissions.ManageUsers | UserPermissions.ManageStockItems);
+        var permissions = (ulong)(UserPermissions.ManageUsers | UserPermissions.CreateStockItems);
 
         var expect = new List<UserPermissions>()
         {
             UserPermissions.ManageUsers,
-            UserPermissions.ManageStockItems
+            UserPermissions.CreateStockItems
         };
         
         // Act
