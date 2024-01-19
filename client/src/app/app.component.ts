@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AccountService } from './core/services/account.service';
-import { TEST_EMAIL, TEST_PASSWORD } from './developer.secrets';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +8,5 @@ import { TEST_EMAIL, TEST_PASSWORD } from './developer.secrets';
 })
 export class AppComponent {
   constructor(protected account: AccountService) {
-    //account.logout().subscribe();
-    //account.login({email: TEST_EMAIL, password: TEST_PASSWORD}).subscribe();
   }
 }
