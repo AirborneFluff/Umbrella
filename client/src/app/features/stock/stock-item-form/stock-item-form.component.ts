@@ -38,5 +38,6 @@ export class StockItemFormComponent {
 
   patchForm(item: StockItem) {
     this.form.patchValue(item);
+    this.getControl('partCode').disable();
   }
 }
