@@ -2,7 +2,7 @@
 
 public sealed class StockItem
 {
-    public required string PartitionKey { get; set; }
+    public required string OrganisationId { get; set; }
     
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public required string PartCode { get; set; }

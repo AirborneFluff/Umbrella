@@ -24,7 +24,7 @@ public sealed class DataSeed
         
         var stockItems = stockItemDTOs.Select(item => new StockItem
         {
-            PartitionKey = organisationId,
+            OrganisationId = organisationId,
             PartCode = item.PartCode,
             Description = item.Description,
             Category = item.Category,

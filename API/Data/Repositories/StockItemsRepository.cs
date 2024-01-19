@@ -33,7 +33,7 @@ public sealed class StockItemsRepository : IStockItemsRepository
 
     public void Add(StockItem stockItem)
     {
-        stockItem.PartitionKey = _partitionKey;
+        stockItem.OrganisationId = _partitionKey;
         _context.StockItems.Add(stockItem);
     }
 
