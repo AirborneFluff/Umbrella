@@ -10,13 +10,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Checkout
       - uses: actions/checkout@v4
-
-      - name: Build Angular Application
-        working-directory: ./client
+      
+      - name: Setup Node
       - uses: actions/setup-node@v4
         with:
           node-version: 18
+        
+      - name: Build Angular Application
+        working-directory: ./client
       - run: |
             npm install
             ng build
