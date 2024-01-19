@@ -22,7 +22,7 @@ jobs:
         working-directory: ./client
         run: |
             npm install
-            bpm run build:prod
+            npm run build:prod
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
