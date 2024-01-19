@@ -43,10 +43,7 @@ public static class WebApplicationExtensions
 
             var unitOfWork = new UnitOfWork(context, user.OrganisationId, mapper);
             
-            if (app.Environment.IsDevelopment())
-            {
-                await DataSeed.SeedStockItems(unitOfWork, user.OrganisationId);
-            }
+            await DataSeed.SeedStockItems(unitOfWork, user.OrganisationId);
         }
         catch (Exception ex)
         {

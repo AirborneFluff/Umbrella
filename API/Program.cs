@@ -38,7 +38,7 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.MapControllers();
-//app.MapFallbackToController("Index", "Fallback");
+app.MapFallbackToController("Index", "Fallback");
 
 app.SeedUsersDatabase();
 app.SeedDatabase();

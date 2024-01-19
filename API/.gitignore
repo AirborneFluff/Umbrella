@@ -486,3 +486,5 @@ $RECYCLE.BIN/
 /LocalDatabase.db
 /LocalDatabase.db-shm
 /LocalDatabase.db-wal
+
+/wwwroot/
