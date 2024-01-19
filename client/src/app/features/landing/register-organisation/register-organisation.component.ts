@@ -5,6 +5,7 @@ import { OrganisationService } from '../../../core/services/organisation.service
 import { matchValues } from '../../../core/form-validators/match-values-validator';
 import { finalize, Subscription } from 'rxjs';
 import { passwordStrengthValidator } from '../../../core/form-validators/password-strength-validator';
+import { Router } from '@angular/router';
 
 type FormControlName = keyof typeof RegisterOrganisationComponent.prototype.form.controls;
 
@@ -33,7 +34,7 @@ export class RegisterOrganisationComponent implements OnDestroy {
     }),
   })
 
-  constructor(private organisation: OrganisationService) {
+  constructor(private organisation: OrganisationService, private router: Router) {
     this.subscriptions.add(
       this.form.controls['password'].valueChanges.subscribe(() => {
         this.form.controls['confirmPassword'].updateValueAndValidity();
@@ -69,8 +70,8 @@ export class RegisterOrganisationComponent implements OnDestroy {
     this.busy = true;
     this.organisation.createOrganisation(this.formValue).pipe(
       finalize(() => this.busy = false)
-    ).subscribe({
-      //todo Some redirection to setup page?
+    ).subscribe(() => {
+      this.router.navigateByUrl('login');
     })
   }
 }
