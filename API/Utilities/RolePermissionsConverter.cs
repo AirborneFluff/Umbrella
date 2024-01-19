@@ -17,7 +17,7 @@ public static class RolePermissionsConverter
         if (!roles.Any()) return 0;
         
         return roles
-            .Select(role => role.PermissionsFlag)
+            .Select(role => (ulong)Enum.Parse<UserPermissions>(role.Name))
             .Aggregate((permissions, roleFlag) => permissions | roleFlag);
     }
 }

@@ -15,7 +15,7 @@ public class RolePermissionsConverterTest
     {
         // Arrange
         var roles = Enum.GetValues<UserPermissions>()
-            .Select(role => new AppRole(role.ToString(), (ulong)role))
+            .Select(role => new AppRole(role.ToString()))
             .AsEnumerable();
 
         var expect = (ulong)(0x01 | 0x02 | 0x04 | 0x08);
@@ -33,8 +33,8 @@ public class RolePermissionsConverterTest
         // Arrange
         var roles = new List<AppRole>()
         {
-            new AppRole(nameof(UserPermissions.ManageStockItems), (ulong)UserPermissions.ManageStockItems),
-            new AppRole(nameof(UserPermissions.ManageUsers), (ulong)UserPermissions.ManageUsers)
+            new AppRole(nameof(UserPermissions.ManageStockItems)),
+            new AppRole(nameof(UserPermissions.ManageUsers))
         };
 
         var expect = (ulong)(UserPermissions.ManageStockItems | UserPermissions.ManageUsers);

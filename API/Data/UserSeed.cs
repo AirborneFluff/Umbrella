@@ -62,7 +62,7 @@ public sealed class UserSeed
         if (roleManager.Roles.Any()) return;
         
         var tasks = Enum.GetValues<UserPermissions>()
-            .Select(role => roleManager.CreateAsync(new AppRole(role.ToString(), (ulong)role)))
+            .Select(role => roleManager.CreateAsync(new AppRole(role.ToString())))
             .ToArray();
         await Task.WhenAll(tasks);
     }
