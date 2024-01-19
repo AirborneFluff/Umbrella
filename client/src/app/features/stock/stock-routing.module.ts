@@ -6,6 +6,7 @@ import { NavigationParams } from '../../core/config/navigation_params';
 import { EditStockItemComponent } from './edit-stock-item/edit-stock-item.component';
 import { authorizationGuard } from '../../core/guards/authorization.guard';
 import { UserPermissions } from '../../core/definitions/user-permissions';
+import { preventUnsavedChangesGuard } from '../../core/guards/prevent-unsaved-changes.guard';
 
 const routes: Routes = [
   {
@@ -16,11 +17,13 @@ const routes: Routes = [
   {
     path: 'new',
     canActivate: [authorizationGuard(UserPermissions.CreateStockItems)],
+    canDeactivate: [preventUnsavedChangesGuard],
     component: NewStockItemComponent
   },
   {
     path: `:${NavigationParams.STOCK_ITEM_ID}`,
     canActivate: [authorizationGuard(UserPermissions.EditStockItems)],
+    canDeactivate: [preventUnsavedChangesGuard],
     component: EditStockItemComponent
   }
 ];
