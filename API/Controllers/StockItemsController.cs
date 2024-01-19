@@ -3,7 +3,6 @@ using API.ActionResults;
 using API.Authentication;
 using API.Data.DTOs;
 using API.Entities;
-using API.Entities.Metadata;
 using API.Extensions;
 using API.Interfaces;
 using API.Utilities.Params;
@@ -63,8 +62,7 @@ public sealed partial class StockItemsController : BaseApiController
     public async Task<ActionResult> UpdateStockItem(UpdateStockItemDto item, string id)
     {
         var stockItem = HttpContext.GetStockItem();
-        
-        _mapper.Map(item, stockItem);
+        await _unitOfWork.StockItems.Update(stockItem, item);
 
         var saveResult = await _unitOfWork.SaveChangesAsync();
         if (saveResult.Success) return Ok(stockItem);

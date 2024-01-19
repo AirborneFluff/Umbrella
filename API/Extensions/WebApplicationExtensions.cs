@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,10 +37,11 @@ public static class WebApplicationExtensions
             await DataSeed.EnsureCreatedAsync(context);
             
             var userManager = service.GetRequiredService<UserManager<AppUser>>();
+            var mapper = service.GetRequiredService<IMapper>();
             var user = await userManager.Users.FirstOrDefaultAsync();
             if (user is null) return;
 
-            var unitOfWork = new UnitOfWork(context, user.OrganisationId);
+            var unitOfWork = new UnitOfWork(context, user.OrganisationId, mapper);
             
             if (app.Environment.IsDevelopment())
             {

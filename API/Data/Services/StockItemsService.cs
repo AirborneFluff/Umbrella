@@ -1,59 +1,75 @@
-﻿using System.Diagnostics;
+﻿using API.Data.DTOs;
+using API.Data.Repositories;
 using API.Entities;
 using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using API.Utilities.Params;
-using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace API.Data.Services;
 
 public class StockItemsService : IStockItemsService
 {
-    private readonly IStockItemsRepository _repository;
-    private readonly DataContext _context;
+    private readonly IMapper _mapper;
+    private readonly IStockItemsRepository _stockItemsRepository;
+    private readonly IStockMetadataRepository _metadataRepository;
 
-    public StockItemsService(IStockItemsRepository repository, DataContext context)
+    public StockItemsService(DataContext context, string partitionKey, IMapper mapper)
     {
-        _repository = repository;
-        _context = context;
+        _mapper = mapper;
+        _stockItemsRepository = new StockItemsRepository(context, partitionKey);
+        _metadataRepository = new StockMetadataRepository(context, partitionKey);
     }
 
     public async Task Add(StockItem stockItem)
     {
-        _repository.Add(stockItem);
-        var metaData = await _context.StockMetadata.SingleOrDefaultAsync();
-        if (metaData is null)
+        _stockItemsRepository.Add(stockItem);
+        if (stockItem.Category is null) return;
+        
+        var metaData = await _metadataRepository.GetAsync();
+        metaData.UniqueCategories.AddWithQuantity(stockItem.Category);
+    }
+
+    public async Task Update(StockItem stockItem, UpdateStockItemDto updates)
+    {
+        if (stockItem.Category == updates.Category)
         {
-            _context.StockMetadata.Add(stockItem.CreateInitialMetadata());
+            _mapper.Map(updates, stockItem);
             return;
         }
-        if (stockItem.Category is null) return;
-        metaData.UniqueCategories.AddWithQuantity(stockItem.Category);
+        var metaData = await _metadataRepository.GetAsync();
+
+        if (stockItem.Category is not null)
+        {
+            metaData.UniqueCategories.RemoveWithQuantity(stockItem.Category);
+        }
+
+        if (updates.Category is not null)
+        {
+            metaData.UniqueCategories.AddWithQuantity(updates.Category);
+        }
         
-        _context.StockMetadata.Update(metaData);
+        _mapper.Map(updates, stockItem);
     }
 
     public async Task Remove(StockItem stockItem)
     {
-        _repository.Remove(stockItem);
-        var metaData = await _context.StockMetadata.SingleOrDefaultAsync();
-        if (metaData is null) return;
+        _stockItemsRepository.Remove(stockItem);
         if (stockItem.Category is null) return;
-        
+
+        var metaData = await _metadataRepository.GetAsync();
         metaData.UniqueCategories.RemoveWithQuantity(stockItem.Category);
-        
-        _context.StockMetadata.Update(metaData);
     }
 
-    public Task<int> Count() => _repository.Count();
+    public Task<int> Count() => _stockItemsRepository.Count();
 
-    public Task<StockItem?> GetByPartCode(string partCode) => _repository.GetByPartCode(partCode);
+    public Task<StockItem?> GetByPartCode(string partCode) => _stockItemsRepository.GetByPartCode(partCode);
 
-    public Task<StockItem?> GetById(string Id) => _repository.GetById(Id);
+    public Task<StockItem?> GetById(string Id) => _stockItemsRepository.GetById(Id);
 
     public Task<PagedList<StockItem>> GetPagedList(StockItemParams stockParams) =>
-        _repository.GetPagedList(stockParams);
+        _stockItemsRepository.GetPagedList(stockParams);
     
-    public Task<Dictionary<string, int>> GetCategories() => _repository.GetCategories();
+    public Task<Dictionary<string, int>> GetCategories() => _stockItemsRepository.GetCategories();
 }
