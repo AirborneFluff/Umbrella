@@ -15,7 +15,7 @@
       </ng-template>
     </div>
   </div>
-  <app-stock-item-form *ngIf="stockItem$ | async else ghostForm" />
+  <app-stock-item-form *ngIf="stockItem$ | async else ghostForm" (isPristine)="formPristine = $event"/>
 </div>
 
 <ng-template #ghostForm>

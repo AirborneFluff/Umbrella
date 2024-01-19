@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StockItem } from '../../../core/models/stock-item';
 import { StockSupplySource } from '../../../core/models/stock-supply-source';
+import { BehaviorSubject, distinctUntilChanged, Subscription } from 'rxjs';
 
 type FormControlName = keyof typeof StockItemFormComponent.prototype.form.controls;
 
@@ -10,7 +11,11 @@ type FormControlName = keyof typeof StockItemFormComponent.prototype.form.contro
   templateUrl: './stock-item-form.component.html',
   styleUrls: ['./stock-item-form.component.scss']
 })
-export class StockItemFormComponent {
+export class StockItemFormComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
+  private isPristine$ = new BehaviorSubject(true);
+  @Output() isPristine = this.isPristine$.pipe(distinctUntilChanged());
+
   form = new FormGroup({
     id: new FormControl<string>({value: '', disabled: true}, {nonNullable: true}),
     partCode: new FormControl<string>('', {validators: [Validators.required], nonNullable: true}),
@@ -21,6 +26,16 @@ export class StockItemFormComponent {
   })
 
   constructor() {}
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe()
+  }
+
+  ngOnInit(): void {
+    this.subscriptions.add(
+      this.form.valueChanges.subscribe(() => this.isPristine$.next(this.form.pristine))
+    )
+  }
 
   get formValue(): StockItem {
     return this.form.getRawValue() as StockItem;

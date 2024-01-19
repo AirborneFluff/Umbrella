@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegisterOrganisationParams } from '../../../core/models/register-organisation-params';
 import { OrganisationService } from '../../../core/services/organisation.service';
 import { matchValues } from '../../../core/form-validators/match-values-validator';
-import { finalize, Subscription } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, Subscription } from 'rxjs';
 import { passwordStrengthValidator } from '../../../core/form-validators/password-strength-validator';
 import { Router } from '@angular/router';
 import { ComponentCanDeactivate } from '../../../core/guards/prevent-unsaved-changes.guard';
@@ -16,6 +16,7 @@ type FormControlName = keyof typeof RegisterOrganisationComponent.prototype.form
   styleUrls: ['./register-organisation.component.scss']
 })
 export class RegisterOrganisationComponent implements OnDestroy, ComponentCanDeactivate {
+  isPristine$ = new BehaviorSubject(true);
   busy = false;
 
   subscriptions = new Subscription();
@@ -42,10 +43,14 @@ export class RegisterOrganisationComponent implements OnDestroy, ComponentCanDea
         this.form.controls['confirmPassword'].updateValueAndValidity();
       })
     );
+
+    this.subscriptions.add(
+      this.form.valueChanges.subscribe(() => this.isPristine$.next(this.form.pristine))
+    )
   }
 
-  canDeactivate(): boolean {
-    return this.form.pristine;
+  canDeactivate(): Observable<boolean> {
+    return this.isPristine$.asObservable();
   }
 
   ngOnDestroy() {

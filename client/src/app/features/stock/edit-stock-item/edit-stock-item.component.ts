@@ -13,8 +13,9 @@ import { ComponentCanDeactivate } from '../../../core/guards/prevent-unsaved-cha
   styleUrls: ['./edit-stock-item.component.scss']
 })
 export class EditStockItemComponent implements AfterViewInit, ComponentCanDeactivate {
-  busy = false;
   @ViewChild(StockItemFormComponent, {static: false}) formComponent!: StockItemFormComponent;
+  busy = false;
+  formPristine = true;
 
   constructor(private stockApi: StockService,
               private id$: StockItemIdStream,
@@ -30,7 +31,7 @@ export class EditStockItemComponent implements AfterViewInit, ComponentCanDeacti
   )
 
   canDeactivate() {
-    return this.formComponent.form.pristine;
+    return this.formPristine;
   }
 
   save() {
@@ -40,6 +41,7 @@ export class EditStockItemComponent implements AfterViewInit, ComponentCanDeacti
     this.stockApi.update(item).pipe(
       finalize(() => this.busy = false)
     ).subscribe(() => {
+      this.formPristine = true;
       this.router.navigate(['../'], { relativeTo: this.route })
     })
   }
