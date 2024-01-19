@@ -45,7 +45,9 @@ public class StockItemsService : IStockItemsService
         
         _context.StockMetadata.Update(metaData);
     }
-    
+
+    public Task<int> Count() => _repository.Count();
+
     public Task<StockItem?> GetByPartCode(string partCode) => _repository.GetByPartCode(partCode);
 
     public Task<StockItem?> GetById(string Id) => _repository.GetById(Id);
@@ -53,5 +55,5 @@ public class StockItemsService : IStockItemsService
     public Task<PagedList<StockItem>> GetPagedList(StockItemParams stockParams) =>
         _repository.GetPagedList(stockParams);
     
-    public Task<List<string>> GetCategories() => _repository.GetCategories();
+    public Task<Dictionary<string, int>> GetCategories() => _repository.GetCategories();
 }
