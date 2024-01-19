@@ -35,4 +35,10 @@ public sealed class UnitOfWork : IUnitOfWork
         _context = context;
         _partitionKey = httpContextAccessor.HttpContext!.User.GetOrganisationId();
     }
+    
+    public UnitOfWork(DataContext context, string partitionKey)
+    {
+        _context = context;
+        _partitionKey = partitionKey;
+    }
 }

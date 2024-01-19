@@ -79,7 +79,7 @@ public sealed partial class StockItemsController : BaseApiController
     public async Task<ActionResult> RemoveStockItem(string id)
     {
         var stockItem = HttpContext.GetStockItem();
-        _unitOfWork.StockItems.Remove(stockItem);
+        await _unitOfWork.StockItems.Remove(stockItem);
 
         var saveResult = await _unitOfWork.SaveChangesAsync();
         if (saveResult.Success) return Ok();
