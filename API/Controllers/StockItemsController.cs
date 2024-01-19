@@ -13,7 +13,6 @@ using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
-[Authorize(Policy = nameof(UserPermissions.ReadStockItems))]
 public sealed partial class StockItemsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -25,7 +24,7 @@ public sealed partial class StockItemsController : BaseApiController
         _mapper = mapper;
     }
 
-    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
+    [Authorize(Policy = nameof(UserPermissions.CreateStockItems))]
     [HttpPost]
     public async Task<ActionResult> AddStockItem(NewStockItemDto item)
     {
@@ -39,6 +38,7 @@ public sealed partial class StockItemsController : BaseApiController
         return new CosmosExceptionResult((CosmosException)saveResult.Exception);
     }
     
+    [Authorize(Policy = nameof(UserPermissions.ReadStockItems))]
     [ServiceFilter(typeof(ValidateStockItemExists))]
     [HttpGet("{id}")]
     public async Task<ActionResult> GetStockItem(string id)
@@ -47,6 +47,7 @@ public sealed partial class StockItemsController : BaseApiController
         return Ok(stockItem);
     }
     
+    [Authorize(Policy = nameof(UserPermissions.ReadStockItems))]
     [HttpGet]
     public async Task<ActionResult> GetStockItems([FromQuery] StockItemParams stockParams)
     {
@@ -56,8 +57,8 @@ public sealed partial class StockItemsController : BaseApiController
         return Ok(result);
     }
     
+    [Authorize(Policy = nameof(UserPermissions.EditStockItems))]
     [ServiceFilter(typeof(ValidateStockItemExists))]
-    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateStockItem(UpdateStockItemDto item, string id)
     {
@@ -71,8 +72,8 @@ public sealed partial class StockItemsController : BaseApiController
         return new CosmosExceptionResult((CosmosException)saveResult.Exception);
     }
 
+    [Authorize(Policy = nameof(UserPermissions.DeleteStockItems))]
     [ServiceFilter(typeof(ValidateStockItemExists))]
-    [Authorize(Policy = nameof(UserPermissions.ManageStockItems))]
     [HttpDelete("{id}")]
     public async Task<ActionResult> RemoveStockItem(string id)
     {

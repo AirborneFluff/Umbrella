@@ -15,11 +15,12 @@ const routes: Routes = [
   },
   {
     path: 'new',
-    canActivate: [authorizationGuard(UserPermissions.ManageUsers)],
+    canActivate: [authorizationGuard(UserPermissions.CreateStockItems)],
     component: NewStockItemComponent
   },
   {
     path: `:${NavigationParams.STOCK_ITEM_ID}`,
+    canActivate: [authorizationGuard(UserPermissions.EditStockItems)],
     component: EditStockItemComponent
   }
 ];
