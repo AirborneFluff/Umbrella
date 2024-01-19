@@ -1,4 +1,5 @@
 ﻿using API.Data.Repositories;
+using API.Data.Services;
 using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
@@ -10,9 +11,11 @@ public sealed class UnitOfWork : IUnitOfWork
 {
     private readonly DataContext _context;
     private readonly string _partitionKey;
-
-    public IStockItemsRepository StockItems => new StockItemsRepository(_context, _partitionKey);
+    private IStockItemsRepository _stockItemsRepository => new StockItemsRepository(_context, _partitionKey);
+    
+    public IStockItemsService StockItems => new StockItemsService(_stockItemsRepository, _context);
     public IStockSuppliersRepository StockSuppliers => new StockSuppliersRepository(_context, _partitionKey);
+    public IStockMetadataRepository StockMetadata => new StockMetadataRepository(_context, _partitionKey);
 
     public async Task<OperationResult> SaveChangesAsync()
     {
@@ -31,5 +34,11 @@ public sealed class UnitOfWork : IUnitOfWork
     {
         _context = context;
         _partitionKey = httpContextAccessor.HttpContext!.User.GetOrganisationId();
+    }
+    
+    public UnitOfWork(DataContext context, string partitionKey)
+    {
+        _context = context;
+        _partitionKey = partitionKey;
     }
 }

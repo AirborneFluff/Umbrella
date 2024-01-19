@@ -17,6 +17,13 @@ public sealed class StockItemsRepository : IStockItemsRepository
         _partitionKey = partitionKey;
     }
 
+    public Task<int> Count()
+    {
+        return _context.StockItems
+            .WithPartitionKey(_partitionKey)
+            .CountAsync();
+    }
+
     public Task<StockItem?> GetByPartCode(string partCode)
     {
         return _context.StockItems
@@ -33,7 +40,7 @@ public sealed class StockItemsRepository : IStockItemsRepository
 
     public void Add(StockItem stockItem)
     {
-        stockItem.PartitionKey = _partitionKey;
+        stockItem.OrganisationId = _partitionKey;
         _context.StockItems.Add(stockItem);
     }
 
@@ -64,13 +71,12 @@ public sealed class StockItemsRepository : IStockItemsRepository
         return await PagedList<StockItem>.CreateAsync(query, stockParams.PageNumber, stockParams.PageSize);
     }
 
-    public async Task<List<string>> GetCategories()
+    public async Task<Dictionary<string, int>> GetCategories()
     {
-        return await _context.StockItems
+        var metadata = await _context.StockMetadata
             .WithPartitionKey(_partitionKey)
-            .Where(item => item.Category != null)
-            .Select(item => item.Category!)
-            .Distinct()
-            .ToListAsync();
+            .SingleOrDefaultAsync();
+
+        return metadata?.UniqueCategories ?? new Dictionary<string, int>();
     }
 }

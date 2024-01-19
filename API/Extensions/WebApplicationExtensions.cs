@@ -38,10 +38,12 @@ public static class WebApplicationExtensions
             var userManager = service.GetRequiredService<UserManager<AppUser>>();
             var user = await userManager.Users.FirstOrDefaultAsync();
             if (user is null) return;
+
+            var unitOfWork = new UnitOfWork(context, user.OrganisationId);
             
             if (app.Environment.IsDevelopment())
             {
-                await DataSeed.SeedStockItems(context, user.OrganisationId);
+                await DataSeed.SeedStockItems(unitOfWork, user.OrganisationId);
             }
         }
         catch (Exception ex)

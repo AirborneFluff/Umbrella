@@ -5,8 +5,9 @@ namespace API.Interfaces;
 
 public interface IUnitOfWork
 {
-    public IStockItemsRepository StockItems { get; }
+    public IStockItemsService StockItems { get; }
     public IStockSuppliersRepository StockSuppliers { get; }
+    public IStockMetadataRepository StockMetadata { get; }
 
     Task<OperationResult> SaveChangesAsync();
 }

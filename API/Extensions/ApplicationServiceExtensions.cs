@@ -28,6 +28,7 @@ public static class ApplicationServiceExtensions
             if (uri is null || key is null || name is null) throw new Exception("Cosmos DB not configured");
 
             options.UseCosmos(uri, key, name);
+            options.EnableSensitiveDataLogging();
         });
     }
 

@@ -22,7 +22,7 @@ public sealed class FiltersController : BaseApiController
     public async Task<ActionResult> GetStockItemFilter()
     {
         var categories = await _unitOfWork.StockItems.GetCategories();
-        var filterOptions = QueryFilterConfigBuilder.FromList(categories);
+        var filterOptions = QueryFilterConfigBuilder.FromList(categories.Keys.ToList());
         var categoryParameter = new QueryFilterParameter()
         {
             DisplayValue = "Category",
