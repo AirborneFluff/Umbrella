@@ -1,21 +1,38 @@
-<section class="relative">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6">
-    <div class="pt-32 pb-12 md:pt-40 md:pb-20">
-      <div class="text-center pb-12 md:pb-16">
-        <h1 class="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4">Time to demo<br><span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-teal-400">umbrella</span></h1>
-        <div class="max-w-lg mx-auto">
-          <p class="text-xl text-gray-600 mb-8">An example of carefully crafted UI/UX design, efficient module loading and use of a NoSQL database</p>
-          <div class="max-w-xs mx-auto sm:max-w-none flex flex-col sm:flex-row justify-center font-light text-2xl gap-2 text-white mb-8">
-            <div class="cursor-pointer bg-primary px-4 py-2 rounded-md" routerLink="/login">
-              <span>Login</span>
-            </div>
-            <div class="cursor-pointer bg-black px-4 py-2 rounded-md" (click)="demoLogin()">
-              <span>Try Demo</span>
-            </div>
-          </div>
-          <a class="text-lg text-primary-deep font-medium underline cursor-pointer" routerLink="/register">Register your Organisation</a>
-        </div>
+<div class="max-w-lg mx-auto text-center pt-32 md:pt-40 px-2">
+    <h1 class="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4">Time to demo<br><span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-teal-400">umbrella</span></h1>
+    <p class="text-xl text-gray-600 mb-8">An example of carefully crafted UI/UX design, efficient module loading and use of a NoSQL database</p>
+    <div class="max-w-xs mx-auto sm:flex flex-row justify-center font-light text-2xl text-white mb-8 gap-2">
+      <div class="cursor-pointer bg-primary px-4 py-2 rounded-md basis-60 mb-2" routerLink="/login">
+        <span>Login</span>
+      </div>
+      <div class="cursor-pointer bg-black px-4 py-2 rounded-md basis-60 mb-2" (click)="demoLogin()">
+        <span>Try Demo</span>
       </div>
     </div>
+    <a class="text-lg text-primary-deep font-medium underline cursor-pointer" routerLink="/register">Register your Organisation</a>
+</div>
+
+<div class="py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center mb-24">
+      <h2 class="text-base font-semibold leading-7 text-indigo-600">Behind the scenes</h2>
+      <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Data is at the forefront of this project</p>
+      <p class="mt-6 text-lg leading-8 text-gray-600">In the backend, I used the most secure methods at my disposal to ensure data integrity and security by utilising best in class technologies</p>
+    </div>
+
+    <div class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16 mx-auto">
+      <app-feature-element title="CI/CD" icon="all_inclusive">
+        With an effective CI/CD pipeline through Github Actions, features can be implemented and deployed within fast.
+      </app-feature-element>
+      <app-feature-element title="Identity" icon="fingerprint">
+        Using Microsoft Identity, user information security is taken care of with a proven framework.
+      </app-feature-element>
+      <app-feature-element title="NoSQL" icon="storage">
+        Fast and efficient data partitioning using Azure Cosmos for NoSQL. No relationships to query, the data is retrieved in a single read operation.
+      </app-feature-element>
+      <app-feature-element title="Cookie Authentication" icon="cookie">
+        Secured by the browser, cookie authentication is arguably the safest method of storing user sessions.
+      </app-feature-element>
+    </div>
   </div>
-</section>
+</div>

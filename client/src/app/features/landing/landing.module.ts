@@ -6,13 +6,15 @@ import { LandingScreenComponent } from './landing-screen/landing-screen.componen
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from '../../shared/shared.module';
 import { RegisterOrganisationComponent } from './register-organisation/register-organisation.component';
+import { FeatureElementComponent } from './feature-element/feature-element.component';
 
 
 @NgModule({
   declarations: [
     LandingScreenComponent,
     LoginComponent,
-    RegisterOrganisationComponent
+    RegisterOrganisationComponent,
+    FeatureElementComponent
   ],
   imports: [
     CommonModule,
