@@ -57,8 +57,10 @@ public sealed class StockItemsRepository : IStockItemsRepository
 
         if (stockParams.SearchTerm is not null)
         {
-            //todo Try find solution to case sensitivity
-            query = query.Where(item => item.PartCode.ToLower().Contains(stockParams.SearchTerm.ToLower()));
+            var term = stockParams.SearchTerm.ToLower();
+            query = query
+                .Where(item => item.PartCode.ToLower().Contains(term) ||
+                               item.Description.ToLower().Contains(term));
         }
         
         if (stockParams.Category is not null)

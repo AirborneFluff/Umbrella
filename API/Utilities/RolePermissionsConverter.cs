@@ -14,10 +14,8 @@ public static class RolePermissionsConverter
 
     public static ulong ConvertToPermissionsValue(IEnumerable<AppRole> roles)
     {
-        if (!roles.Any()) return 0;
-        
         return roles
             .Select(role => (ulong)Enum.Parse<UserPermissions>(role.Name))
-            .Aggregate((permissions, roleFlag) => permissions | roleFlag);
+            .Aggregate((ulong)0, (permissions, roleFlag) => permissions | roleFlag);
     }
 }
