@@ -42,7 +42,10 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   searchUpdates$!: Observable<string>;
 
-  constructor(private stockApi: StockService, private breakpoint$: BreakpointStream, private bottomSheet: MatBottomSheet, private queryFilter: FilterService) {
+  constructor(private stockApi: StockService,
+              private breakpoint$: BreakpointStream,
+              private bottomSheet: MatBottomSheet,
+              private queryFilter: FilterService) {
   }
 
   ngOnInit(): void {
@@ -81,11 +84,13 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
   private dataStream$ = this.pageStream$.pipe(map(result => result.result), shareReplay(1));
   private pagination$ = this.pageStream$.pipe(map(result => result.pagination), shareReplay(1));
 
+  lastPage$ = this.pagination$.pipe(map(page => page.totalPages == page.currentPage), shareReplay(1));
+
   loadNextPage() {
     let pagination: Pagination;
     this.pagination$.pipe(take(1)).subscribe(page => pagination = page);
 
-    if (pagination!.totalPages == pagination!.currentPage) return;
+    if (pagination!.totalPages == this.paginationParams.pageNumber) return;
 
     this.paginationParams.pageNumber += 1;
     this.triggerApi$.next(undefined);
