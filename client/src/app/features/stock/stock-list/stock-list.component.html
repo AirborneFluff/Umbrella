@@ -10,11 +10,23 @@
   </div>
 
   <mat-list class="!p-2">
-    <mat-list-item *ngFor="let item of stockItems" class="!bg-item-light !rounded-lg !mb-0.5 !cursor-pointer" [routerLink]="[item.id]">
+    <ng-container *ngIf="stockItems else loading">
+      <mat-list-item *ngFor="let item of stockItems" class="!bg-item-light !rounded-lg !mb-0.5 !cursor-pointer" [routerLink]="[item.id]">
         <span matListItemTitle>{{item.partCode}}</span>
         <span matListItemLine>{{item.description}}</span>
-    </mat-list-item>
+      </mat-list-item>
+
+      <div *ngIf="!(lastPage$ | async)" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()" class="h-20">
+        <ng-container *ngTemplateOutlet="loading"></ng-container>
+      </div>
+    </ng-container>
   </mat-list>
 
-  <div *ngIf="stockItems.length" isVisible [bottomOffset]="120" (onBecomeVisible)="loadNextPage()"></div>
 </div>
+
+<ng-template #loading>
+  <mat-list-item *repeat="3" class="!bg-item-light !rounded-lg !mb-0.5">
+    <ngx-skeleton-loader appearance="line" [theme]="{'display' : 'block', 'margin-bottom' : '2px', 'height' : '1.25rem', width: '6rem'}"/>
+    <ngx-skeleton-loader appearance="line" [theme]="{'display' : 'block', 'margin-bottom' : '0', 'height' : '0.75rem', width: '12rem'}"/>
+  </mat-list-item>
+</ng-template>
