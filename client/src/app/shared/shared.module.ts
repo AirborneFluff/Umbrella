@@ -17,6 +17,8 @@ import { AppInputGhostDirective } from './app-forms/directives/app-input-ghost.d
 import { FormLabelComponent } from './app-forms/form-label/form-label.component';
 import { FormErrorComponent } from './app-forms/form-error/form-error.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { RepeatDirective } from './directives/repeat.directive';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AppInputGhostDirective,
     FormLabelComponent,
     FormErrorComponent,
+    RepeatDirective,
   ],
   imports: [
     CommonModule,
@@ -39,7 +42,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     QueryFilterModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgxSkeletonLoaderModule
   ],
   exports: [
     MatIconModule,
@@ -57,7 +61,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AppInputGhostDirective,
     FormLabelComponent,
     FormErrorComponent,
-    MatSnackBarModule
-  ]
+    MatSnackBarModule,
+    NgxSkeletonLoaderModule,
+    RepeatDirective
+  ],
 })
 export class SharedModule { }
