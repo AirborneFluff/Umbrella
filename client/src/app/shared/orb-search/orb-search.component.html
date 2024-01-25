@@ -1,8 +1,8 @@
 <div
   class="w-full flex justify-end items-center p-1">
   <div
-    (click)="buttonClick()"
-    [ngClass]="{'w-full pl-3 pointer-events-none' : _expanded, 'cursor-pointer' : !_expanded}"
+    (mousedown)="buttonClick()"
+    [ngClass]="{'w-full pl-3' : _expanded, 'cursor-pointer' : !_expanded}"
     class="h-12 w-12 rounded-full flex justify-between items-center orb-shadow transition-all bg-item-light">
     <input #input
            (input)="emitValue(input.value)"
@@ -11,7 +11,7 @@
            class="focus:outline-none focus:blur-0 min-w-0 w-full pl-2"
            placeholder="Search">
     <div
-      class="ml-auto flex justify-center items-center w-12 px-3">
+      class="ml-auto flex justify-center items-center w-12 px-3 pointer-events-none">
       <mat-icon>search</mat-icon>
     </div>
   </div>
