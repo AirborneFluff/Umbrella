@@ -23,7 +23,7 @@ import {
 import { HttpParams } from '@angular/common/http';
 import { FilterService } from '../../../shared/query-filter/services/filter.service';
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 20;
 
 @Component({
   selector: 'app-stock-list',
@@ -32,7 +32,7 @@ const PAGE_SIZE = 50;
 })
 export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(OrbSearchComponent) searchBar!: OrbSearchComponent;
-  stockItems: StockItem[] = [];
+  stockItems: StockItem[] | undefined;
   subscriptions = new Subscription();
   filters: HttpParams = new HttpParams();
   paginationParams: PaginationParams = {
@@ -50,6 +50,7 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.subscriptions.add(this.dataStream$.subscribe(data => {
+      if (!this.stockItems) this.stockItems = [];
       this.stockItems.push(...data);
     }))
     this.triggerApi$.next(undefined);
@@ -100,10 +101,11 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.filters = new HttpParams().set('searchTerm', searchTerm);
     this.queryFilter.clearFilter('stockItem').subscribe();
     this.triggerApi$.next(undefined);
+    this.clearList();
   }
 
   private clearList() {
-    this.stockItems = [];
+    this.stockItems = undefined;
   }
 
   openFilters() {
@@ -118,5 +120,6 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.filters = event;
     this.paginationParams.pageNumber = 1;
     this.triggerApi$.next(undefined);
+    this.clearList();
   }
 }

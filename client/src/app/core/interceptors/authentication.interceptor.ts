@@ -25,21 +25,20 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 
   private handleError(error: HttpErrorResponse) {
-
     switch (error?.status) {
       case 401:
         this.handleUnauthorized();
         break;
-      default:
-        this.postSnackbar(error);
     }
+
+    this.postSnackbar(error);
   }
 
   private handleUnauthorized() {
     const fragments = this.router.url.split('/');
-    if (fragments[1] == 'app') {
-      this.account.logout('login');
-    }
+    if (fragments[1] != 'app') return;
+
+    this.account.logout('login');
   }
 
   private postSnackbar(error: HttpErrorResponse) {

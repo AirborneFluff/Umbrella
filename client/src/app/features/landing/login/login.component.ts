@@ -54,7 +54,10 @@ export class LoginComponent {
       finalize(() => this.busy = false)
     ).subscribe({
       next: () => this.router.navigateByUrl('/app'),
-      error: e => this.error = e.error
+      error: e => {
+        if (e.status != 401) return;
+        this.error = "Invalid login credentials";
+      }
     })
   }
 }
