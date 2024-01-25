@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { AccountService } from '../services/account.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -25,20 +25,20 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 
   private handleError(error: HttpErrorResponse) {
-
     switch (error?.status) {
       case 401:
         this.handleUnauthorized();
         break;
-      default:
-        this.postSnackbar(error);
     }
+
+    this.postSnackbar(error);
   }
 
   private handleUnauthorized() {
     const fragments = this.router.url.split('/');
     if (fragments[1] == 'app') {
       this.account.logout('login');
+      return;
     }
   }
 
