@@ -23,7 +23,7 @@ import {
 import { HttpParams } from '@angular/common/http';
 import { FilterService } from '../../../shared/query-filter/services/filter.service';
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 20;
 
 @Component({
   selector: 'app-stock-list',
