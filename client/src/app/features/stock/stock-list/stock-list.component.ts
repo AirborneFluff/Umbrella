@@ -111,10 +111,12 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   updateSearch(searchTerm: string) {
+    this.clearList();
+
     this.filters = new HttpParams().set('searchTerm', searchTerm);
     this.queryFilter.clearFilter('stockItem').subscribe();
+    this.paginationParams.pageNumber = 1;
     this.triggerApi$.next(undefined);
-    this.clearList();
   }
 
   private clearList() {
@@ -130,8 +132,9 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   clearFilters() {
+    if (this.filters.keys().length == 0) return;
+
     this.filters = new HttpParams();
-    this.paginationParams.pageNumber = 1;
     this.triggerApi$.next(undefined);
     this.clearList();
   }
