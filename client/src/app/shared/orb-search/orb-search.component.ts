@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { map, startWith, take } from 'rxjs';
 
 @Component({
   selector: 'orb-search',
@@ -12,11 +11,6 @@ export class OrbSearchComponent implements OnInit {
   @Input() alwaysOpen: boolean = false;
   protected _expanded = false;
 
-  private hasEmitted$ = this.onSearch.pipe(
-    startWith(false),
-    map(() => true)
-  )
-
   public ngOnInit() {
     if (this.alwaysOpen)
       this._expanded = true;
@@ -25,12 +19,8 @@ export class OrbSearchComponent implements OnInit {
   public expand() {
     this._expanded = true;
 
-    this.hasEmitted$.pipe(take(1)).subscribe(emitted => {
-      console.log(emitted)
-      if (emitted) this.emitValue(undefined)
-    })
-
     setTimeout(() => {
+      this.emitValue(undefined)
       this.inputElement.nativeElement.focus()
     },0);
   }
