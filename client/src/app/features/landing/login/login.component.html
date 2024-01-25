@@ -15,6 +15,7 @@
     <input appInput placeholder="Password" type="password" [formControl]="getControl('password')"/>
     <app-form-error *ngIf="hasErrors('password')">Invalid Password</app-form-error>
   </app-form-field>
+  <app-form-error *ngIf="error">{{error}}</app-form-error>
 
   <div
     [ngClass]="{'pointer-events-none cursor-auto bg-gray-500' : !form.valid}"
