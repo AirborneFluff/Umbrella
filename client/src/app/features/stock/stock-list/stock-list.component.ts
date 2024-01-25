@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StockService } from '../../../core/services/stock.service';
 import {
-  debounceTime,
+  debounceTime, distinctUntilChanged,
   map,
   Observable,
   shareReplay,
@@ -40,7 +40,7 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
     pageSize: PAGE_SIZE
   };
 
-  searchUpdates$!: Observable<string>;
+  searchUpdates$!: Observable<string | undefined>;
 
   constructor(private stockApi: StockService,
               private breakpoint$: BreakpointStream,
@@ -62,15 +62,28 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.searchUpdates$ = this.searchBar.onSearch.pipe(
+      distinctUntilChanged(),
       debounceTime(500));
 
     this.subscriptions.add(
-      this.searchUpdates$.subscribe(val => this.updateSearch(val)));
+      this.searchUpdates$.subscribe(val => {
+        if (!val) {
+          this.clearFilters();
+          return;
+        }
+        this.updateSearch(val)
+      }));
   }
 
   showCompactFilters$ = this.breakpoint$.pipe(
     map(state => {
       return !state.breakpoints[Breakpoints.xl];
+    })
+  )
+
+  persistentSearchBar$ = this.breakpoint$.pipe(
+    map(state => {
+      return state.breakpoints[Breakpoints.md]
     })
   )
 
@@ -114,6 +127,13 @@ export class StockListComponent implements OnInit, OnDestroy, AfterViewInit {
       panelClass: "h-4/5",
       data: 'stockItem'
     }).afterDismissed().subscribe(val => this.applyFilter(val));
+  }
+
+  clearFilters() {
+    this.filters = new HttpParams();
+    this.paginationParams.pageNumber = 1;
+    this.triggerApi$.next(undefined);
+    this.clearList();
   }
 
   applyFilter(event: HttpParams) {

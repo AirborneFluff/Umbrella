@@ -4,7 +4,7 @@
 
 <div class="xl:pl-60 mt-16">
   <div class="fixed top-0 right-0 flex justify-end w-full pl-[3.5rem] md:pl-24 xl:pl-72 xl:justify-start z-50">
-    <orb-search [alwaysOpen]="!(showCompactFilters$ | async)!" class="flex-grow"/>
+    <orb-search [alwaysOpen]="(persistentSearchBar$ | async)!" class="flex-grow"/>
     <orb-button *ngIf="showCompactFilters$ | async" (click)="openFilters()" icon="tune"/>
     <orb-button routerLink="new" icon="add"/>
   </div>
