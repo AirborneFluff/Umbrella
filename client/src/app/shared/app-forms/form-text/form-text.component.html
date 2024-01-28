@@ -1,11 +1,19 @@
-<input
-  [ngClass]="{'border-2 border-red-400' : !valid, '!bg-gray-300' : control.disabled}"
-  type="text"
-  [placeholder]="placeholder"
-  [matAutocomplete]="auto"
-  [formControl]="control"
-  (focus)="getOptionsFromSource()"
-  class="focus:outline-none focus:blur-0 min-w-0 w-full h-12 rounded-lg px-3 bg-item-light border">
+<div class="relative">
+  <input
+    [ngClass]="{'border-2 border-red-400' : !valid, '!bg-gray-300' : control.disabled}"
+    type="text"
+    [placeholder]="placeholder"
+    [matAutocomplete]="auto"
+    [formControl]="control"
+    (focus)="getOptionsFromSource()"
+    class="focus:outline-none focus:blur-0 min-w-0 w-full h-12 rounded-lg px-3 bg-item-light border">
+
+  <div
+    *ngIf="options || optionsSource"
+    class="absolute w-full h-full top-0 left-0 pointer-events-none flex justify-end items-center px-3">
+    <mat-icon class="text-gray-600">expand_more</mat-icon>
+  </div>
+</div>
 
 <mat-autocomplete #auto="matAutocomplete">
   <mat-option disabled *ngIf="optionsLoading$ | async">
