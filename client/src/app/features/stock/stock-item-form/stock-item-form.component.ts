@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StockItem } from '../../../core/models/stock-item';
 import { StockSupplySource } from '../../../core/models/stock-supply-source';
-import { BehaviorSubject, distinctUntilChanged, Subscription } from 'rxjs';
+import { BehaviorSubject, delay, distinctUntilChanged, Subscription } from 'rxjs';
+import { StockService } from '../../../core/services/stock.service';
 
 type FormControlName = keyof typeof StockItemFormComponent.prototype.form.controls;
 
@@ -25,7 +26,9 @@ export class StockItemFormComponent implements OnInit, OnDestroy {
     supplySources: new FormControl<StockSupplySource[]>([], {nonNullable: true})
   })
 
-  constructor() {}
+  constructor(private stockApi: StockService) {}
+
+  categoryOptions$ = this.stockApi.getCategories();
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe()

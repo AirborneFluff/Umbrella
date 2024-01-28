@@ -12,5 +12,7 @@
 </app-form-field>
 <app-form-field>
   <app-form-label>Category</app-form-label>
-  <app-form-text placeholder="Category" [formControl]="getControl('category')"/>
+  <app-form-text placeholder="Category"
+                 [formControl]="getControl('category')"
+                 [optionsSource]="categoryOptions$"/>
 </app-form-field>
