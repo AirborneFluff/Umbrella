@@ -7,12 +7,12 @@
   </div>
   <app-form-field [requiredError]="hasRequiredError('email')">
     <app-form-label>Email</app-form-label>
-    <input appInput placeholder="Email" [formControl]="getControl('email')"/>
+    <app-form-text placeholder="Email" [formControl]="getControl('email')" />
     <app-form-error *ngIf="hasErrors('email')">Invalid Email</app-form-error>
   </app-form-field>
   <app-form-field [requiredError]="hasRequiredError('password')">
     <app-form-label>Password</app-form-label>
-    <input appInput placeholder="Password" type="password" [formControl]="getControl('password')"/>
+    <app-form-text placeholder="Password" type="password" [formControl]="getControl('password')"/>
     <app-form-error *ngIf="hasErrors('password')">Invalid Password</app-form-error>
   </app-form-field>
   <app-form-error *ngIf="error">{{error}}</app-form-error>

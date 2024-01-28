@@ -7,22 +7,22 @@
   </div>
   <app-form-field [requiredError]="hasRequiredError('organisationName')">
     <app-form-label>Organisation Name</app-form-label>
-    <input appInput placeholder="Organisation Name" [formControl]="getControl('organisationName')"/>
+    <app-form-text placeholder="Organisation Name" [formControl]="getControl('organisationName')"/>
     <app-form-error *ngIf="hasErrors('organisationName')">Must be between 3-32 character long</app-form-error>
   </app-form-field>
   <app-form-field [requiredError]="hasRequiredError('email')">
     <app-form-label>Administrator Email</app-form-label>
-    <input appInput placeholder="Email" [formControl]="getControl('email')"/>
+    <app-form-text placeholder="Email" [formControl]="getControl('email')"/>
     <app-form-error *ngIf="hasErrors('email')">Must be a valid email</app-form-error>
   </app-form-field>
   <app-form-field [requiredError]="hasRequiredError('password')">
     <app-form-label>Password</app-form-label>
-    <input appInput placeholder="Password" type="password" [formControl]="getControl('password')"/>
+    <app-form-text placeholder="Password" type="password" [formControl]="getControl('password')"/>
     <app-form-error *ngIf="hasErrors('password')">Password not secure enough</app-form-error>
   </app-form-field>
   <app-form-field [requiredError]="hasRequiredError('confirmPassword')">
     <app-form-label>Confirm Password</app-form-label>
-    <input appInput placeholder="Confirm Password" type="password" [formControl]="getControl('confirmPassword')"/>
+    <app-form-text placeholder="Confirm Password" type="password" [formControl]="getControl('confirmPassword')"/>
     <app-form-error
       *ngIf="hasErrors('confirmPassword')">
       Passwords must match</app-form-error>
