@@ -12,7 +12,6 @@ import { QueryFilterModule } from './query-filter/query-filter.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormFieldComponent } from './app-forms/form-field/form-field.component';
-import { AppInputGhostDirective } from './app-forms/directives/app-input-ghost.directive';
 import { FormLabelComponent } from './app-forms/form-label/form-label.component';
 import { FormErrorComponent } from './app-forms/form-error/form-error.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -26,7 +25,6 @@ import { FormTextComponent } from './app-forms/form-text/form-text.component';
     IsVisibleDirective,
     OrbSearchComponent,
     FormFieldComponent,
-    AppInputGhostDirective,
     FormLabelComponent,
     FormErrorComponent,
     RepeatDirective,
@@ -57,7 +55,6 @@ import { FormTextComponent } from './app-forms/form-text/form-text.component';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     FormFieldComponent,
-    AppInputGhostDirective,
     FormLabelComponent,
     FormErrorComponent,
     MatSnackBarModule,
