@@ -18,6 +18,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { RepeatDirective } from './directives/repeat.directive';
 import { FormTextComponent } from './app-forms/form-text/form-text.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { FormTextComponent } from './app-forms/form-text/form-text.component';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatIconModule,
@@ -60,7 +62,8 @@ import { FormTextComponent } from './app-forms/form-text/form-text.component';
     MatSnackBarModule,
     NgxSkeletonLoaderModule,
     RepeatDirective,
-    FormTextComponent
+    FormTextComponent,
+    MatAutocompleteModule
   ],
 })
 export class SharedModule { }

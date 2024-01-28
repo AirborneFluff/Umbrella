@@ -8,6 +8,7 @@ import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 })
 export class FormTextComponent implements ControlValueAccessor {
   @Input() placeholder!: string;
+  @Input() options: string[] = [];
 
   constructor(@Self() public ngControl: NgControl) {
     if (this.ngControl) {
