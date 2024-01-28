@@ -19,5 +19,8 @@
   <mat-option disabled *ngIf="optionsLoading$ | async">
     <mat-spinner class="primary-spinner" diameter="25"/>
   </mat-option>
+  <mat-option disabled *ngIf="options?.length == 0">
+    There are no options
+  </mat-option>
   <mat-option *ngFor="let item of options" [value]="item">{{item}}</mat-option>
 </mat-autocomplete>
