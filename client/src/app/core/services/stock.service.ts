@@ -29,6 +29,10 @@ export class StockService {
     return getPaginatedResult<StockItem[]>(this.baseUrl, params, this.http);
   }
 
+  public getCategories(): Observable<string[]> {
+    return this.http.get<string[]>(this.baseUrl + 'categories');
+  }
+
   public addNew(item: Partial<StockItem>): Observable<StockItem> {
     return this.http.post<StockItem>(this.baseUrl, item)
   }

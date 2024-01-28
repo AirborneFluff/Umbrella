@@ -13,7 +13,7 @@ using Microsoft.Azure.Cosmos;
 
 namespace API.Controllers;
 
-public sealed partial class StockItemsController : BaseApiController
+public sealed class StockItemsController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -86,4 +86,15 @@ public sealed partial class StockItemsController : BaseApiController
         if (saveResult.Exception is null) return BadRequest(saveResult.FailureMessage);
         return new CosmosExceptionResult((CosmosException)saveResult.Exception);
     }
+    
+    
+    [Authorize(Policy = nameof(UserPermissions.ReadStockItems))]
+    [HttpGet("categories")]
+    public async Task<ActionResult> GetStockItemCategories()
+    {
+        var categories = await _unitOfWork.StockItems.GetCategories();
+        var categoryNames = categories.Keys.ToList();
+        return Ok(categoryNames);
+    }
+    
 }
