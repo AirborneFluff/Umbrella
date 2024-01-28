@@ -1,6 +1,6 @@
 import { Component, Input, Self } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
-import { BehaviorSubject, finalize, Observable, of, take, tap } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-form-text',
