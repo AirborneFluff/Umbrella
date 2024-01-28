@@ -1,16 +1,16 @@
 <app-form-field [requiredError]="hasRequiredError('partCode')">
   <app-form-label>Partcode</app-form-label>
-  <input appInput placeholder="Partcode" [formControl]="getControl('partCode')">
+  <app-form-text placeholder="Partcode" [formControl]="getControl('partCode')"/>
 </app-form-field>
 <app-form-field [requiredError]="hasRequiredError('description')">
   <app-form-label>Description</app-form-label>
-  <input appInput placeholder="Description" [formControl]="getControl('description')">
+  <app-form-text placeholder="Description" [formControl]="getControl('description')"/>
 </app-form-field>
 <app-form-field>
   <app-form-label>Location</app-form-label>
-  <input appInput placeholder="Location" [formControl]="getControl('location')">
+  <app-form-text placeholder="Location" [formControl]="getControl('location')"/>
 </app-form-field>
 <app-form-field>
   <app-form-label>Category</app-form-label>
-  <input appInput placeholder="Category" [formControl]="getControl('category')">
+  <app-form-text placeholder="Category" [formControl]="getControl('category')"/>
 </app-form-field>

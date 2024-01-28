@@ -19,6 +19,7 @@ import { FormErrorComponent } from './app-forms/form-error/form-error.component'
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { RepeatDirective } from './directives/repeat.directive';
+import { FormTextComponent } from './app-forms/form-text/form-text.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { RepeatDirective } from './directives/repeat.directive';
     FormLabelComponent,
     FormErrorComponent,
     RepeatDirective,
+    FormTextComponent,
   ],
   imports: [
     CommonModule,
@@ -63,7 +65,8 @@ import { RepeatDirective } from './directives/repeat.directive';
     FormErrorComponent,
     MatSnackBarModule,
     NgxSkeletonLoaderModule,
-    RepeatDirective
+    RepeatDirective,
+    FormTextComponent
   ],
 })
 export class SharedModule { }
