@@ -18,6 +18,14 @@ body {
   overflow: hidden !important;
 }
 
+.primary-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: #5B7CFD !important;
+}
+
+.white-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: white !important;
+}
+
 .mat-drawer-container {
   background-color: inherit !important;
 }
@@ -25,9 +33,7 @@ body {
 .mdc-list-item {
   @apply bg-item-light;
 }
-.mdc-circular-progress__indeterminate-circle-graphic {
-  stroke: white !important;
-}
+
 
 .placeholder {
   min-height: 1em;
