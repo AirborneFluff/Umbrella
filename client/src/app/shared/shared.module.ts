@@ -19,6 +19,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { RepeatDirective } from './directives/repeat.directive';
 import { FormTextComponent } from './app-forms/form-text/form-text.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FormTextLoaderComponent } from './app-forms/form-text-loader/form-text-loader.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     FormErrorComponent,
     RepeatDirective,
     FormTextComponent,
+    FormTextLoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -63,7 +65,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     NgxSkeletonLoaderModule,
     RepeatDirective,
     FormTextComponent,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    FormTextLoaderComponent,
   ],
 })
 export class SharedModule { }
