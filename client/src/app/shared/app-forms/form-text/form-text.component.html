@@ -1,7 +1,7 @@
 <div class="relative">
   <input
     [ngClass]="{'border-2 border-red-400' : !valid, '!bg-gray-300' : control.disabled}"
-    type="text"
+    [type]="type"
     [placeholder]="placeholder"
     [matAutocomplete]="auto"
     [formControl]="control"

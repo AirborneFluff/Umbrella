@@ -11,6 +11,7 @@ export class FormTextComponent implements ControlValueAccessor {
   @Input() placeholder!: string;
   @Input() options: string[] | null = null;
   @Input() optionsSource: Observable<string[]> | undefined;
+  @Input() type: 'password' | undefined;
 
   constructor(@Self() public ngControl: NgControl) {
     if (this.ngControl) {
