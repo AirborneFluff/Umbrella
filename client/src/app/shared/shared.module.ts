@@ -20,6 +20,7 @@ import { RepeatDirective } from './directives/repeat.directive';
 import { FormTextComponent } from './app-forms/form-text/form-text.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormTextLoaderComponent } from './app-forms/form-text-loader/form-text-loader.component';
+import { FormTypeaheadComponent } from './app-forms/form-typeahead/form-typeahead.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { FormTextLoaderComponent } from './app-forms/form-text-loader/form-text-
     RepeatDirective,
     FormTextComponent,
     FormTextLoaderComponent,
+    FormTypeaheadComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +69,7 @@ import { FormTextLoaderComponent } from './app-forms/form-text-loader/form-text-
     FormTextComponent,
     MatAutocompleteModule,
     FormTextLoaderComponent,
+    FormTypeaheadComponent,
   ],
 })
 export class SharedModule { }
