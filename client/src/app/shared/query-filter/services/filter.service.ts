@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { FilterDefinition } from '../filter-definition';
 import { QueryParameter } from '../filter-option';
 import { QueryFilter } from '../query-filter';
-import { map, Observable, of, take } from 'rxjs';
+import { distinctUntilChanged, map, Observable, of, take } from 'rxjs';
 import { notNullOrUndefined } from '../../../core/pipes/not-null';
+import { AccountService } from '../../../core/services/account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,15 @@ export class FilterService {
   private baseUrl = environment.apiUrl;
   private filterInstances: QueryFilter[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private account: AccountService) {
+    this.account.currentUser$.pipe(
+      distinctUntilChanged()
+    ).subscribe(() => this.clearInstances())
+  }
+
+  private clearInstances() {
+    this.filterInstances = [];
+  }
 
   private getFilter(entityName: FilterDefinition) {
     return this.http.get<QueryParameter[]>(this.baseUrl + 'filters/' + entityName);

@@ -12,13 +12,15 @@ import { QueryFilterModule } from './query-filter/query-filter.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormFieldComponent } from './app-forms/form-field/form-field.component';
-import { AppInputDirective } from './app-forms/directives/app-input.directive';
-import { AppInputGhostDirective } from './app-forms/directives/app-input-ghost.directive';
 import { FormLabelComponent } from './app-forms/form-label/form-label.component';
 import { FormErrorComponent } from './app-forms/form-error/form-error.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { RepeatDirective } from './directives/repeat.directive';
+import { FormTextComponent } from './app-forms/form-text/form-text.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FormTextLoaderComponent } from './app-forms/form-text-loader/form-text-loader.component';
+import { FormTypeaheadComponent } from './app-forms/form-typeahead/form-typeahead.component';
 
 @NgModule({
   declarations: [
@@ -26,11 +28,12 @@ import { RepeatDirective } from './directives/repeat.directive';
     IsVisibleDirective,
     OrbSearchComponent,
     FormFieldComponent,
-    AppInputDirective,
-    AppInputGhostDirective,
     FormLabelComponent,
     FormErrorComponent,
     RepeatDirective,
+    FormTextComponent,
+    FormTextLoaderComponent,
+    FormTypeaheadComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +46,8 @@ import { RepeatDirective } from './directives/repeat.directive';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatIconModule,
@@ -57,13 +61,15 @@ import { RepeatDirective } from './directives/repeat.directive';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     FormFieldComponent,
-    AppInputDirective,
-    AppInputGhostDirective,
     FormLabelComponent,
     FormErrorComponent,
     MatSnackBarModule,
     NgxSkeletonLoaderModule,
-    RepeatDirective
+    RepeatDirective,
+    FormTextComponent,
+    MatAutocompleteModule,
+    FormTextLoaderComponent,
+    FormTypeaheadComponent,
   ],
 })
 export class SharedModule { }

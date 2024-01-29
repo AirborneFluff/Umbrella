@@ -25,7 +25,7 @@ public class StockItemsService : IStockItemsService
     public async Task Add(StockItem stockItem)
     {
         _stockItemsRepository.Add(stockItem);
-        if (stockItem.Category is null) return;
+        if (string.IsNullOrWhiteSpace(stockItem.Category)) return;
         
         var metaData = await _metadataRepository.GetAsync();
         metaData.UniqueCategories.AddWithQuantity(stockItem.Category);
@@ -56,7 +56,7 @@ public class StockItemsService : IStockItemsService
     public async Task Remove(StockItem stockItem)
     {
         _stockItemsRepository.Remove(stockItem);
-        if (stockItem.Category is null) return;
+        if (string.IsNullOrWhiteSpace(stockItem.Category)) return;
 
         var metaData = await _metadataRepository.GetAsync();
         metaData.UniqueCategories.RemoveWithQuantity(stockItem.Category);
