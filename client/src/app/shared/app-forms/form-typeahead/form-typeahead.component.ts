@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, Self } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
-import { combineLatest, map, Observable, shareReplay, startWith } from 'rxjs';
+import { combineLatest, map, Observable, shareReplay, startWith, take } from 'rxjs';
 
 @Component({
   selector: 'app-form-typeahead',
@@ -16,6 +16,8 @@ export class FormTypeaheadComponent implements ControlValueAccessor, OnInit {
       shareReplay(1)
     )
   }
+  @Input() requireSelection: boolean = false;
+  @ViewChild('input') inputElement!: ElementRef;
 
   protected options$!: Observable<string[]>;
   protected filteredOptions$!: Observable<string[]>;
@@ -37,6 +39,18 @@ export class FormTypeaheadComponent implements ControlValueAccessor, OnInit {
       }),
       shareReplay(1)
     )
+  }
+
+  checkInputValid() {
+    if (!this.requireSelection) return;
+
+    const value = this.inputElement.nativeElement.value;
+    this.options$.pipe(take(1)).subscribe(options => {
+      const selectionValid = options.includes(value);
+
+      if (selectionValid) return;
+      this.control.setValue(null);
+    })
   }
 
   get control(): FormControl {
